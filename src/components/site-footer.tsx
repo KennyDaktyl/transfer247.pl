@@ -1,9 +1,19 @@
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 
 import { Link } from "@/i18n/navigation";
+import { apiFetch } from "@/lib/api";
+import { localize } from "@/lib/localize";
+import type { AppLocale } from "@/i18n/routing";
+import type { FixedRoute, Tour } from "@/lib/types";
 
 export async function SiteFooter() {
-  const t = await getTranslations("Footer");
+  const [t, tNav, locale, routes, tours] = await Promise.all([
+    getTranslations("Footer"),
+    getTranslations("Nav"),
+    getLocale() as Promise<AppLocale>,
+    apiFetch<FixedRoute[]>("/api/fixed-routes/", { next: { revalidate: 60 } }),
+    apiFetch<Tour[]>("/api/tours/", { next: { revalidate: 60 } }),
+  ]);
 
   return (
     <footer className="border-border bg-surface border-t">
@@ -17,19 +27,38 @@ export async function SiteFooter() {
           </div>
           <div>
             <div className="mb-3 text-[13px] font-semibold tracking-wide text-text uppercase">{t("routes")}</div>
-            <a href="/#trasy" className="block text-[14px] text-muted hover:text-text">
-              {t("routes")}
-            </a>
+            <div className="flex flex-col gap-2">
+              {routes.map((route) => (
+                <Link
+                  key={route.slug}
+                  href={`/transfery/${route.slug}`}
+                  className="text-[14px] text-muted hover:text-text"
+                >
+                  {localize(route, "name", locale)}
+                </Link>
+              ))}
+            </div>
           </div>
           <div>
             <div className="mb-3 text-[13px] font-semibold tracking-wide text-text uppercase">{t("tours")}</div>
-            <a href="/#wycieczki" className="block text-[14px] text-muted hover:text-text">
-              {t("tours")}
-            </a>
+            <div className="flex flex-col gap-2">
+              {tours.map((tour) => (
+                <Link
+                  key={tour.slug}
+                  href={`/wycieczki/${tour.slug}`}
+                  className="text-[14px] text-muted hover:text-text"
+                >
+                  {localize(tour, "title", locale)}
+                </Link>
+              ))}
+            </div>
           </div>
           <div>
             <div className="mb-3 text-[13px] font-semibold tracking-wide text-text uppercase">{t("company")}</div>
-            <Link href="/blog" className="block text-[14px] text-muted hover:text-text">
+            <Link href="/flota" className="block text-[14px] text-muted hover:text-text">
+              {tNav("fleet")}
+            </Link>
+            <Link href="/blog" className="mt-2 block text-[14px] text-muted hover:text-text">
               {t("blog")}
             </Link>
             <Link href="/kontakt" className="mt-2 block text-[14px] text-muted hover:text-text">

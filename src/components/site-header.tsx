@@ -1,18 +1,24 @@
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 
+import { apiFetch } from "@/lib/api";
+import { localize } from "@/lib/localize";
+import type { FixedRoute, Tour } from "@/lib/types";
+import type { AppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 
 import { LocaleSwitcher } from "./locale-switcher";
+import { NavDropdown } from "./nav-dropdown";
 
 export async function SiteHeader() {
-  const t = await getTranslations("Nav");
+  const [t, locale, routes, tours] = await Promise.all([
+    getTranslations("Nav"),
+    getLocale() as Promise<AppLocale>,
+    apiFetch<FixedRoute[]>("/api/fixed-routes/", { next: { revalidate: 60 } }),
+    apiFetch<Tour[]>("/api/tours/", { next: { revalidate: 60 } }),
+  ]);
 
-  const navLinks = [
-    { href: "/#trasy", label: t("routes") },
-    { href: "/#wycieczki", label: t("tours") },
-    { href: "/blog", label: t("blog") },
-    { href: "/kontakt", label: t("contact") },
-  ];
+  const routeItems = routes.map((r) => ({ href: `/transfery/${r.slug}`, label: localize(r, "name", locale) }));
+  const tourItems = tours.map((tour) => ({ href: `/wycieczki/${tour.slug}`, label: localize(tour, "title", locale) }));
 
   return (
     <header className="border-border bg-surface/90 sticky top-0 z-50 border-b backdrop-blur-md">
@@ -23,22 +29,28 @@ export async function SiteHeader() {
           </span>
         </Link>
 
-        <nav className="hidden shrink-0 gap-7 text-[14.5px] text-muted md:flex">
-          {navLinks.map((link) => (
-            <a key={link.href} href={link.href} className="transition-colors hover:text-text">
-              {link.label}
-            </a>
-          ))}
+        <nav className="hidden shrink-0 items-center gap-7 text-[14.5px] text-muted md:flex">
+          <NavDropdown label={t("routes")} indexHref="/transfery" items={routeItems} />
+          <NavDropdown label={t("tours")} indexHref="/wycieczki" items={tourItems} />
+          <Link href="/flota" className="transition-colors hover:text-text">
+            {t("fleet")}
+          </Link>
+          <Link href="/blog" className="transition-colors hover:text-text">
+            {t("blog")}
+          </Link>
+          <Link href="/kontakt" className="transition-colors hover:text-text">
+            {t("contact")}
+          </Link>
         </nav>
 
         <div className="flex shrink-0 items-center gap-3">
           <LocaleSwitcher />
-          <a
-            href="/#trasy"
+          <Link
+            href="/transfery"
             className="bg-primary hover:bg-primary-hover rounded-[999px] px-4 py-2 text-[14px] font-medium text-white transition-colors"
           >
             {t("bookNow")}
-          </a>
+          </Link>
         </div>
       </div>
     </header>

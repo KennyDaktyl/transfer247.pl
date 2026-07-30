@@ -67,6 +67,37 @@ export type Tour = {
   order: number;
 };
 
+export type ContentPage = {
+  slug: string;
+  page_type: string;
+  title_pl: string;
+  title_en: string;
+  body_pl: string;
+  body_en: string;
+  seo_title_pl: string;
+  seo_title_en: string;
+  seo_description_pl: string;
+  seo_description_en: string;
+};
+
+export type FleetVehiclePhoto = {
+  image: string;
+  caption: string;
+  order: number;
+};
+
+export type FleetVehicle = {
+  slug: string;
+  name: string;
+  seats: number;
+  description_pl: string;
+  description_en: string;
+  description_de: string;
+  cover_photo: string | null;
+  photos: FleetVehiclePhoto[];
+  order: number;
+};
+
 export type BlogPost = {
   slug: string;
   tag_pl: string;

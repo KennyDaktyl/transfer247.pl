@@ -1,11 +1,12 @@
 {
   "Metadata": {
-    "title": "transfer247.pl — Transfer ab Flughafen Krakau-Balice, 24/7",
+    "title": "transfer247.pl — Flughafentransfers & Ausflüge in Kleinpolen, 24/7",
     "description": "Private Flughafentransfers und Ausflüge ab Krakau — Balice, Katowice-Pyrzowice, Zakopane, Auschwitz-Birkenau, Salzbergwerk Wieliczka. Festpreis, keine versteckten Kosten."
   },
   "Nav": {
-    "routes": "Strecken",
+    "routes": "Transfers",
     "tours": "Ausflüge",
+    "fleet": "Flotte",
     "blog": "Blog",
     "contact": "Kontakt",
     "bookNow": "Jetzt buchen"
@@ -20,17 +21,36 @@
     "from": "ab",
     "vehicleSmall": "Toyota Auris Hybrid",
     "vehicleLarge": "Ford Tourneo Custom",
-    "seeDetails": "Strecke ansehen"
+    "seeDetails": "Strecke ansehen",
+    "backToHome": "Startseite",
+    "backToIndex": "Alle Strecken",
+    "otherRoutes": "Weitere Strecken",
+    "bookThisRoute": "Diese Strecke buchen"
   },
   "Tours": {
     "heading": "Ausflüge mit wartendem Fahrer",
     "lead": "Ihr Fahrer wartet während der gesamten Besichtigung vor Ort.",
     "from": "ab",
-    "seeDetails": "Ausflug ansehen"
+    "seeDetails": "Ausflug ansehen",
+    "backToHome": "Startseite",
+    "backToIndex": "Alle Ausflüge",
+    "otherTours": "Weitere Ausflüge",
+    "bookThisTour": "Diesen Ausflug buchen"
+  },
+  "Fleet": {
+    "heading": "Unsere Flotte",
+    "lead": "Zwei Fahrzeugklassen, passend zu Personenzahl und Gepäck.",
+    "seats": "Plätze"
+  },
+  "Blog": {
+    "heading": "Blog",
+    "lead": "Ratgeber und Informationen für Ihre Reiseplanung.",
+    "readMore": "Weiterlesen",
+    "backToIndex": "Alle Artikel"
   },
   "Footer": {
     "tagline": "Private Flughafentransfers und Ausflüge in Kleinpolen.",
-    "routes": "Strecken",
+    "routes": "Transfers",
     "tours": "Ausflüge",
     "company": "Unternehmen",
     "blog": "Blog",

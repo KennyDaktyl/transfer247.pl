@@ -1,11 +1,12 @@
 {
   "Metadata": {
-    "title": "transfer247.pl — Transfer z lotniska Kraków-Balice, 24/7",
+    "title": "transfer247.pl — Transfery lotniskowe i wycieczki w Małopolsce, 24/7",
     "description": "Prywatne transfery lotniskowe i wycieczki z Krakowa — Balice, Katowice-Pyrzowice, Zakopane, Auschwitz-Birkenau, Kopalnia Soli Wieliczka. Stała cena, bez ukrytych opłat."
   },
   "Nav": {
-    "routes": "Trasy",
+    "routes": "Transfery",
     "tours": "Wycieczki",
+    "fleet": "Flota",
     "blog": "Blog",
     "contact": "Kontakt",
     "bookNow": "Zarezerwuj"
@@ -20,17 +21,36 @@
     "from": "od",
     "vehicleSmall": "Toyota Auris Hybrid",
     "vehicleLarge": "Ford Tourneo Custom",
-    "seeDetails": "Szczegóły trasy"
+    "seeDetails": "Szczegóły trasy",
+    "backToHome": "Strona główna",
+    "backToIndex": "Wszystkie trasy",
+    "otherRoutes": "Inne trasy",
+    "bookThisRoute": "Zarezerwuj tę trasę"
   },
   "Tours": {
     "heading": "Wycieczki z kierowcą",
     "lead": "Kierowca czeka na miejscu przez cały czas zwiedzania.",
     "from": "od",
-    "seeDetails": "Szczegóły wycieczki"
+    "seeDetails": "Szczegóły wycieczki",
+    "backToHome": "Strona główna",
+    "backToIndex": "Wszystkie wycieczki",
+    "otherTours": "Inne wycieczki",
+    "bookThisTour": "Zarezerwuj tę wycieczkę"
+  },
+  "Fleet": {
+    "heading": "Nasza flota",
+    "lead": "Dwa typy pojazdów, dopasowane do liczby pasażerów i bagażu.",
+    "seats": "miejsc"
+  },
+  "Blog": {
+    "heading": "Blog",
+    "lead": "Poradniki i informacje przydatne przed podróżą.",
+    "readMore": "Czytaj dalej",
+    "backToIndex": "Wszystkie wpisy"
   },
   "Footer": {
     "tagline": "Prywatne transfery lotniskowe i wycieczki w Małopolsce.",
-    "routes": "Trasy",
+    "routes": "Transfery",
     "tours": "Wycieczki",
     "company": "Firma",
     "blog": "Blog",

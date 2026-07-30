@@ -1,11 +1,12 @@
 {
   "Metadata": {
-    "title": "transfer247.pl — Kraków Airport (Balice) transfers, 24/7",
+    "title": "transfer247.pl — Airport transfers & tours in Małopolska, 24/7",
     "description": "Private airport transfers and tours from Kraków — Balice, Katowice-Pyrzowice, Zakopane, Auschwitz-Birkenau, Wieliczka Salt Mine. Fixed price, no hidden fees."
   },
   "Nav": {
-    "routes": "Routes",
+    "routes": "Transfers",
     "tours": "Tours",
+    "fleet": "Fleet",
     "blog": "Blog",
     "contact": "Contact",
     "bookNow": "Book now"
@@ -20,17 +21,36 @@
     "from": "from",
     "vehicleSmall": "Toyota Auris Hybrid",
     "vehicleLarge": "Ford Tourneo Custom",
-    "seeDetails": "Route details"
+    "seeDetails": "Route details",
+    "backToHome": "Home",
+    "backToIndex": "All routes",
+    "otherRoutes": "Other routes",
+    "bookThisRoute": "Book this route"
   },
   "Tours": {
     "heading": "Tours with a waiting driver",
     "lead": "Your driver waits on site for the whole visit.",
     "from": "from",
-    "seeDetails": "Tour details"
+    "seeDetails": "Tour details",
+    "backToHome": "Home",
+    "backToIndex": "All tours",
+    "otherTours": "Other tours",
+    "bookThisTour": "Book this tour"
+  },
+  "Fleet": {
+    "heading": "Our fleet",
+    "lead": "Two vehicle classes, matched to passenger count and luggage.",
+    "seats": "seats"
+  },
+  "Blog": {
+    "heading": "Blog",
+    "lead": "Guides and information to help you plan your trip.",
+    "readMore": "Read more",
+    "backToIndex": "All articles"
   },
   "Footer": {
     "tagline": "Private airport transfers and tours in Małopolska.",
-    "routes": "Routes",
+    "routes": "Transfers",
     "tours": "Tours",
     "company": "Company",
     "blog": "Blog",

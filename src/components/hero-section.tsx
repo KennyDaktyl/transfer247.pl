@@ -1,5 +1,6 @@
 import { getLocale, getTranslations } from "next-intl/server";
 
+import { Link } from "@/i18n/navigation";
 import { apiFetch } from "@/lib/api";
 import { localize } from "@/lib/localize";
 import type { HomeContent } from "@/lib/types";
@@ -36,18 +37,18 @@ export async function HeroSection() {
         {lead ? <p className="mx-auto mt-6 max-w-[620px] text-[16px] leading-relaxed text-muted sm:text-[18px]">{lead}</p> : null}
 
         <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
-          <a
-            href="#trasy"
+          <Link
+            href="/transfery"
             className="bg-primary hover:bg-primary-hover rounded-[999px] px-7 py-3 text-[15px] font-medium text-white transition-colors"
           >
             {t("ctaBook")}
-          </a>
-          <a
-            href="#trasy"
+          </Link>
+          <Link
+            href="/wycieczki"
             className="border-border bg-surface hover:border-primary rounded-[999px] border px-7 py-3 text-[15px] font-medium text-text transition-colors"
           >
             {t("ctaRoutes")}
-          </a>
+          </Link>
         </div>
 
         {footnote ? <p className="mt-6 text-[13px] text-muted">{footnote}</p> : null}
