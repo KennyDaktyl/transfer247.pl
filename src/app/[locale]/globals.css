@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-bg: oklch(97% 0.004 250);
+  --color-surface: oklch(100% 0 0);
+  --color-border: oklch(90% 0.006 250);
+  --color-text: oklch(24% 0.02 60);
+  --color-muted: oklch(45% 0.02 60);
+  --color-primary: oklch(58% 0.15 40);
+  --color-primary-hover: oklch(52% 0.15 40);
+  --color-secondary: oklch(40% 0.08 150);
+
+  --font-heading: var(--font-lora), serif;
+  --font-sans: var(--font-work-sans), sans-serif;
+
+  --radius-card: 16px;
+  --radius-pill: 999px;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+}

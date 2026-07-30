@@ -1,0 +1,40 @@
+{
+  "Metadata": {
+    "title": "transfer247.pl — Transfer z lotniska Kraków-Balice, 24/7",
+    "description": "Prywatne transfery lotniskowe i wycieczki z Krakowa — Balice, Katowice-Pyrzowice, Zakopane, Auschwitz-Birkenau, Kopalnia Soli Wieliczka. Stała cena, bez ukrytych opłat."
+  },
+  "Nav": {
+    "routes": "Trasy",
+    "tours": "Wycieczki",
+    "blog": "Blog",
+    "contact": "Kontakt",
+    "bookNow": "Zarezerwuj"
+  },
+  "Hero": {
+    "ctaBook": "Zarezerwuj transfer",
+    "ctaRoutes": "Zobacz trasy i ceny"
+  },
+  "Routes": {
+    "heading": "Stałe trasy, stała cena",
+    "lead": "Bez liczników i dopłat nocnych — cenę znasz zanim zarezerwujesz.",
+    "from": "od",
+    "vehicleSmall": "Toyota Auris Hybrid",
+    "vehicleLarge": "Ford Tourneo Custom",
+    "seeDetails": "Szczegóły trasy"
+  },
+  "Tours": {
+    "heading": "Wycieczki z kierowcą",
+    "lead": "Kierowca czeka na miejscu przez cały czas zwiedzania.",
+    "from": "od",
+    "seeDetails": "Szczegóły wycieczki"
+  },
+  "Footer": {
+    "tagline": "Prywatne transfery lotniskowe i wycieczki w Małopolsce.",
+    "routes": "Trasy",
+    "tours": "Wycieczki",
+    "company": "Firma",
+    "blog": "Blog",
+    "contact": "Kontakt",
+    "rights": "Wszystkie prawa zastrzeżone."
+  }
+}

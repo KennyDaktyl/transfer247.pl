@@ -1,0 +1,24 @@
+import { setRequestLocale } from "next-intl/server";
+
+import { FixedRoutesSection } from "@/components/fixed-routes-section";
+import { HeroSection } from "@/components/hero-section";
+import { SiteFooter } from "@/components/site-footer";
+import { SiteHeader } from "@/components/site-header";
+import { ToursSection } from "@/components/tours-section";
+
+export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
+  return (
+    <>
+      <SiteHeader />
+      <main>
+        <HeroSection />
+        <FixedRoutesSection />
+        <ToursSection />
+      </main>
+      <SiteFooter />
+    </>
+  );
+}

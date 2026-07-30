@@ -1,0 +1,40 @@
+{
+  "Metadata": {
+    "title": "transfer247.pl — Transfer ab Flughafen Krakau-Balice, 24/7",
+    "description": "Private Flughafentransfers und Ausflüge ab Krakau — Balice, Katowice-Pyrzowice, Zakopane, Auschwitz-Birkenau, Salzbergwerk Wieliczka. Festpreis, keine versteckten Kosten."
+  },
+  "Nav": {
+    "routes": "Strecken",
+    "tours": "Ausflüge",
+    "blog": "Blog",
+    "contact": "Kontakt",
+    "bookNow": "Jetzt buchen"
+  },
+  "Hero": {
+    "ctaBook": "Transfer buchen",
+    "ctaRoutes": "Strecken & Preise ansehen"
+  },
+  "Routes": {
+    "heading": "Feste Strecken, fester Preis",
+    "lead": "Keine Taxameter, keine Nachtzuschläge — Sie kennen den Preis vor der Buchung.",
+    "from": "ab",
+    "vehicleSmall": "Toyota Auris Hybrid",
+    "vehicleLarge": "Ford Tourneo Custom",
+    "seeDetails": "Strecke ansehen"
+  },
+  "Tours": {
+    "heading": "Ausflüge mit wartendem Fahrer",
+    "lead": "Ihr Fahrer wartet während der gesamten Besichtigung vor Ort.",
+    "from": "ab",
+    "seeDetails": "Ausflug ansehen"
+  },
+  "Footer": {
+    "tagline": "Private Flughafentransfers und Ausflüge in Kleinpolen.",
+    "routes": "Strecken",
+    "tours": "Ausflüge",
+    "company": "Unternehmen",
+    "blog": "Blog",
+    "contact": "Kontakt",
+    "rights": "Alle Rechte vorbehalten."
+  }
+}
