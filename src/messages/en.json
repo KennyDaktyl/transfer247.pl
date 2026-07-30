@@ -1,7 +1,7 @@
 {
   "Metadata": {
-    "title": "transfer247.pl — Airport transfers & tours in Małopolska, 24/7",
-    "description": "Private airport transfers and tours from Kraków — Balice, Katowice-Pyrzowice, Zakopane, Auschwitz-Birkenau, Wieliczka Salt Mine. Fixed price, no hidden fees."
+    "title": "Kraków Airport Transfer — Balice & Katowice Pyrzowice | transfer247.pl",
+    "description": "Private airport transfer from Kraków Balice and Katowice Pyrzowice airports to Kraków, Zakopane and beyond. Fixed 24/7 price. Tours to Auschwitz-Birkenau and Wieliczka Salt Mine."
   },
   "Nav": {
     "routes": "Transfers",
@@ -16,8 +16,8 @@
     "ctaRoutes": "See routes & prices"
   },
   "Routes": {
-    "heading": "Fixed routes, fixed price",
-    "lead": "No meters, no night surcharges — you know the price before you book.",
+    "heading": "Airport Transfers – Fixed Routes, Fixed Price 24/7",
+    "lead": "Transfer from Kraków Balice and Katowice Pyrzowice airports. No meters, no night surcharges — you know the price before you book.",
     "from": "from",
     "vehicleSmall": "Toyota Auris Hybrid",
     "vehicleLarge": "Ford Tourneo Custom",
@@ -28,8 +28,8 @@
     "bookThisRoute": "Book this route"
   },
   "Tours": {
-    "heading": "Tours with a waiting driver",
-    "lead": "Your driver waits on site for the whole visit.",
+    "heading": "Tours from Kraków with a Waiting Driver",
+    "lead": "Auschwitz-Birkenau, the Wieliczka Salt Mine and more — your driver waits on site for the whole visit.",
     "from": "from",
     "seeDetails": "Tour details",
     "backToHome": "Home",

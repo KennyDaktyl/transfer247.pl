@@ -21,6 +21,9 @@ export type FixedRoute = {
   name_pl: string;
   name_en: string;
   name_de: string;
+  h1_pl: string;
+  h1_en: string;
+  h1_de: string;
   duration: string;
   price_from: string;
   price_large_vehicle: string | null;
@@ -47,6 +50,9 @@ export type Tour = {
   title_pl: string;
   title_en: string;
   title_de: string;
+  h1_pl: string;
+  h1_en: string;
+  h1_de: string;
   summary_pl: string;
   summary_en: string;
   summary_de: string;

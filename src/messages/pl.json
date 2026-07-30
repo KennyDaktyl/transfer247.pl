@@ -1,7 +1,7 @@
 {
   "Metadata": {
-    "title": "transfer247.pl — Transfery lotniskowe i wycieczki w Małopolsce, 24/7",
-    "description": "Prywatne transfery lotniskowe i wycieczki z Krakowa — Balice, Katowice-Pyrzowice, Zakopane, Auschwitz-Birkenau, Kopalnia Soli Wieliczka. Stała cena, bez ukrytych opłat."
+    "title": "Transfer Lotnisko Kraków Balice i Katowice-Pyrzowice | transfer247.pl",
+    "description": "Prywatny transfer z lotniska Kraków-Balice i Katowice-Pyrzowice do Krakowa, Zakopanego i innych miast. Stała cena 24/7. Wycieczki do Auschwitz i Kopalni Soli Wieliczka."
   },
   "Nav": {
     "routes": "Transfery",
@@ -16,8 +16,8 @@
     "ctaRoutes": "Zobacz trasy i ceny"
   },
   "Routes": {
-    "heading": "Stałe trasy, stała cena",
-    "lead": "Bez liczników i dopłat nocnych — cenę znasz zanim zarezerwujesz.",
+    "heading": "Transfery lotniskowe – stałe trasy, stała cena 24/7",
+    "lead": "Transfer z lotniska Kraków-Balice i Katowice-Pyrzowice. Bez liczników i dopłat nocnych — cenę znasz zanim zarezerwujesz.",
     "from": "od",
     "vehicleSmall": "Toyota Auris Hybrid",
     "vehicleLarge": "Ford Tourneo Custom",
@@ -28,8 +28,8 @@
     "bookThisRoute": "Zarezerwuj tę trasę"
   },
   "Tours": {
-    "heading": "Wycieczki z kierowcą",
-    "lead": "Kierowca czeka na miejscu przez cały czas zwiedzania.",
+    "heading": "Wycieczki z Krakowa z kierowcą",
+    "lead": "Auschwitz-Birkenau, Kopalnia Soli Wieliczka i inne — kierowca czeka na miejscu przez cały czas zwiedzania.",
     "from": "od",
     "seeDetails": "Szczegóły wycieczki",
     "backToHome": "Strona główna",

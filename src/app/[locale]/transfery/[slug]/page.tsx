@@ -44,7 +44,10 @@ export async function generateMetadata({
   if (!route) return {};
 
   const appLocale = locale as AppLocale;
-  const title = localize(route, "seo_title", appLocale) || localize(route, "name", appLocale);
+  const title =
+    localize(route, "seo_title", appLocale) ||
+    localize(route, "h1", appLocale) ||
+    localize(route, "name", appLocale);
   const description = localize(route, "seo_description", appLocale);
 
   return { title, description, alternates: buildAlternates(`/transfery/${slug}`) };
@@ -67,7 +70,7 @@ export default async function RouteDetailPage({
 
   if (!route) notFound();
 
-  const name = localize(route, "name", appLocale);
+  const h1 = localize(route, "h1", appLocale) || localize(route, "name", appLocale);
   const body = localize(route, "body", appLocale);
   const otherRoutes = allRoutes.filter((r) => r.slug !== route.slug);
 
@@ -81,7 +84,7 @@ export default async function RouteDetailPage({
           </Link>
 
           <h1 className="font-heading mt-4 text-[32px] leading-[1.1] font-semibold text-text sm:text-[42px]">
-            {name}
+            {h1}
           </h1>
 
           <div className="border-border bg-surface mt-6 flex flex-wrap items-center justify-between gap-4 rounded-[16px] border p-6">

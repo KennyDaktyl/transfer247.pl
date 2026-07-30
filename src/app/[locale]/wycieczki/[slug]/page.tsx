@@ -44,7 +44,10 @@ export async function generateMetadata({
   if (!tour) return {};
 
   const appLocale = locale as AppLocale;
-  const title = localize(tour, "seo_title", appLocale) || localize(tour, "title", appLocale);
+  const title =
+    localize(tour, "seo_title", appLocale) ||
+    localize(tour, "h1", appLocale) ||
+    localize(tour, "title", appLocale);
   const description = localize(tour, "seo_description", appLocale) || localize(tour, "summary", appLocale);
 
   return { title, description, alternates: buildAlternates(`/wycieczki/${slug}`) };
@@ -67,7 +70,7 @@ export default async function TourDetailPage({
 
   if (!tour) notFound();
 
-  const title = localize(tour, "title", appLocale);
+  const h1 = localize(tour, "h1", appLocale) || localize(tour, "title", appLocale);
   const body = localize(tour, "body", appLocale);
   const otherTours = allTours.filter((other) => other.slug !== tour.slug);
 
@@ -81,7 +84,7 @@ export default async function TourDetailPage({
           </Link>
 
           <h1 className="font-heading mt-4 text-[32px] leading-[1.1] font-semibold text-text sm:text-[42px]">
-            {title}
+            {h1}
           </h1>
 
           <div className="border-border bg-surface mt-6 flex flex-wrap items-center justify-between gap-4 rounded-[16px] border p-6">
