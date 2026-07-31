@@ -51,7 +51,7 @@ export default async function RoutesIndexPage({ params }: { params: Promise<{ lo
                   {localize(route, "name", appLocale)}
                 </h2>
                 <div className="mt-4 text-[15px] font-semibold text-text">
-                  {t("from")} {formatPrice(route.price_from)}
+                  {t("from")} {formatPrice(route.price_from, route.price_from_eur, appLocale)}
                 </div>
               </Link>
             ))}

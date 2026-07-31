@@ -5,8 +5,9 @@ import type { AppLocale } from "@/i18n/routing";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { apiFetch, publicApiBaseUrl } from "@/lib/api";
+import { localize } from "@/lib/localize";
 import { buildAlternates } from "@/lib/seo";
-import type { FleetVehicle } from "@/lib/types";
+import type { Vehicle } from "@/lib/types";
 
 function absoluteImageUrl(path: string): string {
   return path.startsWith("http") ? path : `${publicApiBaseUrl()}${path}`;
@@ -43,10 +44,12 @@ export default async function FleetPage({ params }: { params: Promise<{ locale: 
   const { locale } = await params;
   setRequestLocale(locale);
 
+  // The real operational fleet (apps.fleet.Vehicle, shared with driver
+  // assignment) is the only source of truth here — no separate showcase model.
   const [t, appLocale, vehicles] = await Promise.all([
     getTranslations("Fleet"),
     getLocale() as Promise<AppLocale>,
-    apiFetch<FleetVehicle[]>("/api/fleet-vehicles/", { next: { revalidate: 60 } }),
+    apiFetch<Vehicle[]>("/api/fleet/vehicles/", { next: { revalidate: 60 } }),
   ]);
 
   return (
@@ -59,11 +62,11 @@ export default async function FleetPage({ params }: { params: Promise<{ locale: 
 
           <div className="mt-10 grid gap-8 sm:grid-cols-2">
             {vehicles.map((vehicle) => {
-              const description = (vehicle as unknown as Record<string, string>)[`description_${appLocale}`] || vehicle.description_pl;
+              const description = localize(vehicle, "description", appLocale);
               const gallery = vehicle.photos.length > 0 ? vehicle.photos : null;
 
               return (
-                <article key={vehicle.slug} className="border-border bg-surface rounded-[16px] border p-5">
+                <article key={vehicle.id} className="border-border bg-surface rounded-[16px] border p-5">
                   {vehicle.cover_photo ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
@@ -79,7 +82,7 @@ export default async function FleetPage({ params }: { params: Promise<{ locale: 
                   <div className="mt-1 text-[13px] font-medium text-muted">
                     {vehicle.seats} {t("seats")}
                   </div>
-                  <p className="mt-3 text-[14px] leading-relaxed text-muted">{description}</p>
+                  {description ? <p className="mt-3 text-[14px] leading-relaxed text-muted">{description}</p> : null}
 
                   {gallery ? (
                     <div className="mt-4 grid grid-cols-3 gap-2">

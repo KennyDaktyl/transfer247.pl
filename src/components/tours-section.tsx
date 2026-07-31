@@ -46,14 +46,14 @@ export async function ToursSection() {
                 <div className="flex items-center justify-between">
                   <span className="text-muted">Toyota Auris Hybrid</span>
                   <span className="font-semibold text-text">
-                    {t("from")} {formatPrice(tour.price_from)}
+                    {t("from")} {formatPrice(tour.price_from, tour.price_from_eur, locale)}
                   </span>
                 </div>
                 {tour.price_large_vehicle ? (
                   <div className="flex items-center justify-between">
                     <span className="text-muted">Ford Tourneo Custom</span>
                     <span className="font-semibold text-text">
-                      {t("from")} {formatPrice(tour.price_large_vehicle)}
+                      {t("from")} {formatPrice(tour.price_large_vehicle, tour.price_large_vehicle_eur, locale)}
                     </span>
                   </div>
                 ) : null}

@@ -93,14 +93,14 @@ export default async function TourDetailPage({
               <div>
                 <div className="text-muted">Toyota Auris Hybrid</div>
                 <div className="text-[17px] font-semibold text-text">
-                  {t("from")} {formatPrice(tour.price_from)}
+                  {t("from")} {formatPrice(tour.price_from, tour.price_from_eur, appLocale)}
                 </div>
               </div>
               {tour.price_large_vehicle ? (
                 <div>
                   <div className="text-muted">Ford Tourneo Custom</div>
                   <div className="text-[17px] font-semibold text-text">
-                    {t("from")} {formatPrice(tour.price_large_vehicle)}
+                    {t("from")} {formatPrice(tour.price_large_vehicle, tour.price_large_vehicle_eur, appLocale)}
                   </div>
                 </div>
               ) : null}

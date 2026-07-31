@@ -45,14 +45,14 @@ export async function FixedRoutesSection() {
                 <div className="flex items-center justify-between">
                   <span className="text-muted">{t("vehicleSmall")}</span>
                   <span className="font-semibold text-text">
-                    {t("from")} {formatPrice(route.price_from)}
+                    {t("from")} {formatPrice(route.price_from, route.price_from_eur, locale)}
                   </span>
                 </div>
                 {route.price_large_vehicle ? (
                   <div className="flex items-center justify-between">
                     <span className="text-muted">{t("vehicleLarge")}</span>
                     <span className="font-semibold text-text">
-                      {t("from")} {formatPrice(route.price_large_vehicle)}
+                      {t("from")} {formatPrice(route.price_large_vehicle, route.price_large_vehicle_eur, locale)}
                     </span>
                   </div>
                 ) : null}

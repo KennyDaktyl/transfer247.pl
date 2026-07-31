@@ -93,14 +93,14 @@ export default async function RouteDetailPage({
               <div>
                 <div className="text-muted">{t("vehicleSmall")}</div>
                 <div className="text-[17px] font-semibold text-text">
-                  {t("from")} {formatPrice(route.price_from)}
+                  {t("from")} {formatPrice(route.price_from, route.price_from_eur, appLocale)}
                 </div>
               </div>
               {route.price_large_vehicle ? (
                 <div>
                   <div className="text-muted">{t("vehicleLarge")}</div>
                   <div className="text-[17px] font-semibold text-text">
-                    {t("from")} {formatPrice(route.price_large_vehicle)}
+                    {t("from")} {formatPrice(route.price_large_vehicle, route.price_large_vehicle_eur, appLocale)}
                   </div>
                 </div>
               ) : null}

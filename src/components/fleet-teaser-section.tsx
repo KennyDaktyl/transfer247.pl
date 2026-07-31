@@ -3,7 +3,8 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
 import { apiFetch, publicApiBaseUrl } from "@/lib/api";
-import type { FleetVehicle } from "@/lib/types";
+import { localize } from "@/lib/localize";
+import type { Vehicle } from "@/lib/types";
 
 function absoluteImageUrl(path: string): string {
   return path.startsWith("http") ? path : `${publicApiBaseUrl()}${path}`;
@@ -30,7 +31,7 @@ export async function FleetTeaserSection() {
   const [t, locale, vehicles] = await Promise.all([
     getTranslations("Fleet"),
     getLocale() as Promise<AppLocale>,
-    apiFetch<FleetVehicle[]>("/api/fleet-vehicles/", { next: { revalidate: 60 } }),
+    apiFetch<Vehicle[]>("/api/fleet/vehicles/", { next: { revalidate: 60 } }),
   ]);
 
   if (vehicles.length === 0) return null;
@@ -50,10 +51,10 @@ export async function FleetTeaserSection() {
 
         <div className="mt-10 grid gap-5 sm:grid-cols-2">
           {vehicles.map((vehicle) => {
-            const description = (vehicle as unknown as Record<string, string>)[`description_${locale}`] || vehicle.description_pl;
+            const description = localize(vehicle, "description", locale);
             return (
               <Link
-                key={vehicle.slug}
+                key={vehicle.id}
                 href="/flota"
                 className="border-border bg-surface flex gap-5 rounded-[16px] border p-5 transition-shadow hover:shadow-md"
               >

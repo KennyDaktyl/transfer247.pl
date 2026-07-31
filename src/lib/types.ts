@@ -27,6 +27,8 @@ export type FixedRoute = {
   duration: string;
   price_from: string;
   price_large_vehicle: string | null;
+  price_from_eur: string | null;
+  price_large_vehicle_eur: string | null;
   body_pl: string;
   body_en: string;
   body_de: string;
@@ -62,6 +64,8 @@ export type Tour = {
   duration: string;
   price_from: string;
   price_large_vehicle: string | null;
+  price_from_eur: string | null;
+  price_large_vehicle_eur: string | null;
   cover_image: string | null;
   seo_title_pl: string;
   seo_title_en: string;
@@ -86,22 +90,24 @@ export type ContentPage = {
   seo_description_en: string;
 };
 
-export type FleetVehiclePhoto = {
+export type VehiclePhoto = {
   image: string;
   caption: string;
   order: number;
 };
 
-export type FleetVehicle = {
-  slug: string;
+/** The real operational fleet (apps.fleet.Vehicle) — single source of truth
+ * for both brands' public fleet pages, shared with driver assignment. */
+export type Vehicle = {
+  id: number;
   name: string;
+  model: string;
   seats: number;
   description_pl: string;
   description_en: string;
   description_de: string;
   cover_photo: string | null;
-  photos: FleetVehiclePhoto[];
-  order: number;
+  photos: VehiclePhoto[];
 };
 
 export type BlogPost = {
