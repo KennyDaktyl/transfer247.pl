@@ -77,7 +77,7 @@ export default async function RouteDetailPage({
   const otherRoutes = allRoutes.filter((r) => r.slug !== route.slug);
   const galleryPhotos = route.photos.map((photo) => ({
     src: absoluteImageUrl(photo.image),
-    thumbnailSrc: absoluteImageUrl(photo.thumbnail),
+    thumbnailSrc: absoluteImageUrl(photo.thumbnail || photo.image),
     alt: photo.caption || h1,
   }));
 

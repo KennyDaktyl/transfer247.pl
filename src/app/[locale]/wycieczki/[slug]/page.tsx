@@ -77,7 +77,7 @@ export default async function TourDetailPage({
   const otherTours = allTours.filter((other) => other.slug !== tour.slug);
   const galleryPhotos = tour.photos.map((photo) => ({
     src: absoluteImageUrl(photo.image),
-    thumbnailSrc: absoluteImageUrl(photo.thumbnail),
+    thumbnailSrc: absoluteImageUrl(photo.thumbnail || photo.image),
     alt: photo.caption || h1,
   }));
 

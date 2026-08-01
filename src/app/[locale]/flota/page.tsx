@@ -63,7 +63,7 @@ export default async function FleetPage({ params }: { params: Promise<{ locale: 
               const description = localize(vehicle, "description", appLocale);
               const galleryPhotos = vehicle.photos.map((photo) => ({
                 src: absoluteImageUrl(photo.image),
-                thumbnailSrc: absoluteImageUrl(photo.thumbnail),
+                thumbnailSrc: absoluteImageUrl(photo.thumbnail || photo.image),
                 alt: photo.caption || vehicle.name,
               }));
 
