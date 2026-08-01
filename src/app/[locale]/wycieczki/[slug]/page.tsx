@@ -5,10 +5,12 @@ import { notFound } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
 import { MarkdownContent } from "@/components/markdown-content";
+import { PhotoGallery } from "@/components/photo-gallery";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { apiFetch } from "@/lib/api";
 import { formatPrice } from "@/lib/format";
+import { absoluteImageUrl } from "@/lib/images";
 import { localize } from "@/lib/localize";
 import { buildAlternates } from "@/lib/seo";
 import type { Tour } from "@/lib/types";
@@ -73,6 +75,11 @@ export default async function TourDetailPage({
   const h1 = localize(tour, "h1", appLocale) || localize(tour, "title", appLocale);
   const body = localize(tour, "body", appLocale);
   const otherTours = allTours.filter((other) => other.slug !== tour.slug);
+  const galleryPhotos = tour.photos.map((photo) => ({
+    src: absoluteImageUrl(photo.image),
+    thumbnailSrc: absoluteImageUrl(photo.thumbnail),
+    alt: photo.caption || h1,
+  }));
 
   return (
     <>
@@ -87,24 +94,35 @@ export default async function TourDetailPage({
             {h1}
           </h1>
 
-          <div className="border-border bg-surface mt-6 flex flex-wrap items-center justify-between gap-4 rounded-[16px] border p-6">
-            <div className="text-[14px] text-muted">{tour.duration}</div>
-            <div className="flex flex-wrap gap-6 text-[14px]">
-              <div>
-                <div className="text-muted">Toyota Auris Hybrid</div>
-                <div className="text-[17px] font-semibold text-text">
-                  {t("from")} {formatPrice(tour.price_from, tour.price_from_eur, appLocale)}
-                </div>
-              </div>
-              {tour.price_large_vehicle ? (
-                <div>
-                  <div className="text-muted">Ford Tourneo Custom</div>
-                  <div className="text-[17px] font-semibold text-text">
-                    {t("from")} {formatPrice(tour.price_large_vehicle, tour.price_large_vehicle_eur, appLocale)}
-                  </div>
+          <div className="border-border bg-surface mt-6 rounded-[16px] border p-6">
+            <div className="flex items-center justify-between gap-4">
+              <div className="text-[14px] text-muted">{tour.duration}</div>
+              {tour.vehicle_prices.length > 0 ? (
+                <div className="font-label text-[11px] font-semibold tracking-wide text-muted uppercase">
+                  {t("priceTableHeading")}
                 </div>
               ) : null}
             </div>
+            {tour.vehicle_prices.length > 0 ? (
+              <div className="mt-3 flex flex-col gap-2">
+                {tour.vehicle_prices.map((vp) => (
+                  <Link
+                    key={vp.vehicle_id}
+                    href={`/flota#vehicle-${vp.vehicle_id}`}
+                    className="flex items-center justify-between gap-4 border-t border-dashed border-border pt-2 first:border-t-0 first:pt-0"
+                  >
+                    <span className="text-[14px] text-text underline decoration-border underline-offset-2 hover:decoration-text">
+                      {vp.vehicle_name} <span className="text-muted">· {vp.vehicle_seats} os.</span>
+                    </span>
+                    <span className="text-[15px] font-semibold whitespace-nowrap text-text">
+                      {t("from")} {formatPrice(vp.price, vp.price_eur, appLocale)}
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              <p className="mt-3 text-[14px] text-muted">{t("priceOnRequest")}</p>
+            )}
           </div>
 
           <Link
@@ -117,6 +135,13 @@ export default async function TourDetailPage({
           <div className="mt-10">
             <MarkdownContent markdown={body} />
           </div>
+
+          {galleryPhotos.length > 0 ? (
+            <div className="border-border mt-10 border-t pt-10">
+              <h2 className="font-heading mb-4 text-[18px] font-semibold text-text">{t("gallery")}</h2>
+              <PhotoGallery photos={galleryPhotos} />
+            </div>
+          ) : null}
 
           {otherTours.length > 0 ? (
             <div className="border-border mt-14 border-t pt-10">

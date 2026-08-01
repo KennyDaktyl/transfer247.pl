@@ -42,19 +42,17 @@ export async function ToursSection() {
               </h3>
               <p className="mt-2 text-[14px] text-muted">{localize(tour, "summary", locale)}</p>
 
-              <div className="border-border mt-5 space-y-2 border-t pt-4 text-[14px]">
-                <div className="flex items-center justify-between">
-                  <span className="text-muted">Toyota Auris Hybrid</span>
-                  <span className="font-semibold text-text">
+              <div className="border-border mt-5 border-t pt-4">
+                {tour.price_from ? (
+                  <div className="text-[17px] font-semibold text-text">
                     {t("from")} {formatPrice(tour.price_from, tour.price_from_eur, locale)}
-                  </span>
-                </div>
-                {tour.price_large_vehicle ? (
-                  <div className="flex items-center justify-between">
-                    <span className="text-muted">Ford Tourneo Custom</span>
-                    <span className="font-semibold text-text">
-                      {t("from")} {formatPrice(tour.price_large_vehicle, tour.price_large_vehicle_eur, locale)}
-                    </span>
+                  </div>
+                ) : (
+                  <div className="text-[14px] text-muted">{t("priceOnRequest")}</div>
+                )}
+                {tour.vehicle_prices.length > 1 ? (
+                  <div className="mt-1 text-[12.5px] text-muted">
+                    {tour.vehicle_prices.length} {t("vehicleOptions")}
                   </div>
                 ) : null}
               </div>

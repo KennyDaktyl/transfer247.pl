@@ -19,8 +19,10 @@
     "heading": "Transfery lotniskowe – stałe trasy, stała cena 24/7",
     "lead": "Transfer z lotniska Kraków-Balice i Katowice-Pyrzowice. Bez liczników i dopłat nocnych — cenę znasz zanim zarezerwujesz.",
     "from": "od",
-    "vehicleSmall": "Toyota Auris Hybrid",
-    "vehicleLarge": "Ford Tourneo Custom",
+    "priceOnRequest": "Wycena indywidualna",
+    "vehicleOptions": "warianty pojazdu",
+    "priceTableHeading": "Ceny wg pojazdu",
+    "gallery": "Galeria",
     "seeDetails": "Szczegóły trasy",
     "backToHome": "Strona główna",
     "backToIndex": "Wszystkie trasy",
@@ -31,6 +33,10 @@
     "heading": "Wycieczki z Krakowa z kierowcą",
     "lead": "Auschwitz-Birkenau, Kopalnia Soli Wieliczka i inne — kierowca czeka na miejscu przez cały czas zwiedzania.",
     "from": "od",
+    "priceOnRequest": "Wycena indywidualna",
+    "vehicleOptions": "warianty pojazdu",
+    "priceTableHeading": "Ceny wg pojazdu",
+    "gallery": "Galeria",
     "seeDetails": "Szczegóły wycieczki",
     "backToHome": "Strona główna",
     "backToIndex": "Wszystkie wycieczki",
@@ -39,7 +45,7 @@
   },
   "Fleet": {
     "heading": "Nasza flota",
-    "lead": "Dwa typy pojazdów, dopasowane do liczby pasażerów i bagażu.",
+    "lead": "Nasze pojazdy, dopasowane do liczby pasażerów i bagażu.",
     "seats": "miejsc"
   },
   "Blog": {

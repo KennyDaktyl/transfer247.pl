@@ -19,8 +19,10 @@
     "heading": "Airport Transfers – Fixed Routes, Fixed Price 24/7",
     "lead": "Transfer from Kraków Balice and Katowice Pyrzowice airports. No meters, no night surcharges — you know the price before you book.",
     "from": "from",
-    "vehicleSmall": "Toyota Auris Hybrid",
-    "vehicleLarge": "Ford Tourneo Custom",
+    "priceOnRequest": "Custom quote",
+    "vehicleOptions": "vehicle options",
+    "priceTableHeading": "Price by vehicle",
+    "gallery": "Gallery",
     "seeDetails": "Route details",
     "backToHome": "Home",
     "backToIndex": "All routes",
@@ -31,6 +33,10 @@
     "heading": "Tours from Kraków with a Waiting Driver",
     "lead": "Auschwitz-Birkenau, the Wieliczka Salt Mine and more — your driver waits on site for the whole visit.",
     "from": "from",
+    "priceOnRequest": "Custom quote",
+    "vehicleOptions": "vehicle options",
+    "priceTableHeading": "Price by vehicle",
+    "gallery": "Gallery",
     "seeDetails": "Tour details",
     "backToHome": "Home",
     "backToIndex": "All tours",
@@ -39,7 +45,7 @@
   },
   "Fleet": {
     "heading": "Our fleet",
-    "lead": "Two vehicle classes, matched to passenger count and luggage.",
+    "lead": "Our vehicles, matched to passenger count and luggage.",
     "seats": "seats"
   },
   "Blog": {

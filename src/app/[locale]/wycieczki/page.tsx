@@ -52,7 +52,13 @@ export default async function ToursIndexPage({ params }: { params: Promise<{ loc
                 </h2>
                 <p className="mt-2 text-[14px] text-muted">{localize(tour, "summary", appLocale)}</p>
                 <div className="mt-4 text-[15px] font-semibold text-text">
-                  {t("from")} {formatPrice(tour.price_from, tour.price_from_eur, appLocale)}
+                  {tour.price_from ? (
+                    <>
+                      {t("from")} {formatPrice(tour.price_from, tour.price_from_eur, appLocale)}
+                    </>
+                  ) : (
+                    <span className="font-normal text-muted">{t("priceOnRequest")}</span>
+                  )}
                 </div>
               </Link>
             ))}

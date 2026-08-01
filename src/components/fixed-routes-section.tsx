@@ -41,19 +41,17 @@ export async function FixedRoutesSection() {
                 {localize(route, "name", locale)}
               </h3>
 
-              <div className="border-border mt-5 space-y-2 border-t pt-4 text-[14px]">
-                <div className="flex items-center justify-between">
-                  <span className="text-muted">{t("vehicleSmall")}</span>
-                  <span className="font-semibold text-text">
+              <div className="border-border mt-5 border-t pt-4">
+                {route.price_from ? (
+                  <div className="text-[17px] font-semibold text-text">
                     {t("from")} {formatPrice(route.price_from, route.price_from_eur, locale)}
-                  </span>
-                </div>
-                {route.price_large_vehicle ? (
-                  <div className="flex items-center justify-between">
-                    <span className="text-muted">{t("vehicleLarge")}</span>
-                    <span className="font-semibold text-text">
-                      {t("from")} {formatPrice(route.price_large_vehicle, route.price_large_vehicle_eur, locale)}
-                    </span>
+                  </div>
+                ) : (
+                  <div className="text-[14px] text-muted">{t("priceOnRequest")}</div>
+                )}
+                {route.vehicle_prices.length > 1 ? (
+                  <div className="mt-1 text-[12.5px] text-muted">
+                    {route.vehicle_prices.length} {t("vehicleOptions")}
                   </div>
                 ) : null}
               </div>

@@ -19,8 +19,10 @@
     "heading": "Flughafentransfers – Feste Strecken, fester Preis 24/7",
     "lead": "Transfer ab Flughafen Krakau-Balice und Katowice-Pyrzowice. Keine Taxameter, keine Nachtzuschläge — Sie kennen den Preis vor der Buchung.",
     "from": "ab",
-    "vehicleSmall": "Toyota Auris Hybrid",
-    "vehicleLarge": "Ford Tourneo Custom",
+    "priceOnRequest": "Preis auf Anfrage",
+    "vehicleOptions": "Fahrzeugvarianten",
+    "priceTableHeading": "Preise je Fahrzeug",
+    "gallery": "Galerie",
     "seeDetails": "Strecke ansehen",
     "backToHome": "Startseite",
     "backToIndex": "Alle Strecken",
@@ -31,6 +33,10 @@
     "heading": "Ausflüge ab Krakau mit wartendem Fahrer",
     "lead": "Auschwitz-Birkenau, das Salzbergwerk Wieliczka und mehr — Ihr Fahrer wartet während der gesamten Besichtigung vor Ort.",
     "from": "ab",
+    "priceOnRequest": "Preis auf Anfrage",
+    "vehicleOptions": "Fahrzeugvarianten",
+    "priceTableHeading": "Preise je Fahrzeug",
+    "gallery": "Galerie",
     "seeDetails": "Ausflug ansehen",
     "backToHome": "Startseite",
     "backToIndex": "Alle Ausflüge",
@@ -39,7 +45,7 @@
   },
   "Fleet": {
     "heading": "Unsere Flotte",
-    "lead": "Zwei Fahrzeugklassen, passend zu Personenzahl und Gepäck.",
+    "lead": "Unsere Fahrzeuge, passend zu Personenzahl und Gepäck.",
     "seats": "Plätze"
   },
   "Blog": {

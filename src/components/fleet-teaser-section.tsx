@@ -2,13 +2,10 @@ import { getLocale, getTranslations } from "next-intl/server";
 
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
-import { apiFetch, publicApiBaseUrl } from "@/lib/api";
+import { apiFetch } from "@/lib/api";
+import { absoluteImageUrl } from "@/lib/images";
 import { localize } from "@/lib/localize";
 import type { Vehicle } from "@/lib/types";
-
-function absoluteImageUrl(path: string): string {
-  return path.startsWith("http") ? path : `${publicApiBaseUrl()}${path}`;
-}
 
 function VehiclePlaceholder() {
   return (
@@ -55,7 +52,7 @@ export async function FleetTeaserSection() {
             return (
               <Link
                 key={vehicle.id}
-                href="/flota"
+                href={`/flota#vehicle-${vehicle.id}`}
                 className="border-border bg-surface flex gap-5 rounded-[16px] border p-5 transition-shadow hover:shadow-md"
               >
                 <div className="w-[40%] shrink-0">

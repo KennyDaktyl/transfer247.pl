@@ -16,6 +16,23 @@ export type HomeContent = {
   footnote_de: string;
 };
 
+/** A price line tied to a real vehicle from the fleet — however many a
+ * route/tour has is however many the admin actually priced it for. */
+export type VehiclePrice = {
+  vehicle_id: number;
+  vehicle_name: string;
+  vehicle_seats: number;
+  price: string;
+  price_eur: string | null;
+};
+
+export type FixedRoutePhoto = {
+  image: string;
+  thumbnail: string;
+  caption: string;
+  order: number;
+};
+
 export type FixedRoute = {
   slug: string;
   name_pl: string;
@@ -25,10 +42,9 @@ export type FixedRoute = {
   h1_en: string;
   h1_de: string;
   duration: string;
-  price_from: string;
-  price_large_vehicle: string | null;
+  vehicle_prices: VehiclePrice[];
+  price_from: string | null;
   price_from_eur: string | null;
-  price_large_vehicle_eur: string | null;
   body_pl: string;
   body_en: string;
   body_de: string;
@@ -38,11 +54,13 @@ export type FixedRoute = {
   seo_description_pl: string;
   seo_description_en: string;
   seo_description_de: string;
+  photos: FixedRoutePhoto[];
   order: number;
 };
 
 export type TourPhoto = {
   image: string;
+  thumbnail: string;
   caption: string;
   order: number;
 };
@@ -62,10 +80,9 @@ export type Tour = {
   body_en: string;
   body_de: string;
   duration: string;
-  price_from: string;
-  price_large_vehicle: string | null;
+  vehicle_prices: VehiclePrice[];
+  price_from: string | null;
   price_from_eur: string | null;
-  price_large_vehicle_eur: string | null;
   cover_image: string | null;
   seo_title_pl: string;
   seo_title_en: string;
@@ -92,6 +109,7 @@ export type ContentPage = {
 
 export type VehiclePhoto = {
   image: string;
+  thumbnail: string;
   caption: string;
   order: number;
 };

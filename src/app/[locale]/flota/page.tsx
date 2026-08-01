@@ -2,16 +2,14 @@ import type { Metadata } from "next";
 import { getLocale, getTranslations, setRequestLocale } from "next-intl/server";
 
 import type { AppLocale } from "@/i18n/routing";
+import { PhotoGallery } from "@/components/photo-gallery";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { apiFetch, publicApiBaseUrl } from "@/lib/api";
+import { apiFetch } from "@/lib/api";
+import { absoluteImageUrl } from "@/lib/images";
 import { localize } from "@/lib/localize";
 import { buildAlternates } from "@/lib/seo";
 import type { Vehicle } from "@/lib/types";
-
-function absoluteImageUrl(path: string): string {
-  return path.startsWith("http") ? path : `${publicApiBaseUrl()}${path}`;
-}
 
 export async function generateMetadata({
   params,
@@ -63,10 +61,18 @@ export default async function FleetPage({ params }: { params: Promise<{ locale: 
           <div className="mt-10 grid gap-8 sm:grid-cols-2">
             {vehicles.map((vehicle) => {
               const description = localize(vehicle, "description", appLocale);
-              const gallery = vehicle.photos.length > 0 ? vehicle.photos : null;
+              const galleryPhotos = vehicle.photos.map((photo) => ({
+                src: absoluteImageUrl(photo.image),
+                thumbnailSrc: absoluteImageUrl(photo.thumbnail),
+                alt: photo.caption || vehicle.name,
+              }));
 
               return (
-                <article key={vehicle.id} className="border-border bg-surface rounded-[16px] border p-5">
+                <article
+                  key={vehicle.id}
+                  id={`vehicle-${vehicle.id}`}
+                  className="border-border bg-surface scroll-mt-24 rounded-[16px] border p-5"
+                >
                   {vehicle.cover_photo ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
@@ -84,19 +90,7 @@ export default async function FleetPage({ params }: { params: Promise<{ locale: 
                   </div>
                   {description ? <p className="mt-3 text-[14px] leading-relaxed text-muted">{description}</p> : null}
 
-                  {gallery ? (
-                    <div className="mt-4 grid grid-cols-3 gap-2">
-                      {gallery.map((photo, i) => (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          key={i}
-                          src={absoluteImageUrl(photo.image)}
-                          alt={photo.caption || vehicle.name}
-                          className="aspect-square w-full rounded-[8px] object-cover"
-                        />
-                      ))}
-                    </div>
-                  ) : null}
+                  {galleryPhotos.length > 0 ? <PhotoGallery photos={galleryPhotos} className="mt-4" /> : null}
                 </article>
               );
             })}
