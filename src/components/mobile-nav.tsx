@@ -67,6 +67,8 @@ export function MobileNav({
   toursLabel,
   flatLinks,
   callLabel,
+  loginHref,
+  loginLabel,
 }: {
   airportRouteItems: NavItem[];
   stationRouteItems: NavItem[];
@@ -76,6 +78,8 @@ export function MobileNav({
   toursLabel: string;
   flatLinks: NavItem[];
   callLabel: string;
+  loginHref: string;
+  loginLabel: string;
 }) {
   const [open, setOpen] = useState(false);
 
@@ -141,6 +145,13 @@ export function MobileNav({
             >
               {callLabel}
             </a>
+            <Link
+              href={loginHref}
+              onClick={() => setOpen(false)}
+              className="border-primary text-primary mt-2 rounded-md border px-2 py-3 text-center font-semibold transition-colors hover:bg-primary/10"
+            >
+              {loginLabel}
+            </Link>
           </nav>
 
           <div className="mt-4 flex items-center gap-3">

@@ -1,0 +1,79 @@
+"use client";
+
+import { useTranslations } from "next-intl";
+import { useState } from "react";
+
+import { publicApiBaseUrl, withSiteHeader } from "@/lib/api";
+
+import { BookingTracker } from "./booking-tracker";
+
+type TrackResult = {
+  booking_id: number;
+  driver_name: string | null;
+  vehicle_name: string | null;
+};
+
+export function TrackByCode() {
+  const t = useTranslations("TrackByCode");
+  const [code, setCode] = useState("");
+  const [result, setResult] = useState<TrackResult | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch(`${publicApiBaseUrl()}/api/tracking/track-by-code/`, {
+        method: "POST",
+        headers: withSiteHeader({ "Content-Type": "application/json" }),
+        body: JSON.stringify({ code }),
+      });
+      if (!res.ok) {
+        setError(t("invalidCode"));
+        return;
+      }
+      setResult(await res.json());
+    } catch {
+      setError(t("genericError"));
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  if (result) {
+    return (
+      <BookingTracker
+        bookingId={result.booking_id}
+        code={code}
+        driverName={result.driver_name}
+        driverVehicle={result.vehicle_name}
+      />
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="mx-auto max-w-[360px]">
+      <label className="mb-2 block text-[13px] font-semibold tracking-wide text-muted uppercase">
+        {t("codeLabel")}
+      </label>
+      <input
+        value={code}
+        onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 4))}
+        inputMode="numeric"
+        maxLength={4}
+        placeholder="0000"
+        className="border-border bg-surface text-text focus:border-primary w-full rounded-md border px-4 py-3 text-center text-[24px] font-bold tracking-[0.3em] outline-none"
+      />
+      {error && <p className="mt-3 text-center text-[13px] text-red-600">{error}</p>}
+      <button
+        type="submit"
+        disabled={code.length !== 4 || loading}
+        className="bg-primary hover:bg-primary-hover mt-4 w-full rounded-md py-3 text-[14px] font-semibold text-white transition-colors disabled:opacity-50"
+      >
+        {loading ? t("submitting") : t("submit")}
+      </button>
+    </form>
+  );
+}

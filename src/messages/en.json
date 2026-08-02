@@ -3,6 +3,58 @@
     "title": "Kraków & Katowice Airport Transfer | transfer247.pl",
     "description": "Private transfer from Kraków Balice and Katowice Pyrzowice airports to Kraków and Zakopane. Fixed 24/7 price, no meters. Tours to Auschwitz and Wieliczka."
   },
+  "TrackByCode": {
+    "title": "Track your driver",
+    "lead": "Enter the 4-digit code you got by SMS from your driver — the code is valid for one hour after the ride is accepted.",
+    "codeLabel": "Ride code (4 digits)",
+    "submit": "Track driver",
+    "submitting": "Checking…",
+    "invalidCode": "Invalid or expired code.",
+    "genericError": "Couldn't check the code.",
+    "statusAvailable": "Available",
+    "statusEnRoute": "En route",
+    "statusBusy": "Busy",
+    "noActiveDriver": "Waiting for driver position…",
+    "vehicleUnknown": "Driver"
+  },
+  "Auth": {
+    "title": "Log in with your phone number",
+    "phoneLabel": "Phone number",
+    "phonePlaceholder": "500 000 000",
+    "requestCode": "Send SMS code",
+    "codeLabel": "SMS code",
+    "codePlaceholder": "123456",
+    "verifyCode": "Log in",
+    "changePhone": "Change number",
+    "codeSentTo": "Code sent to {phone}",
+    "errorRequest": "Couldn't send the code. Check the number and try again.",
+    "errorVerify": "Invalid or expired code."
+  },
+  "Panel": {
+    "title": "My rides",
+    "empty": "You don't have any rides yet.",
+    "date": "Date",
+    "price": "Price",
+    "trackDriver": "Track driver",
+    "trackingTitle": "Your driver is on the way"
+  },
+  "BookingStatus": {
+    "NOWA": "New (awaiting confirmation)",
+    "POTWIERDZONA": "Confirmed (pay deposit)",
+    "OPLACONA": "Paid (awaiting driver)",
+    "KIEROWCA_W_DRODZE": "Driver on the way",
+    "W_TRAKCIE": "In progress",
+    "ZAKONCZONA": "Finished",
+    "ANULOWANA": "Cancelled"
+  },
+  "BookingPayment": {
+    "waitingForConfirmation": "Waiting for dispatcher confirmation — you'll get an SMS and email once it's confirmed. Payment isn't available yet.",
+    "payDeposit": "Pay deposit {amount} zł",
+    "payBy": "Pay by {time}, or the booking will be cancelled.",
+    "paying": "Paying…",
+    "paidConfirmed": "Deposit paid — your booking is confirmed.",
+    "error": "Couldn't pay the deposit. Please try again."
+  },
   "Nav": {
     "airportRoutes": "Airport Transfers",
     "stationRoutes": "Train Station Transfers",
@@ -11,6 +63,9 @@
     "fleet": "Fleet",
     "blog": "Blog",
     "contact": "Contact",
+    "trackByCode": "Track your ride",
+    "login": "Log in",
+    "myTrips": "My rides",
     "bookNow": "Book now",
     "call": "Call",
     "whatsapp": "Message on WhatsApp"

@@ -157,3 +157,53 @@ export type BlogPost = {
   seo_description_de: string;
   published_at: string;
 };
+
+export type Customer = {
+  id: number;
+  phone: string;
+  name: string;
+  created_at: string;
+};
+
+export type BookingStatus =
+  | "NOWA"
+  | "POTWIERDZONA"
+  | "OPLACONA"
+  | "KIEROWCA_W_DRODZE"
+  | "W_TRAKCIE"
+  | "ZAKONCZONA"
+  | "ANULOWANA";
+
+export type Booking = {
+  id: number;
+  pickup_address: string;
+  pickup_lat: string | null;
+  pickup_lng: string | null;
+  dropoff_address: string;
+  dropoff_lat: string | null;
+  dropoff_lng: string | null;
+  scheduled_at: string;
+  status: BookingStatus;
+  distance_km: string | null;
+  is_reserved: boolean;
+  price: string | null;
+  coupon_code: string | null;
+  driver_name: string | null;
+  driver_vehicle: string | null;
+  created_at: string;
+  confirmed_at: string | null;
+  payment_deadline: string | null;
+  deposit_amount: string | null;
+  paid_at: string | null;
+};
+
+export type DriverLiveStatus = {
+  id: number;
+  name: string;
+  status: "OFFLINE" | "DOSTEPNY" | "JADACY_PO_KLIENTA" | "W_KURSIE" | "WRACA_DO_BAZY";
+  current_lat: string | null;
+  current_lng: string | null;
+  location_updated_at: string | null;
+  vehicle_name: string | null;
+  vehicle_plate: string | null;
+};

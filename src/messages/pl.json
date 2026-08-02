@@ -3,6 +3,58 @@
     "title": "Transfer lotniskowy Kraków-Balice, Katowice | transfer247.pl",
     "description": "Prywatny transfer z lotniska Kraków-Balice i Katowice-Pyrzowice do Krakowa i Zakopanego. Stała cena 24/7, zero dopłat. Wycieczki do Auschwitz i Wieliczki."
   },
+  "TrackByCode": {
+    "title": "Śledź pozycję kierowcy",
+    "lead": "Wpisz 4-cyfrowy kod, który dostałeś SMS-em od kierowcy — kod jest ważny przez godzinę od przyjęcia kursu.",
+    "codeLabel": "Kod kursu (4 cyfry)",
+    "submit": "Śledź kierowcę",
+    "submitting": "Sprawdzam…",
+    "invalidCode": "Nieprawidłowy lub wygasły kod.",
+    "genericError": "Nie udało się sprawdzić kodu.",
+    "statusAvailable": "Dostępny",
+    "statusEnRoute": "W drodze",
+    "statusBusy": "Zajęty",
+    "noActiveDriver": "Oczekiwanie na pozycję kierowcy…",
+    "vehicleUnknown": "Kierowca"
+  },
+  "Auth": {
+    "title": "Zaloguj się numerem telefonu",
+    "phoneLabel": "Numer telefonu",
+    "phonePlaceholder": "500 000 000",
+    "requestCode": "Wyślij kod SMS",
+    "codeLabel": "Kod z SMS-a",
+    "codePlaceholder": "123456",
+    "verifyCode": "Zaloguj się",
+    "changePhone": "Zmień numer",
+    "codeSentTo": "Kod wysłany na {phone}",
+    "errorRequest": "Nie udało się wysłać kodu. Sprawdź numer i spróbuj ponownie.",
+    "errorVerify": "Nieprawidłowy lub wygasły kod."
+  },
+  "Panel": {
+    "title": "Moje kursy",
+    "empty": "Nie masz jeszcze żadnych kursów.",
+    "date": "Termin",
+    "price": "Cena",
+    "trackDriver": "Śledź kierowcę",
+    "trackingTitle": "Twój kierowca w drodze"
+  },
+  "BookingStatus": {
+    "NOWA": "Nowa (oczekuje na potwierdzenie)",
+    "POTWIERDZONA": "Potwierdzona (zapłać zaliczkę)",
+    "OPLACONA": "Opłacona (oczekuje na kierowcę)",
+    "KIEROWCA_W_DRODZE": "Kierowca w drodze",
+    "W_TRAKCIE": "W trakcie kursu",
+    "ZAKONCZONA": "Zakończona",
+    "ANULOWANA": "Anulowana"
+  },
+  "BookingPayment": {
+    "waitingForConfirmation": "Czekaj na potwierdzenie przez dyspozytora — dostaniesz SMS i e-mail, gdy kurs zostanie potwierdzony. Płatność nie jest jeszcze możliwa.",
+    "payDeposit": "Zapłać zaliczkę {amount} zł",
+    "payBy": "Zapłać do {time}, inaczej rezerwacja zostanie anulowana.",
+    "paying": "Płacę…",
+    "paidConfirmed": "Zaliczka opłacona — kurs jest ważny.",
+    "error": "Nie udało się zapłacić zaliczki. Spróbuj ponownie."
+  },
   "Nav": {
     "airportRoutes": "Transfery lotniskowe",
     "stationRoutes": "Transfery z dworca PKP",
@@ -11,6 +63,9 @@
     "fleet": "Flota",
     "blog": "Blog",
     "contact": "Kontakt",
+    "trackByCode": "Śledź kurs",
+    "login": "Zaloguj się",
+    "myTrips": "Moje kursy",
     "bookNow": "Zarezerwuj",
     "call": "Zadzwoń",
     "whatsapp": "Napisz na WhatsApp"

@@ -3,6 +3,58 @@
     "title": "Flughafentransfer Krakau & Katowice | transfer247.pl",
     "description": "Privater Transfer ab Flughafen Krakau-Balice und Katowice-Pyrzowice nach Krakau und Zakopane. Fester Preis rund um die Uhr. Ausflüge nach Auschwitz und Wieliczka."
   },
+  "TrackByCode": {
+    "title": "Verfolgen Sie Ihren Fahrer",
+    "lead": "Geben Sie den 4-stelligen Code ein, den Sie per SMS von Ihrem Fahrer erhalten haben — der Code ist eine Stunde nach Annahme der Fahrt gültig.",
+    "codeLabel": "Fahrtcode (4 Ziffern)",
+    "submit": "Fahrer verfolgen",
+    "submitting": "Wird geprüft…",
+    "invalidCode": "Ungültiger oder abgelaufener Code.",
+    "genericError": "Code konnte nicht geprüft werden.",
+    "statusAvailable": "Verfügbar",
+    "statusEnRoute": "Unterwegs",
+    "statusBusy": "Beschäftigt",
+    "noActiveDriver": "Warten auf Fahrerposition…",
+    "vehicleUnknown": "Fahrer"
+  },
+  "Auth": {
+    "title": "Mit Telefonnummer anmelden",
+    "phoneLabel": "Telefonnummer",
+    "phonePlaceholder": "500 000 000",
+    "requestCode": "SMS-Code senden",
+    "codeLabel": "SMS-Code",
+    "codePlaceholder": "123456",
+    "verifyCode": "Anmelden",
+    "changePhone": "Nummer ändern",
+    "codeSentTo": "Code gesendet an {phone}",
+    "errorRequest": "Code konnte nicht gesendet werden. Nummer prüfen und erneut versuchen.",
+    "errorVerify": "Ungültiger oder abgelaufener Code."
+  },
+  "Panel": {
+    "title": "Meine Fahrten",
+    "empty": "Sie haben noch keine Fahrten.",
+    "date": "Termin",
+    "price": "Preis",
+    "trackDriver": "Fahrer verfolgen",
+    "trackingTitle": "Ihr Fahrer ist unterwegs"
+  },
+  "BookingStatus": {
+    "NOWA": "Neu (wartet auf Bestätigung)",
+    "POTWIERDZONA": "Bestätigt (Anzahlung zahlen)",
+    "OPLACONA": "Bezahlt (wartet auf Fahrer)",
+    "KIEROWCA_W_DRODZE": "Fahrer unterwegs",
+    "W_TRAKCIE": "In Bearbeitung",
+    "ZAKONCZONA": "Abgeschlossen",
+    "ANULOWANA": "Storniert"
+  },
+  "BookingPayment": {
+    "waitingForConfirmation": "Warten auf Bestätigung durch den Disponenten — Sie erhalten eine SMS und E-Mail, sobald die Fahrt bestätigt ist. Zahlung ist noch nicht möglich.",
+    "payDeposit": "Anzahlung {amount} zł zahlen",
+    "payBy": "Zahlen Sie bis {time}, sonst wird die Buchung storniert.",
+    "paying": "Zahlung läuft…",
+    "paidConfirmed": "Anzahlung bezahlt — Ihre Buchung ist gültig.",
+    "error": "Anzahlung konnte nicht bezahlt werden. Bitte erneut versuchen."
+  },
   "Nav": {
     "airportRoutes": "Flughafentransfers",
     "stationRoutes": "Transfers ab Hauptbahnhof",
@@ -11,6 +63,9 @@
     "fleet": "Flotte",
     "blog": "Blog",
     "contact": "Kontakt",
+    "trackByCode": "Fahrt verfolgen",
+    "login": "Anmelden",
+    "myTrips": "Meine Fahrten",
     "bookNow": "Jetzt buchen",
     "call": "Anrufen",
     "whatsapp": "Auf WhatsApp schreiben"

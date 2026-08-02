@@ -1,6 +1,7 @@
 import { getLocale, getTranslations } from "next-intl/server";
 
 import { apiFetch } from "@/lib/api";
+import { getSession } from "@/lib/auth";
 import { localize } from "@/lib/localize";
 import type { FixedRoute, Tour } from "@/lib/types";
 import type { AppLocale } from "@/i18n/routing";
@@ -11,11 +12,12 @@ import { MobileNav } from "./mobile-nav";
 import { NavDropdown } from "./nav-dropdown";
 
 export async function SiteHeader() {
-  const [t, locale, routes, tours] = await Promise.all([
+  const [t, locale, routes, tours, { customer }] = await Promise.all([
     getTranslations("Nav"),
     getLocale() as Promise<AppLocale>,
     apiFetch<FixedRoute[]>("/api/fixed-routes/", { next: { revalidate: 60 } }),
     apiFetch<Tour[]>("/api/tours/", { next: { revalidate: 60 } }),
+    getSession(),
   ]);
 
   const toNavItem = (r: FixedRoute) => ({ href: `/transfery/${r.slug}`, label: localize(r, "name", locale) });
@@ -30,6 +32,8 @@ export async function SiteHeader() {
     { href: "/blog", label: t("blog") },
     { href: "/kontakt", label: t("contact") },
   ];
+  const loginHref = customer ? "/panel" : "/logowanie";
+  const loginLabel = customer ? t("myTrips") : t("login");
 
   return (
     <header className="border-border bg-surface/90 sticky top-0 z-50 border-b backdrop-blur-md">
@@ -55,6 +59,12 @@ export async function SiteHeader() {
           <div className="hidden lg:block">
             <LocaleSwitcher />
           </div>
+          <Link
+            href={loginHref}
+            className="border-primary text-primary hover:bg-primary/10 hidden shrink-0 rounded-[999px] border px-3 py-2 text-[14px] font-medium whitespace-nowrap transition-colors lg:inline-block"
+          >
+            {loginLabel}
+          </Link>
           <a
             href="tel:+48506029980"
             aria-label={t("call")}
@@ -83,6 +93,8 @@ export async function SiteHeader() {
             toursLabel={t("tours")}
             flatLinks={flatLinks}
             callLabel={t("call")}
+            loginHref={loginHref}
+            loginLabel={loginLabel}
           />
         </div>
       </div>
