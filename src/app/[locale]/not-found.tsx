@@ -18,7 +18,7 @@ export default async function NotFound() {
     <>
       <SiteHeader />
       <main>
-        <div className="mx-auto max-w-[640px] px-4 py-24 text-center sm:px-6">
+        <div className="mx-auto max-w-[1200px] px-4 py-24 text-center sm:px-6">
           <div className="text-primary font-heading text-[64px] font-bold">404</div>
           <h1 className="font-heading mt-2 text-[26px] font-semibold text-text">{t("title")}</h1>
           <p className="mt-3 text-[15px] text-muted">{t("lead")}</p>

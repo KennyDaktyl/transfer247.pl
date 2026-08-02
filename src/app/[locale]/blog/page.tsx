@@ -34,7 +34,7 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ loca
     <>
       <SiteHeader />
       <main>
-        <div className="mx-auto max-w-[900px] px-4 py-16 sm:px-6 sm:py-20">
+        <div className="mx-auto max-w-[1200px] px-4 py-16 sm:px-6 sm:py-20">
           <h1 className="font-heading text-[32px] font-semibold text-text sm:text-[42px]">{t("heading")}</h1>
           <p className="mt-3 max-w-[560px] text-[16px] text-muted">{t("lead")}</p>
 

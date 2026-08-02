@@ -85,7 +85,7 @@ export default async function TourDetailPage({
     <>
       <SiteHeader />
       <main>
-        <div className="mx-auto max-w-[820px] px-4 py-14 sm:px-6 sm:py-20">
+        <div className="mx-auto max-w-[1200px] px-4 py-14 sm:px-6 sm:py-20">
           <Link href="/wycieczki" className="text-primary text-[13px] font-medium">
             ← {t("backToIndex")}
           </Link>

@@ -73,7 +73,7 @@ export default async function BlogPostPage({
     <>
       <SiteHeader />
       <main>
-        <div className="mx-auto max-w-[760px] px-4 py-14 sm:px-6 sm:py-20">
+        <div className="mx-auto max-w-[1200px] px-4 py-14 sm:px-6 sm:py-20">
           <Link href="/blog" className="text-primary text-[13px] font-medium">
             ← {t("backToIndex")}
           </Link>
