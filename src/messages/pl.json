@@ -1,7 +1,7 @@
 {
   "Metadata": {
     "title": "Transfer lotniskowy Kraków-Balice, Katowice | transfer247.pl",
-    "description": "Prywatny transfer z lotniska Kraków-Balice i Katowice-Pyrzowice. Stała cena 24/7, zero dopłat. Wycieczki do Auschwitz i Wieliczki."
+    "description": "Prywatny transfer z lotniska Kraków-Balice i Katowice-Pyrzowice do Krakowa i Zakopanego. Stała cena 24/7, zero dopłat. Wycieczki do Auschwitz i Wieliczki."
   },
   "Nav": {
     "airportRoutes": "Transfery lotniskowe",
@@ -11,7 +11,14 @@
     "fleet": "Flota",
     "blog": "Blog",
     "contact": "Kontakt",
-    "bookNow": "Zarezerwuj"
+    "bookNow": "Zarezerwuj",
+    "call": "Zadzwoń",
+    "whatsapp": "Napisz na WhatsApp"
+  },
+  "NotFound": {
+    "title": "Nie znaleziono strony",
+    "lead": "Strona, której szukasz, nie istnieje albo została przeniesiona. Sprawdź poniższe linki albo wróć na stronę główną.",
+    "backHome": "Strona główna"
   },
   "Hero": {
     "ctaBook": "Zarezerwuj transfer",

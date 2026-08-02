@@ -1,7 +1,7 @@
 {
   "Metadata": {
     "title": "Kraków & Katowice Airport Transfer | transfer247.pl",
-    "description": "Private transfer from Kraków Balice and Katowice Pyrzowice airports. Fixed 24/7 price, no meters. Tours to Auschwitz and Wieliczka."
+    "description": "Private transfer from Kraków Balice and Katowice Pyrzowice airports to Kraków and Zakopane. Fixed 24/7 price, no meters. Tours to Auschwitz and Wieliczka."
   },
   "Nav": {
     "airportRoutes": "Airport Transfers",
@@ -11,7 +11,14 @@
     "fleet": "Fleet",
     "blog": "Blog",
     "contact": "Contact",
-    "bookNow": "Book now"
+    "bookNow": "Book now",
+    "call": "Call",
+    "whatsapp": "Message on WhatsApp"
+  },
+  "NotFound": {
+    "title": "Page not found",
+    "lead": "The page you're looking for doesn't exist or has moved. Check the links below or head back home.",
+    "backHome": "Back home"
   },
   "Hero": {
     "ctaBook": "Book a transfer",

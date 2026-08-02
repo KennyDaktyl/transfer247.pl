@@ -1,7 +1,7 @@
 {
   "Metadata": {
     "title": "Flughafentransfer Krakau & Katowice | transfer247.pl",
-    "description": "Privater Transfer ab Flughafen Krakau-Balice und Katowice-Pyrzowice. Fester Preis rund um die Uhr. Ausflüge nach Auschwitz und Wieliczka."
+    "description": "Privater Transfer ab Flughafen Krakau-Balice und Katowice-Pyrzowice nach Krakau und Zakopane. Fester Preis rund um die Uhr. Ausflüge nach Auschwitz und Wieliczka."
   },
   "Nav": {
     "airportRoutes": "Flughafentransfers",
@@ -11,7 +11,14 @@
     "fleet": "Flotte",
     "blog": "Blog",
     "contact": "Kontakt",
-    "bookNow": "Jetzt buchen"
+    "bookNow": "Jetzt buchen",
+    "call": "Anrufen",
+    "whatsapp": "Auf WhatsApp schreiben"
+  },
+  "NotFound": {
+    "title": "Seite nicht gefunden",
+    "lead": "Die gesuchte Seite existiert nicht mehr oder wurde verschoben. Prüfen Sie die Links unten oder gehen Sie zurück zur Startseite.",
+    "backHome": "Zur Startseite"
   },
   "Hero": {
     "ctaBook": "Transfer buchen",

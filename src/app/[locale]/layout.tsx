@@ -4,6 +4,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { Lora, Work_Sans } from "next/font/google";
 
+import { WhatsAppButton } from "@/components/whatsapp-button";
 import { routing } from "@/i18n/routing";
 import { siteUrl } from "@/lib/seo";
 import "./globals.css";
@@ -50,7 +51,10 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} className={`${lora.variable} ${workSans.variable} antialiased`}>
       <body className="bg-bg text-text min-h-screen" suppressHydrationWarning>
-        <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <NextIntlClientProvider>
+          {children}
+          <WhatsAppButton />
+        </NextIntlClientProvider>
       </body>
     </html>
   );

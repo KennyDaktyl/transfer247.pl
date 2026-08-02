@@ -66,6 +66,7 @@ export function MobileNav({
   stationRoutesLabel,
   toursLabel,
   flatLinks,
+  callLabel,
 }: {
   airportRouteItems: NavItem[];
   stationRouteItems: NavItem[];
@@ -74,6 +75,7 @@ export function MobileNav({
   stationRoutesLabel: string;
   toursLabel: string;
   flatLinks: NavItem[];
+  callLabel: string;
 }) {
   const [open, setOpen] = useState(false);
 
@@ -133,6 +135,12 @@ export function MobileNav({
                 {link.label}
               </Link>
             ))}
+            <a
+              href="tel:+48506029980"
+              className="border-border text-primary rounded-md border-b px-2 py-3 font-medium transition-colors hover:bg-bg"
+            >
+              {callLabel}
+            </a>
           </nav>
 
           <div className="mt-4 flex items-center gap-3">
