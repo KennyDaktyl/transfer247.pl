@@ -21,9 +21,11 @@ export async function SiteHeader() {
   const toNavItem = (r: FixedRoute) => ({ href: `/transfery/${r.slug}`, label: localize(r, "name", locale) });
   const airportRouteItems = routes.filter((r) => r.category === "LOTNISKO").map(toNavItem);
   const stationRouteItems = routes.filter((r) => r.category === "DWORZEC_PKP").map(toNavItem);
-  const tourItems = tours.map((tour) => ({ href: `/wycieczki/${tour.slug}`, label: localize(tour, "title", locale) }));
-  const flatLinks = [
+  const tourItems = [
+    ...tours.map((tour) => ({ href: `/wycieczki/${tour.slug}`, label: localize(tour, "title", locale) })),
     { href: "/przewoz-rowerow", label: t("bikeTransport") },
+  ];
+  const flatLinks = [
     { href: "/flota", label: t("fleet") },
     { href: "/blog", label: t("blog") },
     { href: "/kontakt", label: t("contact") },
