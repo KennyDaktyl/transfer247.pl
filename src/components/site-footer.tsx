@@ -58,6 +58,9 @@ export async function SiteFooter() {
             <Link href="/flota" className="block text-[14px] text-muted hover:text-text">
               {tNav("fleet")}
             </Link>
+            <Link href="/przewoz-rowerow" className="mt-2 block text-[14px] text-muted hover:text-text">
+              {t("bikeTransport")}
+            </Link>
             <Link href="/blog" className="mt-2 block text-[14px] text-muted hover:text-text">
               {t("blog")}
             </Link>

@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { Lora, Work_Sans } from "next/font/google";
 
 import { routing } from "@/i18n/routing";
+import { siteUrl } from "@/lib/seo";
 import "./globals.css";
 
 const lora = Lora({
@@ -30,7 +31,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Metadata" });
-  return { title: t("title"), description: t("description") };
+  return { title: t("title"), description: t("description"), metadataBase: new URL(siteUrl()) };
 }
 
 export default async function LocaleLayout({

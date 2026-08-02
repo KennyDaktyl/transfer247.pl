@@ -59,15 +59,19 @@ function CollapsibleGroup({ label, indexHref, items, onNavigate }: {
 }
 
 export function MobileNav({
-  routeItems,
+  airportRouteItems,
+  stationRouteItems,
   tourItems,
-  routesLabel,
+  airportRoutesLabel,
+  stationRoutesLabel,
   toursLabel,
   flatLinks,
 }: {
-  routeItems: NavItem[];
+  airportRouteItems: NavItem[];
+  stationRouteItems: NavItem[];
   tourItems: NavItem[];
-  routesLabel: string;
+  airportRoutesLabel: string;
+  stationRoutesLabel: string;
   toursLabel: string;
   flatLinks: NavItem[];
 }) {
@@ -81,7 +85,7 @@ export function MobileNav({
   }, [open]);
 
   return (
-    <div className="md:hidden">
+    <div className="lg:hidden">
       <button
         type="button"
         aria-label={open ? "Zamknij menu" : "Otwórz menu"}
@@ -102,9 +106,15 @@ export function MobileNav({
         <div className="border-border bg-surface absolute inset-x-0 top-full z-40 max-h-[80vh] overflow-y-auto border-t px-4 py-4 shadow-xl">
           <nav className="flex flex-col text-[16px]">
             <CollapsibleGroup
-              label={routesLabel}
-              indexHref="/transfery"
-              items={routeItems}
+              label={airportRoutesLabel}
+              indexHref="/transfery#lotniskowe"
+              items={airportRouteItems}
+              onNavigate={() => setOpen(false)}
+            />
+            <CollapsibleGroup
+              label={stationRoutesLabel}
+              indexHref="/transfery#dworzec-pkp"
+              items={stationRouteItems}
               onNavigate={() => setOpen(false)}
             />
             <CollapsibleGroup

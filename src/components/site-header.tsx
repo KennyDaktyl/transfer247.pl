@@ -18,9 +18,12 @@ export async function SiteHeader() {
     apiFetch<Tour[]>("/api/tours/", { next: { revalidate: 60 } }),
   ]);
 
-  const routeItems = routes.map((r) => ({ href: `/transfery/${r.slug}`, label: localize(r, "name", locale) }));
+  const toNavItem = (r: FixedRoute) => ({ href: `/transfery/${r.slug}`, label: localize(r, "name", locale) });
+  const airportRouteItems = routes.filter((r) => r.category === "LOTNISKO").map(toNavItem);
+  const stationRouteItems = routes.filter((r) => r.category === "DWORZEC_PKP").map(toNavItem);
   const tourItems = tours.map((tour) => ({ href: `/wycieczki/${tour.slug}`, label: localize(tour, "title", locale) }));
   const flatLinks = [
+    { href: "/przewoz-rowerow", label: t("bikeTransport") },
     { href: "/flota", label: t("fleet") },
     { href: "/blog", label: t("blog") },
     { href: "/kontakt", label: t("contact") },
@@ -35,8 +38,9 @@ export async function SiteHeader() {
           </span>
         </Link>
 
-        <nav className="hidden shrink-0 items-center gap-7 text-[14.5px] text-muted md:flex">
-          <NavDropdown label={t("routes")} indexHref="/transfery" items={routeItems} />
+        <nav className="hidden shrink-0 items-center gap-6 text-[14.5px] text-muted lg:flex">
+          <NavDropdown label={t("airportRoutes")} indexHref="/transfery#lotniskowe" items={airportRouteItems} />
+          <NavDropdown label={t("stationRoutes")} indexHref="/transfery#dworzec-pkp" items={stationRouteItems} />
           <NavDropdown label={t("tours")} indexHref="/wycieczki" items={tourItems} />
           {flatLinks.map((link) => (
             <Link key={link.href} href={link.href} className="transition-colors hover:text-text">
@@ -46,7 +50,7 @@ export async function SiteHeader() {
         </nav>
 
         <div className="flex shrink-0 items-center gap-3">
-          <div className="hidden md:block">
+          <div className="hidden lg:block">
             <LocaleSwitcher />
           </div>
           <Link
@@ -56,9 +60,11 @@ export async function SiteHeader() {
             {t("bookNow")}
           </Link>
           <MobileNav
-            routeItems={routeItems}
+            airportRouteItems={airportRouteItems}
+            stationRouteItems={stationRouteItems}
             tourItems={tourItems}
-            routesLabel={t("routes")}
+            airportRoutesLabel={t("airportRoutes")}
+            stationRoutesLabel={t("stationRoutes")}
             toursLabel={t("tours")}
             flatLinks={flatLinks}
           />

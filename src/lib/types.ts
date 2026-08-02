@@ -14,6 +14,9 @@ export type HomeContent = {
   footnote_pl: string;
   footnote_en: string;
   footnote_de: string;
+  about_pl: string;
+  about_en: string;
+  about_de: string;
 };
 
 /** A price line tied to a real vehicle from the fleet — however many a
@@ -33,8 +36,11 @@ export type FixedRoutePhoto = {
   order: number;
 };
 
+export type FixedRouteCategory = "LOTNISKO" | "DWORZEC_PKP";
+
 export type FixedRoute = {
   slug: string;
+  category: FixedRouteCategory;
   name_pl: string;
   name_en: string;
   name_de: string;

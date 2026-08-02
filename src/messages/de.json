@@ -1,11 +1,13 @@
 {
   "Metadata": {
-    "title": "Flughafentransfer Krakau Balice & Katowice-Pyrzowice | transfer247.pl",
-    "description": "Privater Flughafentransfer ab Krakau-Balice und Katowice-Pyrzowice nach Krakau, Zakopane und mehr. Festpreis rund um die Uhr. Ausflüge nach Auschwitz-Birkenau und Wieliczka."
+    "title": "Flughafentransfer Krakau & Katowice | transfer247.pl",
+    "description": "Privater Transfer ab Flughafen Krakau-Balice und Katowice-Pyrzowice. Fester Preis rund um die Uhr. Ausflüge nach Auschwitz und Wieliczka."
   },
   "Nav": {
-    "routes": "Transfers",
+    "airportRoutes": "Flughafentransfers",
+    "stationRoutes": "Transfers ab Hauptbahnhof",
     "tours": "Ausflüge",
+    "bikeTransport": "Fahrradtransport",
     "fleet": "Flotte",
     "blog": "Blog",
     "contact": "Kontakt",
@@ -16,8 +18,12 @@
     "ctaRoutes": "Strecken & Preise ansehen"
   },
   "Routes": {
-    "heading": "Flughafentransfers – Feste Strecken, fester Preis 24/7",
-    "lead": "Transfer ab Flughafen Krakau-Balice und Katowice-Pyrzowice. Keine Taxameter, keine Nachtzuschläge — Sie kennen den Preis vor der Buchung.",
+    "heading": "Transfers – Feste Strecken, fester Preis 24/7",
+    "lead": "Transfer ab Flughafen Krakau-Balice und Katowice-Pyrzowice sowie ab dem Krakauer Hauptbahnhof. Keine Taxameter, keine Nachtzuschläge — Sie kennen den Preis vor der Buchung.",
+    "airportHeading": "Flughafentransfers",
+    "airportLead": "Transfer ab Flughafen Krakau-Balice und Katowice-Pyrzowice.",
+    "stationHeading": "Transfers ab Hauptbahnhof",
+    "stationLead": "Transfer ab dem Krakauer Hauptbahnhof — z. B. zum Energylandia, zu Ihrem Hotel oder an jede Adresse.",
     "from": "ab",
     "priceOnRequest": "Preis auf Anfrage",
     "vehicleOptions": "Fahrzeugvarianten",
@@ -54,10 +60,15 @@
     "readMore": "Weiterlesen",
     "backToIndex": "Alle Artikel"
   },
+  "About": {
+    "heading": "Über transfer247.pl",
+    "airportLink": "Offizielle Website Flughafen Krakau-Balice"
+  },
   "Footer": {
     "tagline": "Private Flughafentransfers und Ausflüge in Kleinpolen.",
     "routes": "Transfers",
     "tours": "Ausflüge",
+    "bikeTransport": "Fahrradtransport",
     "company": "Unternehmen",
     "blog": "Blog",
     "contact": "Kontakt",

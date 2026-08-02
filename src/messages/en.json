@@ -1,11 +1,13 @@
 {
   "Metadata": {
-    "title": "Kraków Airport Transfer — Balice & Katowice Pyrzowice | transfer247.pl",
-    "description": "Private airport transfer from Kraków Balice and Katowice Pyrzowice airports to Kraków, Zakopane and beyond. Fixed 24/7 price. Tours to Auschwitz-Birkenau and Wieliczka Salt Mine."
+    "title": "Kraków & Katowice Airport Transfer | transfer247.pl",
+    "description": "Private transfer from Kraków Balice and Katowice Pyrzowice airports. Fixed 24/7 price, no meters. Tours to Auschwitz and Wieliczka."
   },
   "Nav": {
-    "routes": "Transfers",
+    "airportRoutes": "Airport Transfers",
+    "stationRoutes": "Train Station Transfers",
     "tours": "Tours",
+    "bikeTransport": "Bike Transport",
     "fleet": "Fleet",
     "blog": "Blog",
     "contact": "Contact",
@@ -16,8 +18,12 @@
     "ctaRoutes": "See routes & prices"
   },
   "Routes": {
-    "heading": "Airport Transfers – Fixed Routes, Fixed Price 24/7",
-    "lead": "Transfer from Kraków Balice and Katowice Pyrzowice airports. No meters, no night surcharges — you know the price before you book.",
+    "heading": "Transfers – Fixed Routes, Fixed Price 24/7",
+    "lead": "Transfer from Kraków Balice and Katowice Pyrzowice airports, and from Kraków's train station. No meters, no night surcharges — you know the price before you book.",
+    "airportHeading": "Airport Transfers",
+    "airportLead": "Transfer from Kraków Balice and Katowice Pyrzowice airports.",
+    "stationHeading": "Train Station Transfers",
+    "stationLead": "Transfer from Kraków's main train station — e.g. to Energylandia, your hotel, or any address.",
     "from": "from",
     "priceOnRequest": "Custom quote",
     "vehicleOptions": "vehicle options",
@@ -54,10 +60,15 @@
     "readMore": "Read more",
     "backToIndex": "All articles"
   },
+  "About": {
+    "heading": "About transfer247.pl",
+    "airportLink": "Official Kraków Balice Airport website"
+  },
   "Footer": {
     "tagline": "Private airport transfers and tours in Małopolska.",
     "routes": "Transfers",
     "tours": "Tours",
+    "bikeTransport": "Bike Transport",
     "company": "Company",
     "blog": "Blog",
     "contact": "Contact",

@@ -1,11 +1,13 @@
 {
   "Metadata": {
-    "title": "Transfer Lotnisko Kraków Balice i Katowice-Pyrzowice | transfer247.pl",
-    "description": "Prywatny transfer z lotniska Kraków-Balice i Katowice-Pyrzowice do Krakowa, Zakopanego i innych miast. Stała cena 24/7. Wycieczki do Auschwitz i Kopalni Soli Wieliczka."
+    "title": "Transfer lotniskowy Kraków-Balice, Katowice | transfer247.pl",
+    "description": "Prywatny transfer z lotniska Kraków-Balice i Katowice-Pyrzowice. Stała cena 24/7, zero dopłat. Wycieczki do Auschwitz i Wieliczki."
   },
   "Nav": {
-    "routes": "Transfery",
+    "airportRoutes": "Transfery lotniskowe",
+    "stationRoutes": "Transfery z dworca PKP",
     "tours": "Wycieczki",
+    "bikeTransport": "Przewóz rowerów",
     "fleet": "Flota",
     "blog": "Blog",
     "contact": "Kontakt",
@@ -16,8 +18,12 @@
     "ctaRoutes": "Zobacz trasy i ceny"
   },
   "Routes": {
-    "heading": "Transfery lotniskowe – stałe trasy, stała cena 24/7",
-    "lead": "Transfer z lotniska Kraków-Balice i Katowice-Pyrzowice. Bez liczników i dopłat nocnych — cenę znasz zanim zarezerwujesz.",
+    "heading": "Transfery — stałe trasy, stała cena 24/7",
+    "lead": "Transfer z lotniska Kraków-Balice i Katowice-Pyrzowice oraz z dworca PKP. Bez liczników i dopłat nocnych — cenę znasz zanim zarezerwujesz.",
+    "airportHeading": "Transfery lotniskowe",
+    "airportLead": "Transfer z lotniska Kraków-Balice i Katowice-Pyrzowice.",
+    "stationHeading": "Transfery z dworca PKP",
+    "stationLead": "Transfer z dworca PKP w Krakowie — np. na Energylandię, do hotelu czy pod wybrany adres.",
     "from": "od",
     "priceOnRequest": "Wycena indywidualna",
     "vehicleOptions": "warianty pojazdu",
@@ -54,10 +60,15 @@
     "readMore": "Czytaj dalej",
     "backToIndex": "Wszystkie wpisy"
   },
+  "About": {
+    "heading": "O transfer247.pl",
+    "airportLink": "Oficjalna strona lotniska Kraków-Balice"
+  },
   "Footer": {
     "tagline": "Prywatne transfery lotniskowe i wycieczki w Małopolsce.",
     "routes": "Transfery",
     "tours": "Wycieczki",
+    "bikeTransport": "Przewóz rowerów",
     "company": "Firma",
     "blog": "Blog",
     "contact": "Kontakt",

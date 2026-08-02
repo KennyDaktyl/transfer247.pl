@@ -1,5 +1,6 @@
 import { setRequestLocale } from "next-intl/server";
 
+import { AboutSection } from "@/components/about-section";
 import { FixedRoutesSection } from "@/components/fixed-routes-section";
 import { FleetTeaserSection } from "@/components/fleet-teaser-section";
 import { HeroSection } from "@/components/hero-section";
@@ -19,6 +20,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         <FixedRoutesSection />
         <ToursSection />
         <FleetTeaserSection />
+        <AboutSection />
       </main>
       <SiteFooter />
     </>
