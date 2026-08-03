@@ -12,6 +12,8 @@ export function AddressSearchField({
   onClear,
   onFocus,
   placeholder,
+  required,
+  error,
 }: {
   label: string;
   value: string;
@@ -20,6 +22,8 @@ export function AddressSearchField({
   onClear?: () => void;
   onFocus?: () => void;
   placeholder?: string;
+  required?: boolean;
+  error?: boolean;
 }) {
   const [suggestions, setSuggestions] = useState<AddressSuggestion[]>([]);
   const [open, setOpen] = useState(false);
@@ -46,7 +50,10 @@ export function AddressSearchField({
 
   return (
     <div ref={containerRef} className="relative flex flex-col gap-1.5">
-      <label className="text-[11.5px] font-semibold tracking-[0.08em] text-muted uppercase">{label}</label>
+      <label className="text-[11.5px] font-semibold tracking-[0.08em] text-muted uppercase">
+        {label}
+        {required && <span className="text-red-600"> *</span>}
+      </label>
       <div className="relative">
         <input
           type="text"
@@ -60,7 +67,9 @@ export function AddressSearchField({
             onTextChange(e.target.value);
             setOpen(true);
           }}
-          className="border-border bg-bg text-text focus:border-primary w-full rounded-lg border px-3 py-[11px] pr-9 text-[14.5px] outline-none"
+          className={`bg-bg text-text focus:border-primary w-full rounded-lg border px-3 py-[11px] pr-9 text-[14.5px] outline-none ${
+            error ? "border-red-500" : "border-border"
+          }`}
         />
         {value && (
           <button

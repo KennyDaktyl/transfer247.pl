@@ -58,6 +58,7 @@ export function CatalogBookingForm({
   const [phone, setPhone] = useState("+48");
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error" | "unauthenticated">("idle");
   const [estimate, setEstimate] = useState<RouteEstimate | null>(null);
+  const [attemptedSubmit, setAttemptedSubmit] = useState(false);
 
   // A vehicle switch can shrink the seat cap below whatever the customer
   // already picked — never silently submit more passengers than fit.
@@ -65,15 +66,19 @@ export function CatalogBookingForm({
     setPassengers((prev) => Math.min(prev, maxPassengers));
   }, [maxPassengers]);
 
-  // Distance/duration/route-line preview — also doubles as the driver's
-  // busy-window estimate the backend uses to block double-booking, so the
-  // operator sees the same figure the schedule actually enforces.
+  // Distance/duration/route-line preview — shown as soon as both points are
+  // picked, not gated behind date/time, since this form never shows
+  // estimate.price/is_reserved (the real price always comes from the
+  // catalog's own FixedRouteVehiclePrice/TourVehiclePrice, server-side) —
+  // scheduled_at here only affects that unused price field, not the road
+  // geometry, so a placeholder value is fine until the customer picks a
+  // real date/time.
   useEffect(() => {
-    if (!pickup || !dropoff || !date || !time) {
+    if (!pickup || !dropoff) {
       setEstimate(null);
       return;
     }
-    const scheduledAt = new Date(`${date}T${time}:00`).toISOString();
+    const scheduledAt = date && time ? new Date(`${date}T${time}:00`).toISOString() : new Date().toISOString();
     const controller = new AbortController();
     const timer = setTimeout(async () => {
       try {
@@ -137,10 +142,21 @@ export function CatalogBookingForm({
     }
   }
 
+  // The success box replaces the whole (much taller) form — without this,
+  // the browser keeps whatever scroll position the customer was at while
+  // filling out the form, which can land well below the now-short success
+  // message with nothing visible on screen.
+  useEffect(() => {
+    if (status === "success") window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [status]);
+
   const canSubmit = vehicleId != null && date && time && pickupText && dropoffText && customerName;
 
   async function handleSubmit() {
-    if (!canSubmit) return;
+    if (!canSubmit) {
+      setAttemptedSubmit(true);
+      return;
+    }
     setStatus("submitting");
     try {
       const scheduledAt = new Date(`${date}T${time}:00`).toISOString();
@@ -232,24 +248,28 @@ export function CatalogBookingForm({
         <div className="grid grid-cols-2 gap-3">
           <div className="flex flex-col gap-1.5">
             <label className="text-[11.5px] font-semibold tracking-[0.08em] text-muted uppercase">
-              {t("dateLabel")}
+              {t("dateLabel")} <span className="text-red-600">*</span>
             </label>
             <input
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
-              className="border-border bg-bg text-text focus:border-primary rounded-lg border px-3 py-[11px] text-[14.5px] outline-none"
+              className={`bg-bg text-text focus:border-primary rounded-lg border px-3 py-[11px] text-[14.5px] outline-none ${
+                attemptedSubmit && !date ? "border-red-500" : "border-border"
+              }`}
             />
           </div>
           <div className="flex flex-col gap-1.5">
             <label className="text-[11.5px] font-semibold tracking-[0.08em] text-muted uppercase">
-              {t("timeLabel")}
+              {t("timeLabel")} <span className="text-red-600">*</span>
             </label>
             <input
               type="time"
               value={time}
               onChange={(e) => setTime(e.target.value)}
-              className="border-border bg-bg text-text focus:border-primary rounded-lg border px-3 py-[11px] text-[14.5px] outline-none"
+              className={`bg-bg text-text focus:border-primary rounded-lg border px-3 py-[11px] text-[14.5px] outline-none ${
+                attemptedSubmit && !time ? "border-red-500" : "border-border"
+              }`}
             />
           </div>
         </div>
@@ -282,6 +302,8 @@ export function CatalogBookingForm({
                 onFocus={() => setActiveField("pickup")}
                 onSelect={(s) => handleSelectSuggestion("pickup", s)}
                 onClear={() => setPickup(null)}
+                required
+                error={attemptedSubmit && !pickupText}
               />
               <button
                 type="button"
@@ -300,6 +322,8 @@ export function CatalogBookingForm({
               onFocus={() => setActiveField("dropoff")}
               onSelect={(s) => handleSelectSuggestion("dropoff", s)}
               onClear={() => setDropoff(null)}
+              required
+              error={attemptedSubmit && !dropoffText}
             />
           </div>
           <div className="min-h-[240px]">
@@ -329,14 +353,16 @@ export function CatalogBookingForm({
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <div className="flex flex-col gap-1.5">
             <label className="text-[11.5px] font-semibold tracking-[0.08em] text-muted uppercase">
-              {t("nameLabel")}
+              {t("nameLabel")} <span className="text-red-600">*</span>
             </label>
             <input
               type="text"
               value={customerName}
               onChange={(e) => setCustomerName(e.target.value)}
               placeholder={t("namePlaceholder")}
-              className="border-border bg-bg text-text focus:border-primary rounded-lg border px-3 py-[11px] text-[14.5px] outline-none"
+              className={`bg-bg text-text focus:border-primary rounded-lg border px-3 py-[11px] text-[14.5px] outline-none ${
+                attemptedSubmit && !customerName ? "border-red-500" : "border-border"
+              }`}
             />
           </div>
           <div className="flex flex-col gap-1.5">

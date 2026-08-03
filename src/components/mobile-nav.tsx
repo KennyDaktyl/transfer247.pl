@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Link } from "@/i18n/navigation";
 
 import { LocaleSwitcher } from "./locale-switcher";
+import { LogoutButton } from "./logout-button";
 
 type NavItem = { href: string; label: string };
 
@@ -69,6 +70,8 @@ export function MobileNav({
   callLabel,
   loginHref,
   loginLabel,
+  isLoggedIn,
+  logoutLabel,
 }: {
   airportRouteItems: NavItem[];
   stationRouteItems: NavItem[];
@@ -80,6 +83,8 @@ export function MobileNav({
   callLabel: string;
   loginHref: string;
   loginLabel: string;
+  isLoggedIn: boolean;
+  logoutLabel: string;
 }) {
   const [open, setOpen] = useState(false);
 
@@ -152,6 +157,12 @@ export function MobileNav({
             >
               {loginLabel}
             </Link>
+            {isLoggedIn && (
+              <LogoutButton
+                label={logoutLabel}
+                className="text-muted mt-2 rounded-md px-2 py-3 text-center font-medium transition-colors hover:bg-bg"
+              />
+            )}
           </nav>
 
           <div className="mt-4 flex items-center gap-3">
