@@ -23,6 +23,7 @@ export async function ToursSection() {
           <div>
             <h2 className="font-heading text-[28px] font-semibold text-text sm:text-[36px]">{t("heading")}</h2>
             <p className="mt-3 max-w-[560px] text-[15px] text-muted sm:text-[16px]">{t("lead")}</p>
+            <p className="mt-1.5 text-[12px] text-muted">{t("vatNote")}</p>
           </div>
           <Link href="/wycieczki" className="text-primary text-[14px] font-medium whitespace-nowrap">
             {t("backToIndex")} →

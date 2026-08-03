@@ -56,7 +56,9 @@
     "paidConfirmed": "Anzahlung bezahlt — Ihre Buchung ist gültig.",
     "error": "Anzahlung konnte nicht bezahlt werden. Bitte erneut versuchen.",
     "processing": "Zahlung wird geprüft… bei BLIK kann dies bis zu 2 Minuten dauern.",
-    "vatNote": "Bruttobetrag, inkl. 23% MwSt. (netto: {net} zł)."
+    "vatNote": "Bruttobetrag, inkl. 23% MwSt. (netto: {net} zł).",
+    "securePayments": "Sichere Zahlungen",
+    "paymentMethods": "Powered by Stripe · Karte und BLIK"
   },
   "Nav": {
     "airportRoutes": "Flughafentransfers",
@@ -98,7 +100,8 @@
     "backToHome": "Startseite",
     "backToIndex": "Alle Strecken",
     "otherRoutes": "Weitere Strecken",
-    "bookThisRoute": "Diese Strecke buchen"
+    "bookThisRoute": "Diese Strecke buchen",
+    "vatNote": "Alle Preise inkl. MwSt. (23%)."
   },
   "Tours": {
     "heading": "Ausflüge ab Krakau mit wartendem Fahrer",
@@ -112,7 +115,8 @@
     "backToHome": "Startseite",
     "backToIndex": "Alle Ausflüge",
     "otherTours": "Weitere Ausflüge",
-    "bookThisTour": "Diesen Ausflug buchen"
+    "bookThisTour": "Diesen Ausflug buchen",
+    "vatNote": "Alle Preise inkl. MwSt. (23%)."
   },
   "Fleet": {
     "heading": "Unsere Flotte",

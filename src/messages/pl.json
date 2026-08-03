@@ -56,7 +56,9 @@
     "paidConfirmed": "Zaliczka opłacona — kurs jest ważny.",
     "error": "Nie udało się zapłacić zaliczki. Spróbuj ponownie.",
     "processing": "Weryfikujemy płatność… może to potrwać do 2 minut przy BLIK-u.",
-    "vatNote": "Kwota brutto, zawiera VAT 23% (netto: {net} zł)."
+    "vatNote": "Kwota brutto, zawiera VAT 23% (netto: {net} zł).",
+    "securePayments": "Bezpieczne płatności",
+    "paymentMethods": "Obsługiwane przez Stripe · karta i BLIK"
   },
   "Nav": {
     "airportRoutes": "Transfery lotniskowe",
@@ -98,7 +100,8 @@
     "backToHome": "Strona główna",
     "backToIndex": "Wszystkie trasy",
     "otherRoutes": "Inne trasy",
-    "bookThisRoute": "Zarezerwuj tę trasę"
+    "bookThisRoute": "Zarezerwuj tę trasę",
+    "vatNote": "Wszystkie ceny zawierają VAT (23%)."
   },
   "Tours": {
     "heading": "Wycieczki z Krakowa z kierowcą",
@@ -112,7 +115,8 @@
     "backToHome": "Strona główna",
     "backToIndex": "Wszystkie wycieczki",
     "otherTours": "Inne wycieczki",
-    "bookThisTour": "Zarezerwuj tę wycieczkę"
+    "bookThisTour": "Zarezerwuj tę wycieczkę",
+    "vatNote": "Wszystkie ceny zawierają VAT (23%)."
   },
   "Fleet": {
     "heading": "Nasza flota",

@@ -56,7 +56,9 @@
     "paidConfirmed": "Deposit paid — your booking is confirmed.",
     "error": "Couldn't pay the deposit. Please try again.",
     "processing": "Verifying your payment… this can take up to 2 minutes for BLIK.",
-    "vatNote": "Gross amount, includes 23% VAT (net: {net} zł)."
+    "vatNote": "Gross amount, includes 23% VAT (net: {net} zł).",
+    "securePayments": "Secure payments",
+    "paymentMethods": "Powered by Stripe · card and BLIK"
   },
   "Nav": {
     "airportRoutes": "Airport Transfers",
@@ -98,7 +100,8 @@
     "backToHome": "Home",
     "backToIndex": "All routes",
     "otherRoutes": "Other routes",
-    "bookThisRoute": "Book this route"
+    "bookThisRoute": "Book this route",
+    "vatNote": "All prices include VAT (23%)."
   },
   "Tours": {
     "heading": "Tours from Kraków with a Waiting Driver",
@@ -112,7 +115,8 @@
     "backToHome": "Home",
     "backToIndex": "All tours",
     "otherTours": "Other tours",
-    "bookThisTour": "Book this tour"
+    "bookThisTour": "Book this tour",
+    "vatNote": "All prices include VAT (23%)."
   },
   "Fleet": {
     "heading": "Our fleet",

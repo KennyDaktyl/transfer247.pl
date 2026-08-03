@@ -1,5 +1,6 @@
 import { getLocale, getTranslations } from "next-intl/server";
 
+import { PaymentBadge } from "@/components/payment-badge";
 import { Link } from "@/i18n/navigation";
 import { apiFetch } from "@/lib/api";
 import { localize } from "@/lib/localize";
@@ -7,9 +8,10 @@ import type { AppLocale } from "@/i18n/routing";
 import type { FixedRoute, Tour } from "@/lib/types";
 
 export async function SiteFooter() {
-  const [t, tNav, locale, routes, tours] = await Promise.all([
+  const [t, tNav, tPayment, locale, routes, tours] = await Promise.all([
     getTranslations("Footer"),
     getTranslations("Nav"),
+    getTranslations("BookingPayment"),
     getLocale() as Promise<AppLocale>,
     apiFetch<FixedRoute[]>("/api/fixed-routes/", { next: { revalidate: 60 } }),
     apiFetch<Tour[]>("/api/tours/", { next: { revalidate: 60 } }),
@@ -72,11 +74,14 @@ export async function SiteFooter() {
             </Link>
           </div>
         </div>
-        <div className="border-border mt-10 flex flex-col gap-1 border-t pt-6 text-[12.5px] text-muted">
-          <span>Michał Pielak MIKTEL · NIP 6782805234 · ul. Wspólna 2, 32-061 Rybna</span>
-          <span>
-            © {new Date().getFullYear()} transfer247.pl — {t("rights")}
-          </span>
+        <div className="border-border mt-10 flex flex-wrap items-center justify-between gap-4 border-t pt-6">
+          <div className="flex flex-col gap-1 text-[12.5px] text-muted">
+            <span>Michał Pielak MIKTEL · NIP 6782805234 · ul. Wspólna 2, 32-061 Rybna</span>
+            <span>
+              © {new Date().getFullYear()} transfer247.pl — {t("rights")}
+            </span>
+          </div>
+          <PaymentBadge label={tPayment("securePayments")} sublabel={tPayment("paymentMethods")} />
         </div>
       </div>
     </footer>

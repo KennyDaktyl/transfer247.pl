@@ -79,6 +79,7 @@ export default async function RoutesIndexPage({ params }: { params: Promise<{ lo
         <div className="mx-auto max-w-[1200px] px-4 py-16 sm:px-6 sm:py-20">
           <h1 className="font-heading text-[32px] font-semibold text-text sm:text-[42px]">{t("heading")}</h1>
           <p className="mt-3 max-w-[560px] text-[16px] text-muted">{t("lead")}</p>
+          <p className="mt-1.5 text-[12px] text-muted">{t("vatNote")}</p>
 
           {airportRoutes.length > 0 ? (
             <section id="lotniskowe" className="mt-14 scroll-mt-24">

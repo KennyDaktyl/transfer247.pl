@@ -123,6 +123,7 @@ export default async function RouteDetailPage({
             ) : (
               <p className="mt-3 text-[14px] text-muted">{t("priceOnRequest")}</p>
             )}
+            <p className="mt-3 text-[12px] text-muted">{t("vatNote")}</p>
           </div>
 
           <Link
