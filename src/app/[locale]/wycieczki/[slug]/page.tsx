@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
+import { CatalogBookingForm } from "@/components/catalog-booking-form";
 import { MarkdownContent } from "@/components/markdown-content";
 import { PhotoGallery } from "@/components/photo-gallery";
 import { SiteFooter } from "@/components/site-footer";
@@ -126,12 +127,16 @@ export default async function TourDetailPage({
             <p className="mt-3 text-[12px] text-muted">{t("vatNote")}</p>
           </div>
 
-          <Link
-            href="/kontakt"
-            className="bg-primary hover:bg-primary-hover mt-8 inline-block rounded-[999px] px-7 py-3 text-[15px] font-medium text-white transition-colors"
-          >
-            {t("bookThisTour")}
-          </Link>
+          {tour.vehicle_prices.length > 0 ? (
+            <CatalogBookingForm kind="tour" catalogSlug={tour.slug} vehiclePrices={tour.vehicle_prices} />
+          ) : (
+            <Link
+              href="/kontakt"
+              className="bg-primary hover:bg-primary-hover mt-8 inline-block rounded-[999px] px-7 py-3 text-[15px] font-medium text-white transition-colors"
+            >
+              {t("bookThisTour")}
+            </Link>
+          )}
 
           <div className="mt-10">
             <MarkdownContent markdown={body} />

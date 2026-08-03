@@ -143,5 +143,24 @@
     "contact": "Contact",
     "rights": "All rights reserved.",
     "terms": "Terms of Service"
+  },
+  "CatalogBooking": {
+    "title": "Book this ride",
+    "vehicleLabel": "Vehicle",
+    "dateLabel": "Date",
+    "timeLabel": "Time",
+    "passengersLabel": "Passengers",
+    "pickupDetailsLabel": "Pickup address / hotel",
+    "pickupDetailsPlaceholder": "e.g. Hotel Wawel, ul. Poselska 22",
+    "nameLabel": "Name",
+    "namePlaceholder": "Jane Smith",
+    "emailLabel": "Email (optional)",
+    "emailPlaceholder": "jane@example.com",
+    "submit": "Book now",
+    "submitting": "Booking…",
+    "verifyPhone": "Enter your phone number to finish the booking — you will get an SMS code.",
+    "success": "Booking received — awaiting confirmation.",
+    "successPanelLink": "View in customer panel",
+    "error": "Couldn't submit the booking. Please try again."
   }
 }

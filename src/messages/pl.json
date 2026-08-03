@@ -143,5 +143,24 @@
     "contact": "Kontakt",
     "rights": "Wszystkie prawa zastrzeżone.",
     "terms": "Regulamin"
+  },
+  "CatalogBooking": {
+    "title": "Zarezerwuj ten kurs",
+    "vehicleLabel": "Pojazd",
+    "dateLabel": "Data",
+    "timeLabel": "Godzina",
+    "passengersLabel": "Liczba pasażerów",
+    "pickupDetailsLabel": "Adres odbioru / hotel",
+    "pickupDetailsPlaceholder": "np. Hotel Wawel, ul. Poselska 22",
+    "nameLabel": "Imię",
+    "namePlaceholder": "Jan Kowalski",
+    "emailLabel": "E-mail (opcjonalnie)",
+    "emailPlaceholder": "jan@przyklad.pl",
+    "submit": "Zarezerwuj",
+    "submitting": "Rezerwuję…",
+    "verifyPhone": "Podaj numer telefonu, żeby dokończyć rezerwację — dostaniesz kod SMS.",
+    "success": "Rezerwacja przyjęta — czeka na potwierdzenie.",
+    "successPanelLink": "Zobacz w panelu klienta",
+    "error": "Nie udało się złożyć rezerwacji. Spróbuj ponownie."
   }
 }

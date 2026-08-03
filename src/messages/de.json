@@ -143,5 +143,24 @@
     "contact": "Kontakt",
     "rights": "Alle Rechte vorbehalten.",
     "terms": "AGB"
+  },
+  "CatalogBooking": {
+    "title": "Diese Fahrt buchen",
+    "vehicleLabel": "Fahrzeug",
+    "dateLabel": "Datum",
+    "timeLabel": "Uhrzeit",
+    "passengersLabel": "Passagiere",
+    "pickupDetailsLabel": "Abholadresse / Hotel",
+    "pickupDetailsPlaceholder": "z.B. Hotel Wawel, ul. Poselska 22",
+    "nameLabel": "Name",
+    "namePlaceholder": "Max Mustermann",
+    "emailLabel": "E-Mail (optional)",
+    "emailPlaceholder": "max@beispiel.de",
+    "submit": "Jetzt buchen",
+    "submitting": "Buchung läuft…",
+    "verifyPhone": "Geben Sie Ihre Telefonnummer ein, um die Buchung abzuschließen — Sie erhalten einen SMS-Code.",
+    "success": "Buchung eingegangen — wird noch bestätigt.",
+    "successPanelLink": "Im Kundenbereich ansehen",
+    "error": "Buchung konnte nicht gesendet werden. Bitte erneut versuchen."
   }
 }
