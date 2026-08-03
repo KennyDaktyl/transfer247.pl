@@ -2,12 +2,13 @@
 
 import { useTranslations } from "next-intl";
 import dynamic from "next/dynamic";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
+import { BookingCancelButton } from "@/components/booking-cancel-button";
 import { DepositPaymentForm } from "@/components/deposit-payment-form";
 import { Link } from "@/i18n/navigation";
 import { netFromGross } from "@/lib/format";
-import type { Booking } from "@/lib/types";
+import type { Booking, BookingStatus } from "@/lib/types";
 
 const BookingRoutePreview = dynamic(
   () => import("./booking-route-preview").then((m) => m.BookingRoutePreview),
@@ -15,138 +16,310 @@ const BookingRoutePreview = dynamic(
 );
 
 const TRACKABLE_STATUSES = ["KIEROWCA_W_DRODZE", "W_TRAKCIE"];
-const ARCHIVE_STATUSES = ["ZAKONCZONA", "ANULOWANA"];
+const CANCELLABLE_STATUSES = ["NOWA", "POTWIERDZONA", "OPLACONA", "KIEROWCA_W_DRODZE"];
 const PAID_GATE_STATUSES = ["OPLACONA", "KIEROWCA_W_DRODZE", "W_TRAKCIE", "ZAKONCZONA"];
+
+type Tab = "upcoming" | "history" | "cancelled";
+
+const TAB_STATUSES: Record<Tab, BookingStatus[]> = {
+  upcoming: ["NOWA", "POTWIERDZONA", "OPLACONA", "KIEROWCA_W_DRODZE", "W_TRAKCIE"],
+  history: ["ZAKONCZONA"],
+  cancelled: ["ANULOWANA"],
+};
+
+const STATUS_DOT: Record<BookingStatus, string> = {
+  NOWA: "bg-primary",
+  POTWIERDZONA: "bg-primary",
+  OPLACONA: "bg-secondary",
+  KIEROWCA_W_DRODZE: "bg-secondary",
+  W_TRAKCIE: "bg-secondary",
+  ZAKONCZONA: "bg-muted",
+  ANULOWANA: "bg-red-600",
+};
+
+const STATUS_COLOR: Record<BookingStatus, string> = {
+  NOWA: "text-primary",
+  POTWIERDZONA: "text-primary",
+  OPLACONA: "text-secondary",
+  KIEROWCA_W_DRODZE: "text-secondary",
+  W_TRAKCIE: "text-secondary",
+  ZAKONCZONA: "text-muted",
+  ANULOWANA: "text-red-600",
+};
+
+/** Booking reference shown to the customer — not stored anywhere, just a
+ * stable, readable label derived from data we already have. */
+function bookingRef(booking: Booking): string {
+  const date = new Date(booking.created_at);
+  const pad = (n: number) => String(n).padStart(2, "0");
+  const y = date.getFullYear();
+  const m = pad(date.getMonth() + 1);
+  const d = pad(date.getDate());
+  return `#T247-${y}${m}${d}-${String(booking.id).padStart(4, "0")}`;
+}
+
+function formatCountdown(ms: number): string {
+  const totalSeconds = Math.max(0, Math.floor(ms / 1000));
+  const h = String(Math.floor(totalSeconds / 3600)).padStart(2, "0");
+  const m = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, "0");
+  const s = String(totalSeconds % 60).padStart(2, "0");
+  return `${h}:${m}:${s}`;
+}
+
+function useCountdown(deadline: string | null): string | null {
+  const [now, setNow] = useState(() => Date.now());
+
+  useEffect(() => {
+    if (!deadline) return;
+    const interval = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(interval);
+  }, [deadline]);
+
+  if (!deadline) return null;
+  return formatCountdown(new Date(deadline).getTime() - now);
+}
+
+function vehicleChip(booking: Booking): string | null {
+  if (booking.driver_vehicle) {
+    const parts = [booking.driver_vehicle];
+    if (booking.driver_vehicle_seats) parts.push(`${booking.driver_vehicle_seats} os.`);
+    if (booking.driver_vehicle_plate) parts.push(booking.driver_vehicle_plate);
+    return parts.join(" · ");
+  }
+  if (booking.booked_vehicle_name) {
+    const parts = [booking.booked_vehicle_name];
+    if (booking.booked_vehicle_seats) parts.push(`${booking.booked_vehicle_seats} os.`);
+    return parts.join(" · ");
+  }
+  return null;
+}
 
 export function BookingsList({ bookings, locale }: { bookings: Booking[]; locale: string }) {
   const t = useTranslations("Panel");
   const tStatus = useTranslations("BookingStatus");
   const tPayment = useTranslations("BookingPayment");
-  const [showArchive, setShowArchive] = useState(false);
-
-  const archiveCount = bookings.filter((b) => ARCHIVE_STATUSES.includes(b.status)).length;
-  const visible = showArchive ? bookings : bookings.filter((b) => !ARCHIVE_STATUSES.includes(b.status));
+  const [tab, setTab] = useState<Tab>("upcoming");
 
   if (bookings.length === 0) {
     return <p className="text-muted">{t("empty")}</p>;
   }
 
+  const counts: Record<Tab, number> = {
+    upcoming: bookings.filter((b) => TAB_STATUSES.upcoming.includes(b.status)).length,
+    history: bookings.filter((b) => TAB_STATUSES.history.includes(b.status)).length,
+    cancelled: bookings.filter((b) => TAB_STATUSES.cancelled.includes(b.status)).length,
+  };
+  const visible = bookings.filter((b) => TAB_STATUSES[tab].includes(b.status));
+  const emptyKey = { upcoming: "emptyUpcoming", history: "emptyHistory", cancelled: "emptyCancelled" }[tab] as
+    | "emptyUpcoming"
+    | "emptyHistory"
+    | "emptyCancelled";
+
   return (
-    <div className="flex flex-col gap-3">
-      {archiveCount > 0 && (
-        <button
-          type="button"
-          onClick={() => setShowArchive((v) => !v)}
-          className="text-primary self-start text-[12.5px] font-semibold underline"
-        >
-          {showArchive ? t("hideArchive") : t("showArchive", { count: archiveCount })}
-        </button>
-      )}
+    <div className="flex flex-col gap-4">
+      <div className="border-border flex gap-1 border-b">
+        {(["upcoming", "history", "cancelled"] as Tab[]).map((key) => (
+          <button
+            key={key}
+            type="button"
+            onClick={() => setTab(key)}
+            className={`mr-5 flex items-center gap-1.5 border-b-2 px-1 py-2.5 text-[14px] font-semibold transition-colors ${
+              tab === key ? "border-primary text-text" : "border-transparent text-muted hover:text-text"
+            }`}
+          >
+            {t(key === "upcoming" ? "tabUpcoming" : key === "history" ? "tabHistory" : "tabCancelled")}
+            <span
+              className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${
+                tab === key ? "bg-primary/10 text-primary" : "bg-bg text-muted"
+              }`}
+            >
+              {counts[key]}
+            </span>
+          </button>
+        ))}
+      </div>
 
       {visible.length === 0 ? (
-        <p className="text-muted">{t("emptyCurrent")}</p>
+        <p className="text-muted">{t(emptyKey)}</p>
       ) : (
-        visible.map((booking) => (
-          <div key={booking.id} className="border-border bg-surface rounded-[12px] border p-5">
-            <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
-              <span className="font-heading text-[15px] font-semibold text-text">
-                {booking.pickup_address} → {booking.dropoff_address}
-              </span>
-              <span className="border-border text-primary rounded-full border px-2.5 py-1 text-[11px] font-semibold tracking-wide uppercase">
-                {tStatus(booking.status)}
-              </span>
+        <div className="flex flex-col gap-4">
+          {visible.map((booking) => {
+            const vehicle = vehicleChip(booking);
+            const showUrgency =
+              booking.status === "POTWIERDZONA" && booking.payment_deadline && booking.deposit_amount;
+            return (
+              <BookingCard
+                key={booking.id}
+                booking={booking}
+                locale={locale}
+                vehicle={vehicle}
+                showUrgency={Boolean(showUrgency)}
+                t={t}
+                tStatus={tStatus}
+                tPayment={tPayment}
+              />
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function BookingCard({
+  booking,
+  locale,
+  vehicle,
+  showUrgency,
+  t,
+  tStatus,
+  tPayment,
+}: {
+  booking: Booking;
+  locale: string;
+  vehicle: string | null;
+  showUrgency: boolean;
+  t: ReturnType<typeof useTranslations<"Panel">>;
+  tStatus: ReturnType<typeof useTranslations<"BookingStatus">>;
+  tPayment: ReturnType<typeof useTranslations<"BookingPayment">>;
+}) {
+  const countdown = useCountdown(showUrgency ? booking.payment_deadline : null);
+  const showPaymentButtons = booking.status === "POTWIERDZONA" && booking.deposit_amount;
+  const showSecureNote = Boolean(showPaymentButtons || (PAID_GATE_STATUSES.includes(booking.status) && booking.remaining_amount));
+
+  return (
+    <div
+      className={`bg-surface rounded-[14px] border p-5 sm:p-[22px] ${
+        showUrgency ? "border-primary/35" : "border-border"
+      }`}
+    >
+      <div className="mb-4 flex items-center justify-between gap-2">
+        <span className="font-label text-muted text-[12px] font-semibold tracking-wide">{bookingRef(booking)}</span>
+        <span
+          className={`bg-bg flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-bold tracking-wide uppercase ${STATUS_COLOR[booking.status]}`}
+        >
+          <span className={`h-[6px] w-[6px] rounded-full ${STATUS_DOT[booking.status]}`} />
+          {tStatus(booking.status)}
+        </span>
+      </div>
+
+      <div className="mb-4 flex flex-col gap-0.5">
+        <div className="flex gap-3">
+          <div className="flex w-3 flex-col items-center pt-1">
+            <span className="bg-primary h-2 w-2 flex-shrink-0 rounded-full" />
+            <span className="border-border my-0.5 min-h-[16px] w-px flex-1 bg-[repeating-linear-gradient(180deg,var(--color-border)_0_4px,transparent_4px_8px)]" />
+          </div>
+          <span className="text-text pb-2 text-[14.5px] font-semibold">{booking.pickup_address}</span>
+        </div>
+        <div className="flex gap-3">
+          <div className="flex w-3 flex-col items-center pt-1">
+            <span className="bg-secondary h-2 w-2 flex-shrink-0 rounded-full" />
+          </div>
+          <span className="text-text text-[14.5px] font-semibold">{booking.dropoff_address}</span>
+        </div>
+      </div>
+
+      <div className="mb-3 flex flex-wrap gap-2">
+        <span className="border-border bg-bg text-muted flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-[12.5px]">
+          {new Date(booking.scheduled_at).toLocaleString(locale)}
+        </span>
+        {vehicle && (
+          <span className="border-border bg-bg text-text flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-[12.5px]">
+            {vehicle}
+          </span>
+        )}
+        {(booking.distance_km || booking.duration_minutes) && (
+          <span className="border-border bg-bg text-muted flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-[12.5px]">
+            {booking.distance_km && `${booking.distance_km} ${t("km")}`}
+            {booking.distance_km && booking.duration_minutes && " · "}
+            {booking.duration_minutes && `~${booking.duration_minutes} ${t("min")}`}
+          </span>
+        )}
+        {booking.booked_vehicle_id && (
+          <Link
+            href={`/flota#vehicle-${booking.booked_vehicle_id}`}
+            className="border-border bg-bg text-primary flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-[12.5px] underline"
+          >
+            {t("seeVehicle", { name: booking.booked_vehicle_name ?? "" })}
+          </Link>
+        )}
+      </div>
+
+      {booking.pickup_lat && booking.pickup_lng && booking.dropoff_lat && booking.dropoff_lng && (
+        <div className="mb-3">
+          <BookingRoutePreview
+            pickup={{ lat: Number(booking.pickup_lat), lng: Number(booking.pickup_lng) }}
+            dropoff={{ lat: Number(booking.dropoff_lat), lng: Number(booking.dropoff_lng) }}
+          />
+        </div>
+      )}
+
+      {showUrgency && countdown && (
+        <div className="border-primary/35 bg-primary/5 mb-3 flex items-center gap-2 rounded-[10px] border px-3.5 py-2.5 text-[13px] text-text">
+          {tPayment("urgencyCountdown", {
+            time: new Date(booking.payment_deadline!).toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit" }),
+            countdown,
+          })}
+        </div>
+      )}
+
+      {booking.status === "NOWA" && <p className="text-muted mb-3 text-[13px]">{tPayment("waitingForConfirmation")}</p>}
+
+      {showPaymentButtons && (
+        <div className="border-border bg-bg mb-3 rounded-[10px] border p-4">
+          {booking.price && (
+            <div className="mb-3">
+              <div className="font-heading text-text text-[20px] font-bold">{Number(booking.price).toFixed(0)} zł</div>
+              <div className="text-muted text-[11.5px]">
+                {t("vatIncluded", { net: netFromGross(booking.price).toFixed(2) })}
+              </div>
             </div>
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-1 text-[13px] text-muted">
-              <span>
-                {t("date")}: {new Date(booking.scheduled_at).toLocaleString(locale)}
-              </span>
-              <span>
-                {t("price")}:{" "}
-                {booking.price
-                  ? `${Number(booking.price).toFixed(0)} zł (${t("vatIncluded", { net: netFromGross(booking.price).toFixed(2) })})`
-                  : "—"}
-              </span>
-              {TRACKABLE_STATUSES.includes(booking.status) && (
-                <Link href={`/panel/kurs/${booking.id}`} className="text-primary font-semibold underline">
-                  {t("trackDriver")}
-                </Link>
-              )}
-              {booking.booked_vehicle_id && (
-                <Link href={`/flota#vehicle-${booking.booked_vehicle_id}`} className="text-primary underline">
-                  {t("seeVehicle", { name: booking.booked_vehicle_name ?? "" })}
-                </Link>
-              )}
-            </div>
-
-            {booking.pickup_lat && booking.pickup_lng && booking.dropoff_lat && booking.dropoff_lng && (
-              <div className="mt-3 flex flex-col gap-1.5">
-                <BookingRoutePreview
-                  pickup={{ lat: Number(booking.pickup_lat), lng: Number(booking.pickup_lng) }}
-                  dropoff={{ lat: Number(booking.dropoff_lat), lng: Number(booking.dropoff_lng) }}
-                />
-                {(booking.distance_km || booking.duration_minutes) && (
-                  <span className="font-label text-xs tracking-[0.05em] text-muted">
-                    {booking.distance_km && `${booking.distance_km} ${t("km")}`}
-                    {booking.distance_km && booking.duration_minutes && " · "}
-                    {booking.duration_minutes && `~${booking.duration_minutes} ${t("min")}`}
-                  </span>
-                )}
-              </div>
-            )}
-
-            {booking.status === "NOWA" && (
-              <p className="mt-3 text-[13px] text-muted">{tPayment("waitingForConfirmation")}</p>
-            )}
-
-            {booking.status === "POTWIERDZONA" && booking.deposit_amount && (
-              <div className="mt-3 flex flex-col gap-2">
-                <DepositPaymentForm bookingId={booking.id} amount={booking.deposit_amount} kind="deposit" />
-                {booking.price && booking.price !== booking.deposit_amount && (
-                  <>
-                    <span className="text-[12px] text-muted">{tPayment("orPayFull")}</span>
-                    <DepositPaymentForm
-                      bookingId={booking.id}
-                      amount={booking.price}
-                      kind="full"
-                      showVatNote={false}
-                    />
-                  </>
-                )}
-                {booking.payment_deadline && (
-                  <span className="text-[12px] text-muted">
-                    {tPayment("payBy", { time: new Date(booking.payment_deadline).toLocaleString(locale) })}
-                  </span>
-                )}
-              </div>
-            )}
-
-            {PAID_GATE_STATUSES.includes(booking.status) && (
-              <div className="mt-3 flex flex-col gap-2">
-                {booking.remainder_paid_at ? (
-                  <p className="text-secondary text-[13px]">{tPayment("fullyPaid")}</p>
-                ) : (
-                  <>
-                    <p className="text-secondary text-[13px]">{tPayment("paidConfirmed")}</p>
-                    {booking.remaining_amount && (
-                      <div className="flex flex-col gap-2">
-                        <span className="text-[12px] text-muted">
-                          {tPayment("remainingAmount", { amount: Number(booking.remaining_amount).toFixed(0) })}
-                        </span>
-                        <DepositPaymentForm
-                          bookingId={booking.id}
-                          amount={booking.remaining_amount}
-                          kind="remainder"
-                          showVatNote={false}
-                        />
-                      </div>
-                    )}
-                  </>
-                )}
-              </div>
+          )}
+          <div className="flex flex-wrap gap-2">
+            <DepositPaymentForm bookingId={booking.id} amount={booking.deposit_amount!} kind="deposit" showVatNote={false} />
+            {booking.price && booking.price !== booking.deposit_amount && (
+              <DepositPaymentForm bookingId={booking.id} amount={booking.price} kind="full" showVatNote={false} />
             )}
           </div>
-        ))
+        </div>
       )}
+
+      {PAID_GATE_STATUSES.includes(booking.status) && (
+        <div className="mb-3 flex flex-col gap-2">
+          {booking.remainder_paid_at ? (
+            <p className="text-secondary text-[13px]">{tPayment("fullyPaid")}</p>
+          ) : (
+            <>
+              <p className="text-secondary text-[13px]">{tPayment("paidConfirmed")}</p>
+              {booking.remaining_amount && (
+                <div className="border-border bg-bg flex flex-col gap-2 rounded-[10px] border p-4">
+                  <span className="text-muted text-[12px]">
+                    {tPayment("remainingAmount", { amount: Number(booking.remaining_amount).toFixed(0) })}
+                  </span>
+                  <DepositPaymentForm bookingId={booking.id} amount={booking.remaining_amount} kind="remainder" showVatNote={false} />
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      )}
+
+      <div className="border-border flex flex-wrap items-center justify-between gap-3 border-t pt-3">
+        <div className="flex flex-wrap items-center gap-4">
+          {TRACKABLE_STATUSES.includes(booking.status) && (
+            <Link href={`/panel/kurs/${booking.id}`} className="text-primary text-[12.5px] font-semibold underline">
+              {t("trackDriver")}
+            </Link>
+          )}
+          {booking.status === "ZAKONCZONA" && (
+            <Link href="/transfery" className="text-primary text-[12.5px] font-semibold underline">
+              {t("bookSimilar")}
+            </Link>
+          )}
+          {CANCELLABLE_STATUSES.includes(booking.status) && <BookingCancelButton bookingId={booking.id} />}
+        </div>
+        {showSecureNote && <span className="text-muted text-[11px]">{tPayment("securedByStripe")}</span>}
+      </div>
     </div>
   );
 }

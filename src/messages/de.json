@@ -43,7 +43,16 @@
     "hideArchive": "Nur aktuelle Fahrten anzeigen",
     "emptyCurrent": "Keine aktuellen Fahrten.",
     "km": "km",
-    "min": "Min."
+    "min": "Min.",
+    "tabUpcoming": "Bevorstehend",
+    "tabHistory": "Verlauf",
+    "tabCancelled": "Storniert",
+    "emptyUpcoming": "Keine bevorstehenden Fahrten.",
+    "emptyHistory": "Keine abgeschlossenen Fahrten.",
+    "emptyCancelled": "Sie haben keine stornierten Fahrten.",
+    "seats": "{count} Plätze",
+    "downloadConfirmation": "Bestätigung herunterladen",
+    "bookSimilar": "Ähnliche Fahrt buchen"
   },
   "BookingStatus": {
     "NOWA": "Neu (wartet auf Bestätigung)",
@@ -69,7 +78,13 @@
     "payRemainder": "Restbetrag zahlen {amount} zł",
     "orPayFull": "oder jetzt komplett bezahlen",
     "remainingAmount": "Restbetrag: {amount} zł",
-    "fullyPaid": "Fahrt vollständig bezahlt."
+    "fullyPaid": "Fahrt vollständig bezahlt.",
+    "urgencyCountdown": "Zahlen Sie die Anzahlung bis {time} heute — sonst wird die Buchung in {countdown} storniert",
+    "cancel": "Buchung stornieren",
+    "cancelConfirm": "Diese Fahrt stornieren? Das kann nicht rückgängig gemacht werden.",
+    "cancelling": "Wird storniert…",
+    "cancelError": "Buchung konnte nicht storniert werden. Bitte erneut versuchen.",
+    "securedByStripe": "Zahlung gesichert durch Stripe"
   },
   "Nav": {
     "airportRoutes": "Flughafentransfers",

@@ -192,6 +192,8 @@ export type Booking = {
   coupon_code: string | null;
   driver_name: string | null;
   driver_vehicle: string | null;
+  driver_vehicle_plate: string | null;
+  driver_vehicle_seats: number | null;
   created_at: string;
   confirmed_at: string | null;
   payment_deadline: string | null;
@@ -201,6 +203,8 @@ export type Booking = {
   remaining_amount: string | null;
   booked_vehicle_id: number | null;
   booked_vehicle_name: string | null;
+  booked_vehicle_plate: string | null;
+  booked_vehicle_seats: number | null;
 };
 
 /** Distance/duration/route-line preview for the booking form's map — reuses
