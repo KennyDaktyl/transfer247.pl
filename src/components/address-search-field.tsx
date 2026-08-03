@@ -1,0 +1,101 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+
+import { searchAddress, type AddressSuggestion } from "@/lib/geocode";
+
+export function AddressSearchField({
+  label,
+  value,
+  onTextChange,
+  onSelect,
+  onClear,
+  onFocus,
+  placeholder,
+}: {
+  label: string;
+  value: string;
+  onTextChange: (text: string) => void;
+  onSelect: (suggestion: AddressSuggestion) => void;
+  onClear?: () => void;
+  onFocus?: () => void;
+  placeholder?: string;
+}) {
+  const [suggestions, setSuggestions] = useState<AddressSuggestion[]>([]);
+  const [open, setOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const timer = setTimeout(async () => {
+      const results = await searchAddress(value);
+      setSuggestions(results);
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [value, open]);
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  return (
+    <div ref={containerRef} className="relative flex flex-col gap-1.5">
+      <label className="text-[11.5px] font-semibold tracking-[0.08em] text-muted uppercase">{label}</label>
+      <div className="relative">
+        <input
+          type="text"
+          value={value}
+          placeholder={placeholder}
+          onFocus={() => {
+            setOpen(true);
+            onFocus?.();
+          }}
+          onChange={(e) => {
+            onTextChange(e.target.value);
+            setOpen(true);
+          }}
+          className="border-border bg-bg text-text focus:border-primary w-full rounded-lg border px-3 py-[11px] pr-9 text-[14.5px] outline-none"
+        />
+        {value && (
+          <button
+            type="button"
+            aria-label="Wyczyść"
+            onClick={() => {
+              onTextChange("");
+              onClear?.();
+              setSuggestions([]);
+              setOpen(false);
+            }}
+            className="absolute top-1/2 right-2.5 -translate-y-1/2 text-muted transition-colors hover:text-text"
+          >
+            ✕
+          </button>
+        )}
+      </div>
+      {open && suggestions.length > 0 && (
+        <ul className="border-border bg-surface absolute top-full z-20 mt-1 w-full overflow-hidden rounded-lg border shadow-lg">
+          {suggestions.map((s) => (
+            <li key={`${s.lat},${s.lng}`}>
+              <button
+                type="button"
+                onClick={() => {
+                  onSelect(s);
+                  setOpen(false);
+                }}
+                className="hover:bg-bg block w-full px-3 py-2 text-left text-[13px] text-text"
+              >
+                {s.label}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}

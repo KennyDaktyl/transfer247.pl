@@ -25,6 +25,7 @@ export type VehiclePrice = {
   vehicle_id: number;
   vehicle_name: string;
   vehicle_seats: number;
+  vehicle_cover_image: string | null;
   price: string;
   price_eur: string | null;
 };
@@ -195,6 +196,8 @@ export type Booking = {
   payment_deadline: string | null;
   deposit_amount: string | null;
   paid_at: string | null;
+  booked_vehicle_id: number | null;
+  booked_vehicle_name: string | null;
 };
 
 export type DriverLiveStatus = {

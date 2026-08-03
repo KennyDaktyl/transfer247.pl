@@ -67,6 +67,11 @@ export default async function PanelPage({ params }: { params: Promise<{ locale: 
                       {t("trackDriver")}
                     </Link>
                   )}
+                  {booking.booked_vehicle_id && (
+                    <Link href={`/flota#vehicle-${booking.booked_vehicle_id}`} className="text-primary underline">
+                      {t("seeVehicle", { name: booking.booked_vehicle_name ?? "" })}
+                    </Link>
+                  )}
                 </div>
 
                 {booking.status === "NOWA" && (

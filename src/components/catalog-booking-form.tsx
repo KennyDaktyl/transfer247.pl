@@ -1,16 +1,31 @@
 "use client";
 
 import { useLocale, useTranslations } from "next-intl";
-import { useState } from "react";
+import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
 
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
 import { formatPrice } from "@/lib/format";
+import { reverseGeocode, type AddressSuggestion } from "@/lib/geocode";
+import { absoluteImageUrl } from "@/lib/images";
 import type { VehiclePrice } from "@/lib/types";
 
+import { AddressSearchField } from "./address-search-field";
 import { PhoneVerifyStep } from "./phone-verify-step";
 
-const MAX_PASSENGERS = 7;
+const BookingMap = dynamic(() => import("./booking-map").then((m) => m.BookingMap), {
+  ssr: false,
+  loading: () => <div className="bg-bg h-[240px] w-full animate-pulse rounded-lg md:h-[320px]" />,
+});
+
+type LatLng = { lat: number; lng: number };
+
+// Geocoders (Nominatim) and the browser's Geolocation API can return more
+// decimal places than the backend's DecimalField(decimal_places=6) accepts.
+function roundCoord(n: number): number {
+  return Math.round(n * 1e6) / 1e6;
+}
 
 export function CatalogBookingForm({
   kind,
@@ -25,16 +40,68 @@ export function CatalogBookingForm({
   const locale = useLocale() as AppLocale;
 
   const [vehicleId, setVehicleId] = useState<number | null>(vehiclePrices[0]?.vehicle_id ?? null);
+  const selectedVehicle = vehiclePrices.find((vp) => vp.vehicle_id === vehicleId) ?? null;
+  const maxPassengers = selectedVehicle?.vehicle_seats ?? 1;
+
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [passengers, setPassengers] = useState(1);
-  const [pickupDetails, setPickupDetails] = useState("");
+  const [pickup, setPickup] = useState<LatLng | null>(null);
+  const [pickupText, setPickupText] = useState("");
+  const [dropoff, setDropoff] = useState<LatLng | null>(null);
+  const [dropoffText, setDropoffText] = useState("");
+  const [activeField, setActiveField] = useState<"pickup" | "dropoff">("pickup");
+  const [locating, setLocating] = useState(false);
   const [customerName, setCustomerName] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
   const [phone, setPhone] = useState("+48");
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error" | "unauthenticated">("idle");
 
-  const canSubmit = vehicleId != null && date && time && pickupDetails && customerName;
+  // A vehicle switch can shrink the seat cap below whatever the customer
+  // already picked — never silently submit more passengers than fit.
+  useEffect(() => {
+    setPassengers((prev) => Math.min(prev, maxPassengers));
+  }, [maxPassengers]);
+
+  async function handleUseMyLocation() {
+    if (!navigator.geolocation) return;
+    setLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        const coords = { lat: roundCoord(pos.coords.latitude), lng: roundCoord(pos.coords.longitude) };
+        setPickup(coords);
+        setActiveField("pickup");
+        const address = await reverseGeocode(coords.lat, coords.lng);
+        if (address) setPickupText(address);
+        setLocating(false);
+      },
+      () => setLocating(false),
+      { enableHighAccuracy: true, timeout: 10000 },
+    );
+  }
+
+  function handleSelectSuggestion(field: "pickup" | "dropoff", s: AddressSuggestion) {
+    const coords = { lat: roundCoord(s.lat), lng: roundCoord(s.lng) };
+    if (field === "pickup") {
+      setPickup(coords);
+      setPickupText(s.label);
+    } else {
+      setDropoff(coords);
+      setDropoffText(s.label);
+    }
+  }
+
+  async function handleMapChange(field: "pickup" | "dropoff", pos: LatLng) {
+    if (field === "pickup") setPickup(pos);
+    else setDropoff(pos);
+    const address = await reverseGeocode(pos.lat, pos.lng);
+    if (address) {
+      if (field === "pickup") setPickupText(address);
+      else setDropoffText(address);
+    }
+  }
+
+  const canSubmit = vehicleId != null && date && time && pickupText && dropoffText && customerName;
 
   async function handleSubmit() {
     if (!canSubmit) return;
@@ -49,7 +116,12 @@ export function CatalogBookingForm({
           vehicle_id: vehicleId,
           scheduled_at: scheduledAt,
           passenger_count: passengers,
-          pickup_details: pickupDetails,
+          pickup_details: pickupText,
+          pickup_lat: pickup?.lat,
+          pickup_lng: pickup?.lng,
+          dropoff_details: dropoffText,
+          dropoff_lat: dropoff?.lat,
+          dropoff_lng: dropoff?.lng,
           customer_name: customerName,
           customer_email: customerEmail || undefined,
         }),
@@ -79,22 +151,46 @@ export function CatalogBookingForm({
     <div className="border-border bg-surface mt-6 rounded-[16px] border p-6">
       <h2 className="font-heading text-[19px] font-semibold text-text">{t("title")}</h2>
 
-      <div className="mt-4 flex flex-col gap-3">
+      <div className="mt-4 flex flex-col gap-4">
         <div className="flex flex-col gap-1.5">
           <label className="text-[11.5px] font-semibold tracking-[0.08em] text-muted uppercase">
             {t("vehicleLabel")}
           </label>
-          <select
-            value={vehicleId ?? ""}
-            onChange={(e) => setVehicleId(Number(e.target.value))}
-            className="border-border bg-bg text-text focus:border-primary rounded-lg border px-3 py-[11px] text-[14.5px] outline-none"
-          >
-            {vehiclePrices.map((vp) => (
-              <option key={vp.vehicle_id} value={vp.vehicle_id}>
-                {vp.vehicle_name} · {vp.vehicle_seats} os. · {formatPrice(vp.price, vp.price_eur, locale)}
-              </option>
-            ))}
-          </select>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {vehiclePrices.map((vp) => {
+              const selected = vp.vehicle_id === vehicleId;
+              return (
+                <button
+                  key={vp.vehicle_id}
+                  type="button"
+                  onClick={() => setVehicleId(vp.vehicle_id)}
+                  className={`overflow-hidden rounded-[12px] border text-left transition-colors ${
+                    selected ? "border-primary" : "border-border hover:border-text/30"
+                  }`}
+                >
+                  {vp.vehicle_cover_image ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={absoluteImageUrl(vp.vehicle_cover_image)}
+                      alt={vp.vehicle_name}
+                      className="h-28 w-full object-cover"
+                    />
+                  ) : (
+                    <div className="bg-bg flex h-28 w-full items-center justify-center text-[12px] text-muted">
+                      {vp.vehicle_name}
+                    </div>
+                  )}
+                  <div className="p-3">
+                    <div className="text-[14px] font-semibold text-text">{vp.vehicle_name}</div>
+                    <div className="mt-0.5 flex items-center justify-between text-[13px]">
+                      <span className="text-muted">{vp.vehicle_seats} os.</span>
+                      <span className="font-semibold text-text">{formatPrice(vp.price, vp.price_eur, locale)}</span>
+                    </div>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         <div className="grid grid-cols-2 gap-3">
@@ -131,7 +227,7 @@ export function CatalogBookingForm({
             onChange={(e) => setPassengers(Number(e.target.value))}
             className="border-border bg-bg text-text focus:border-primary rounded-lg border px-3 py-[11px] text-[14.5px] outline-none"
           >
-            {Array.from({ length: MAX_PASSENGERS }, (_, i) => i + 1).map((n) => (
+            {Array.from({ length: maxPassengers }, (_, i) => i + 1).map((n) => (
               <option key={n} value={n}>
                 {n}
               </option>
@@ -139,17 +235,46 @@ export function CatalogBookingForm({
           </select>
         </div>
 
-        <div className="flex flex-col gap-1.5">
-          <label className="text-[11.5px] font-semibold tracking-[0.08em] text-muted uppercase">
-            {t("pickupDetailsLabel")}
-          </label>
-          <input
-            type="text"
-            value={pickupDetails}
-            onChange={(e) => setPickupDetails(e.target.value)}
-            placeholder={t("pickupDetailsPlaceholder")}
-            className="border-border bg-bg text-text focus:border-primary rounded-lg border px-3 py-[11px] text-[14.5px] outline-none"
-          />
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-[400px_1fr]">
+          <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-1.5">
+              <AddressSearchField
+                label={t("pickupLabel")}
+                placeholder={t("pickupPlaceholder")}
+                value={pickupText}
+                onTextChange={setPickupText}
+                onFocus={() => setActiveField("pickup")}
+                onSelect={(s) => handleSelectSuggestion("pickup", s)}
+                onClear={() => setPickup(null)}
+              />
+              <button
+                type="button"
+                onClick={handleUseMyLocation}
+                disabled={locating}
+                className="text-primary text-left text-[12.5px] font-semibold transition-opacity hover:opacity-80 disabled:opacity-50"
+              >
+                📍 {locating ? t("locating") : t("useMyLocation")}
+              </button>
+            </div>
+            <AddressSearchField
+              label={t("dropoffLabel")}
+              placeholder={t("dropoffPlaceholder")}
+              value={dropoffText}
+              onTextChange={setDropoffText}
+              onFocus={() => setActiveField("dropoff")}
+              onSelect={(s) => handleSelectSuggestion("dropoff", s)}
+              onClear={() => setDropoff(null)}
+            />
+          </div>
+          <div className="min-h-[240px]">
+            <BookingMap
+              pickup={pickup}
+              dropoff={dropoff}
+              activeField={activeField}
+              onPickupChange={(pos) => handleMapChange("pickup", pos)}
+              onDropoffChange={(pos) => handleMapChange("dropoff", pos)}
+            />
+          </div>
         </div>
 
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -188,9 +313,7 @@ export function CatalogBookingForm({
           {status === "submitting" ? t("submitting") : t("submit")}
         </button>
 
-        {status === "error" && (
-          <p className="text-center text-xs font-semibold text-red-600">{t("error")}</p>
-        )}
+        {status === "error" && <p className="text-center text-xs font-semibold text-red-600">{t("error")}</p>}
 
         {status === "unauthenticated" && (
           <div className="flex flex-col gap-2">

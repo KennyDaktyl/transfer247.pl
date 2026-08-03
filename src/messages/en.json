@@ -37,7 +37,8 @@
     "price": "Price",
     "trackDriver": "Track driver",
     "trackingTitle": "Your driver is on the way",
-    "vatIncluded": "incl. 23% VAT, net: {net} zł"
+    "vatIncluded": "incl. 23% VAT, net: {net} zł",
+    "seeVehicle": "See vehicle: {name}"
   },
   "BookingStatus": {
     "NOWA": "New (awaiting confirmation)",
@@ -161,6 +162,12 @@
     "verifyPhone": "Enter your phone number to finish the booking — you will get an SMS code.",
     "success": "Booking received — awaiting confirmation.",
     "successPanelLink": "View in customer panel",
-    "error": "Couldn't submit the booking. Please try again."
+    "error": "Couldn't submit the booking. Please try again.",
+    "pickupLabel": "Pickup",
+    "pickupPlaceholder": "e.g. Balice Airport, Terminal 1",
+    "dropoffLabel": "Destination",
+    "dropoffPlaceholder": "e.g. Sheraton Hotel, ul. Powiśle 7",
+    "useMyLocation": "Use my location",
+    "locating": "Locating…"
   }
 }
