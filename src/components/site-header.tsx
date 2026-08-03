@@ -7,8 +7,8 @@ import type { FixedRoute, Tour } from "@/lib/types";
 import type { AppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 
+import { CustomerMenu } from "./customer-menu";
 import { LocaleSwitcher } from "./locale-switcher";
-import { LogoutButton } from "./logout-button";
 import { MobileNav } from "./mobile-nav";
 import { NavDropdown } from "./nav-dropdown";
 
@@ -60,18 +60,18 @@ export async function SiteHeader() {
           <div className="hidden lg:block">
             <LocaleSwitcher />
           </div>
-          <Link
-            href={loginHref}
-            className="border-primary text-primary hover:bg-primary/10 hidden shrink-0 rounded-[999px] border px-3 py-2 text-[14px] font-medium whitespace-nowrap transition-colors lg:inline-block"
-          >
-            {loginLabel}
-          </Link>
-          {customer && (
-            <LogoutButton
-              label={t("logout")}
-              className="hidden shrink-0 text-[13.5px] font-medium whitespace-nowrap text-muted transition-colors hover:text-text lg:inline-block"
-            />
-          )}
+          <div className="hidden lg:block">
+            {customer ? (
+              <CustomerMenu myTripsLabel={t("myTrips")} logoutLabel={t("logout")} />
+            ) : (
+              <Link
+                href={loginHref}
+                className="border-primary text-primary hover:bg-primary/10 shrink-0 rounded-[999px] border px-3 py-2 text-[14px] font-medium whitespace-nowrap transition-colors"
+              >
+                {loginLabel}
+              </Link>
+            )}
+          </div>
           <a
             href="tel:+48506029980"
             aria-label={t("call")}
