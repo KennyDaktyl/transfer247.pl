@@ -36,7 +36,8 @@
     "date": "Date",
     "price": "Price",
     "trackDriver": "Track driver",
-    "trackingTitle": "Your driver is on the way"
+    "trackingTitle": "Your driver is on the way",
+    "vatIncluded": "incl. 23% VAT, net: {net} zł"
   },
   "BookingStatus": {
     "NOWA": "New (awaiting confirmation)",
@@ -53,7 +54,9 @@
     "payBy": "Pay by {time}, or the booking will be cancelled.",
     "paying": "Paying…",
     "paidConfirmed": "Deposit paid — your booking is confirmed.",
-    "error": "Couldn't pay the deposit. Please try again."
+    "error": "Couldn't pay the deposit. Please try again.",
+    "processing": "Verifying your payment… this can take up to 2 minutes for BLIK.",
+    "vatNote": "Gross amount, includes 23% VAT (net: {net} zł)."
   },
   "Nav": {
     "airportRoutes": "Airport Transfers",
@@ -134,6 +137,7 @@
     "company": "Company",
     "blog": "Blog",
     "contact": "Contact",
-    "rights": "All rights reserved."
+    "rights": "All rights reserved.",
+    "terms": "Terms of Service"
   }
 }

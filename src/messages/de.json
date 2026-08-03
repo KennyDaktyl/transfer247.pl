@@ -36,7 +36,8 @@
     "date": "Termin",
     "price": "Preis",
     "trackDriver": "Fahrer verfolgen",
-    "trackingTitle": "Ihr Fahrer ist unterwegs"
+    "trackingTitle": "Ihr Fahrer ist unterwegs",
+    "vatIncluded": "inkl. 23% MwSt., netto: {net} zł"
   },
   "BookingStatus": {
     "NOWA": "Neu (wartet auf Bestätigung)",
@@ -53,7 +54,9 @@
     "payBy": "Zahlen Sie bis {time}, sonst wird die Buchung storniert.",
     "paying": "Zahlung läuft…",
     "paidConfirmed": "Anzahlung bezahlt — Ihre Buchung ist gültig.",
-    "error": "Anzahlung konnte nicht bezahlt werden. Bitte erneut versuchen."
+    "error": "Anzahlung konnte nicht bezahlt werden. Bitte erneut versuchen.",
+    "processing": "Zahlung wird geprüft… bei BLIK kann dies bis zu 2 Minuten dauern.",
+    "vatNote": "Bruttobetrag, inkl. 23% MwSt. (netto: {net} zł)."
   },
   "Nav": {
     "airportRoutes": "Flughafentransfers",
@@ -134,6 +137,7 @@
     "company": "Unternehmen",
     "blog": "Blog",
     "contact": "Kontakt",
-    "rights": "Alle Rechte vorbehalten."
+    "rights": "Alle Rechte vorbehalten.",
+    "terms": "AGB"
   }
 }

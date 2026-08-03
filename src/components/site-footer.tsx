@@ -67,10 +67,16 @@ export async function SiteFooter() {
             <Link href="/kontakt" className="mt-2 block text-[14px] text-muted hover:text-text">
               {t("contact")}
             </Link>
+            <Link href="/regulamin" className="mt-2 block text-[14px] text-muted hover:text-text">
+              {t("terms")}
+            </Link>
           </div>
         </div>
-        <div className="border-border mt-10 border-t pt-6 text-[13px] text-muted">
-          © {new Date().getFullYear()} transfer247.pl — {t("rights")}
+        <div className="border-border mt-10 flex flex-col gap-1 border-t pt-6 text-[12.5px] text-muted">
+          <span>Michał Pielak MIKTEL · NIP 6782805234 · ul. Wspólna 2, 32-061 Rybna</span>
+          <span>
+            © {new Date().getFullYear()} transfer247.pl — {t("rights")}
+          </span>
         </div>
       </div>
     </footer>

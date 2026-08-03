@@ -36,7 +36,8 @@
     "date": "Termin",
     "price": "Cena",
     "trackDriver": "Śledź kierowcę",
-    "trackingTitle": "Twój kierowca w drodze"
+    "trackingTitle": "Twój kierowca w drodze",
+    "vatIncluded": "w tym VAT 23%, netto: {net} zł"
   },
   "BookingStatus": {
     "NOWA": "Nowa (oczekuje na potwierdzenie)",
@@ -53,7 +54,9 @@
     "payBy": "Zapłać do {time}, inaczej rezerwacja zostanie anulowana.",
     "paying": "Płacę…",
     "paidConfirmed": "Zaliczka opłacona — kurs jest ważny.",
-    "error": "Nie udało się zapłacić zaliczki. Spróbuj ponownie."
+    "error": "Nie udało się zapłacić zaliczki. Spróbuj ponownie.",
+    "processing": "Weryfikujemy płatność… może to potrwać do 2 minut przy BLIK-u.",
+    "vatNote": "Kwota brutto, zawiera VAT 23% (netto: {net} zł)."
   },
   "Nav": {
     "airportRoutes": "Transfery lotniskowe",
@@ -134,6 +137,7 @@
     "company": "Firma",
     "blog": "Blog",
     "contact": "Kontakt",
-    "rights": "Wszystkie prawa zastrzeżone."
+    "rights": "Wszystkie prawa zastrzeżone.",
+    "terms": "Regulamin"
   }
 }
