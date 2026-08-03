@@ -4,7 +4,7 @@ import "leaflet/dist/leaflet.css";
 
 import L from "leaflet";
 import { useEffect, useMemo } from "react";
-import { MapContainer, Marker, TileLayer, useMap, useMapEvents } from "react-leaflet";
+import { MapContainer, Marker, Polyline, TileLayer, useMap, useMapEvents } from "react-leaflet";
 
 import { fixLeafletDefaultIcon } from "@/lib/leaflet-icon-fix";
 
@@ -75,16 +75,23 @@ export function BookingMap({
   pickup,
   dropoff,
   activeField,
+  routeGeometry,
   onPickupChange,
   onDropoffChange,
 }: {
   pickup: LatLng | null;
   dropoff: LatLng | null;
   activeField: "pickup" | "dropoff";
+  routeGeometry?: [number, number][] | null;
   onPickupChange: (pos: LatLng) => void;
   onDropoffChange: (pos: LatLng) => void;
 }) {
   const points = useMemo(() => [pickup, dropoff].filter((p): p is LatLng => p !== null), [pickup, dropoff]);
+  const routeLine = useMemo(
+    () => (routeGeometry && routeGeometry.length > 1 ? routeGeometry.map(([lat, lng]) => ({ lat, lng })) : null),
+    [routeGeometry],
+  );
+  const fitPoints = routeLine ?? points;
 
   function handlePick(pos: LatLng) {
     if (activeField === "pickup") onPickupChange(pos);
@@ -105,7 +112,10 @@ export function BookingMap({
         />
         <ClickToPlace onPick={handlePick} />
         <InvalidateSizeOnResize />
-        <FitBounds points={points} />
+        <FitBounds points={fitPoints} />
+        {routeLine && (
+          <Polyline positions={routeLine} pathOptions={{ color: "#c2410c", weight: 4, opacity: 0.85 }} />
+        )}
         {pickup && (
           <Marker
             position={pickup}

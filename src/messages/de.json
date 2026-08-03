@@ -38,7 +38,10 @@
     "trackDriver": "Fahrer verfolgen",
     "trackingTitle": "Ihr Fahrer ist unterwegs",
     "vatIncluded": "inkl. 23% MwSt., netto: {net} zł",
-    "seeVehicle": "Fahrzeug ansehen: {name}"
+    "seeVehicle": "Fahrzeug ansehen: {name}",
+    "showArchive": "Archivierte Fahrten anzeigen ({count})",
+    "hideArchive": "Nur aktuelle Fahrten anzeigen",
+    "emptyCurrent": "Keine aktuellen Fahrten."
   },
   "BookingStatus": {
     "NOWA": "Neu (wartet auf Bestätigung)",
@@ -59,7 +62,12 @@
     "processing": "Zahlung wird geprüft… bei BLIK kann dies bis zu 2 Minuten dauern.",
     "vatNote": "Bruttobetrag, inkl. 23% MwSt. (netto: {net} zł).",
     "securePayments": "Sichere Zahlungen",
-    "paymentMethods": "Powered by Stripe · Karte und BLIK"
+    "paymentMethods": "Powered by Stripe · Karte und BLIK",
+    "payFull": "Voll bezahlen {amount} zł",
+    "payRemainder": "Restbetrag zahlen {amount} zł",
+    "orPayFull": "oder jetzt komplett bezahlen",
+    "remainingAmount": "Restbetrag: {amount} zł",
+    "fullyPaid": "Fahrt vollständig bezahlt."
   },
   "Nav": {
     "airportRoutes": "Flughafentransfers",
@@ -168,6 +176,8 @@
     "dropoffLabel": "Ziel",
     "dropoffPlaceholder": "z.B. Hotel Sheraton, ul. Powiśle 7",
     "useMyLocation": "Meinen Standort verwenden",
-    "locating": "Standort wird ermittelt…"
+    "locating": "Standort wird ermittelt…",
+    "km": "km",
+    "min": "Min."
   }
 }

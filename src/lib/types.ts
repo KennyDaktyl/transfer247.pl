@@ -196,8 +196,21 @@ export type Booking = {
   payment_deadline: string | null;
   deposit_amount: string | null;
   paid_at: string | null;
+  remainder_paid_at: string | null;
+  remaining_amount: string | null;
   booked_vehicle_id: number | null;
   booked_vehicle_name: string | null;
+};
+
+/** Distance/duration/route-line preview for the booking form's map — reuses
+ * the shared backend's /api/route-estimate/ endpoint (built for
+ * dowieziemycie.pl's map-based flow); the catalog flow only needs the
+ * distance/duration/geometry fields, not the tier-based price it also
+ * returns. */
+export type RouteEstimate = {
+  distance_km: number;
+  duration_min: number;
+  geometry: [number, number][];
 };
 
 export type DriverLiveStatus = {

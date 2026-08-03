@@ -6,10 +6,11 @@ import { useEffect, useState } from "react";
 
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
+import { publicApiBaseUrl, withSiteHeader } from "@/lib/api";
 import { formatPrice } from "@/lib/format";
 import { reverseGeocode, type AddressSuggestion } from "@/lib/geocode";
 import { absoluteImageUrl } from "@/lib/images";
-import type { VehiclePrice } from "@/lib/types";
+import type { RouteEstimate, VehiclePrice } from "@/lib/types";
 
 import { AddressSearchField } from "./address-search-field";
 import { PhoneVerifyStep } from "./phone-verify-step";
@@ -56,12 +57,47 @@ export function CatalogBookingForm({
   const [customerEmail, setCustomerEmail] = useState("");
   const [phone, setPhone] = useState("+48");
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error" | "unauthenticated">("idle");
+  const [estimate, setEstimate] = useState<RouteEstimate | null>(null);
 
   // A vehicle switch can shrink the seat cap below whatever the customer
   // already picked — never silently submit more passengers than fit.
   useEffect(() => {
     setPassengers((prev) => Math.min(prev, maxPassengers));
   }, [maxPassengers]);
+
+  // Distance/duration/route-line preview — also doubles as the driver's
+  // busy-window estimate the backend uses to block double-booking, so the
+  // operator sees the same figure the schedule actually enforces.
+  useEffect(() => {
+    if (!pickup || !dropoff || !date || !time) {
+      setEstimate(null);
+      return;
+    }
+    const scheduledAt = new Date(`${date}T${time}:00`).toISOString();
+    const controller = new AbortController();
+    const timer = setTimeout(async () => {
+      try {
+        const params = new URLSearchParams({
+          pickup_lat: String(pickup.lat),
+          pickup_lng: String(pickup.lng),
+          dropoff_lat: String(dropoff.lat),
+          dropoff_lng: String(dropoff.lng),
+          scheduled_at: scheduledAt,
+        });
+        const res = await fetch(`${publicApiBaseUrl()}/api/route-estimate/?${params}`, {
+          signal: controller.signal,
+          headers: withSiteHeader(),
+        });
+        if (res.ok) setEstimate(await res.json());
+      } catch {
+        // ignore — stale/aborted request or transient network hiccup
+      }
+    }, 500);
+    return () => {
+      clearTimeout(timer);
+      controller.abort();
+    };
+  }, [pickup, dropoff, date, time]);
 
   async function handleUseMyLocation() {
     if (!navigator.geolocation) return;
@@ -271,11 +307,24 @@ export function CatalogBookingForm({
               pickup={pickup}
               dropoff={dropoff}
               activeField={activeField}
+              routeGeometry={estimate?.geometry}
               onPickupChange={(pos) => handleMapChange("pickup", pos)}
               onDropoffChange={(pos) => handleMapChange("dropoff", pos)}
             />
           </div>
         </div>
+
+        {pickup && dropoff && estimate && (
+          <div className="my-0.5 flex items-center gap-2">
+            <span className="h-[7px] w-[7px] rounded-full bg-muted" />
+            <span className="h-px flex-1 bg-[repeating-linear-gradient(90deg,var(--color-muted)_0_4px,transparent_4px_8px)] opacity-50" />
+            <span className="font-label text-xs tracking-[0.05em] text-muted whitespace-nowrap">
+              {estimate.distance_km} {t("km")} · {Math.round(estimate.duration_min)} {t("min")}
+            </span>
+            <span className="h-px flex-1 bg-[repeating-linear-gradient(90deg,var(--color-muted)_0_4px,transparent_4px_8px)] opacity-50" />
+            <span className="bg-primary h-[7px] w-[7px] rounded-full" />
+          </div>
+        )}
 
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <div className="flex flex-col gap-1.5">
