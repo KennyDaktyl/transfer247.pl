@@ -41,7 +41,9 @@
     "seeVehicle": "See vehicle: {name}",
     "showArchive": "Show archived rides ({count})",
     "hideArchive": "Show current rides only",
-    "emptyCurrent": "No current rides."
+    "emptyCurrent": "No current rides.",
+    "km": "km",
+    "min": "min"
   },
   "BookingStatus": {
     "NOWA": "New (awaiting confirmation)",
@@ -83,6 +85,17 @@
     "bookNow": "Book now",
     "call": "Call",
     "whatsapp": "Message on WhatsApp"
+  },
+  "Breadcrumbs": {
+    "home": "Home",
+    "transfers": "Transfers",
+    "tours": "Tours",
+    "blog": "Blog",
+    "fleet": "Fleet",
+    "contact": "Contact",
+    "bikeTransport": "Bike transport",
+    "myTrips": "My rides",
+    "tracking": "Ride tracking"
   },
   "NotFound": {
     "title": "Page not found",

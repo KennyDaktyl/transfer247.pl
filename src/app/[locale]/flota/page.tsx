@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getLocale, getTranslations, setRequestLocale } from "next-intl/server";
 
 import type { AppLocale } from "@/i18n/routing";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { PhotoGallery } from "@/components/photo-gallery";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -44,8 +45,9 @@ export default async function FleetPage({ params }: { params: Promise<{ locale: 
 
   // The real operational fleet (apps.fleet.Vehicle, shared with driver
   // assignment) is the only source of truth here — no separate showcase model.
-  const [t, appLocale, vehicles] = await Promise.all([
+  const [t, tCrumbs, appLocale, vehicles] = await Promise.all([
     getTranslations("Fleet"),
+    getTranslations("Breadcrumbs"),
     getLocale() as Promise<AppLocale>,
     apiFetch<Vehicle[]>("/api/fleet/vehicles/", { next: { revalidate: 60 } }),
   ]);
@@ -55,7 +57,8 @@ export default async function FleetPage({ params }: { params: Promise<{ locale: 
       <SiteHeader />
       <main>
         <div className="mx-auto max-w-[1200px] px-4 py-16 sm:px-6 sm:py-20">
-          <h1 className="font-heading text-[32px] font-semibold text-text sm:text-[42px]">{t("heading")}</h1>
+          <Breadcrumbs items={[{ label: tCrumbs("home"), href: "/" }, { label: tCrumbs("fleet") }]} />
+          <h1 className="font-heading mt-3 text-[32px] font-semibold text-text sm:text-[42px]">{t("heading")}</h1>
           <p className="mt-3 max-w-[560px] text-[16px] text-muted">{t("lead")}</p>
 
           <div className="mt-10 grid gap-8 sm:grid-cols-2">

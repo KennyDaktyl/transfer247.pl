@@ -41,7 +41,9 @@
     "seeVehicle": "Fahrzeug ansehen: {name}",
     "showArchive": "Archivierte Fahrten anzeigen ({count})",
     "hideArchive": "Nur aktuelle Fahrten anzeigen",
-    "emptyCurrent": "Keine aktuellen Fahrten."
+    "emptyCurrent": "Keine aktuellen Fahrten.",
+    "km": "km",
+    "min": "Min."
   },
   "BookingStatus": {
     "NOWA": "Neu (wartet auf Bestätigung)",
@@ -83,6 +85,17 @@
     "bookNow": "Jetzt buchen",
     "call": "Anrufen",
     "whatsapp": "Auf WhatsApp schreiben"
+  },
+  "Breadcrumbs": {
+    "home": "Startseite",
+    "transfers": "Transfers",
+    "tours": "Ausflüge",
+    "blog": "Blog",
+    "fleet": "Flotte",
+    "contact": "Kontakt",
+    "bikeTransport": "Fahrradtransport",
+    "myTrips": "Meine Fahrten",
+    "tracking": "Fahrtverfolgung"
   },
   "NotFound": {
     "title": "Seite nicht gefunden",

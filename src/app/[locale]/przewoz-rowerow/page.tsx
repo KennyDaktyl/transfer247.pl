@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import type { AppLocale } from "@/i18n/routing";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { MarkdownContent } from "@/components/markdown-content";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -38,14 +39,15 @@ export default async function BikeTransportPage({ params }: { params: Promise<{ 
   const { locale } = await params;
   setRequestLocale(locale);
   const appLocale = locale as AppLocale;
-  const page = await getPage();
+  const [tCrumbs, page] = await Promise.all([getTranslations("Breadcrumbs"), getPage()]);
 
   return (
     <>
       <SiteHeader />
       <main>
         <div className="mx-auto max-w-[1200px] px-4 py-16 sm:px-6 sm:py-20">
-          <h1 className="font-heading text-[32px] font-semibold text-text sm:text-[42px]">
+          <Breadcrumbs items={[{ label: tCrumbs("home"), href: "/" }, { label: tCrumbs("bikeTransport") }]} />
+          <h1 className="font-heading mt-3 text-[32px] font-semibold text-text sm:text-[42px]">
             {page ? localize(page, "title", appLocale) : "Przewóz rowerów"}
           </h1>
           {page ? (

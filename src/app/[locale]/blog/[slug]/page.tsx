@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { MarkdownContent } from "@/components/markdown-content";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -57,8 +58,9 @@ export default async function BlogPostPage({
   const { locale, slug } = await params;
   setRequestLocale(locale);
 
-  const [t, appLocale, post] = await Promise.all([
+  const [t, tCrumbs, appLocale, post] = await Promise.all([
     getTranslations("Blog"),
+    getTranslations("Breadcrumbs"),
     getLocale() as Promise<AppLocale>,
     getPost(slug),
   ]);
@@ -74,7 +76,15 @@ export default async function BlogPostPage({
       <SiteHeader />
       <main>
         <div className="mx-auto max-w-[1200px] px-4 py-14 sm:px-6 sm:py-20">
-          <Link href="/blog" className="text-primary text-[13px] font-medium">
+          <Breadcrumbs
+            items={[
+              { label: tCrumbs("home"), href: "/" },
+              { label: tCrumbs("blog"), href: "/blog" },
+              { label: title },
+            ]}
+          />
+
+          <Link href="/blog" className="text-primary mt-3 inline-block text-[13px] font-medium">
             ← {t("backToIndex")}
           </Link>
 

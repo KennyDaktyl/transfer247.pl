@@ -41,7 +41,9 @@
     "seeVehicle": "Zobacz pojazd: {name}",
     "showArchive": "Pokaż archiwalne kursy ({count})",
     "hideArchive": "Pokaż tylko aktualne kursy",
-    "emptyCurrent": "Brak aktualnych kursów."
+    "emptyCurrent": "Brak aktualnych kursów.",
+    "km": "km",
+    "min": "min"
   },
   "BookingStatus": {
     "NOWA": "Nowa (oczekuje na potwierdzenie)",
@@ -83,6 +85,17 @@
     "bookNow": "Zarezerwuj",
     "call": "Zadzwoń",
     "whatsapp": "Napisz na WhatsApp"
+  },
+  "Breadcrumbs": {
+    "home": "Strona główna",
+    "transfers": "Transfery",
+    "tours": "Wycieczki",
+    "blog": "Blog",
+    "fleet": "Flota",
+    "contact": "Kontakt",
+    "bikeTransport": "Przewóz rowerów",
+    "myTrips": "Moje kursy",
+    "tracking": "Śledzenie kursu"
   },
   "NotFound": {
     "title": "Nie znaleziono strony",

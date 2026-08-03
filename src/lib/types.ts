@@ -186,6 +186,7 @@ export type Booking = {
   scheduled_at: string;
   status: BookingStatus;
   distance_km: string | null;
+  duration_minutes: number | null;
   is_reserved: boolean;
   price: string | null;
   coupon_code: string | null;

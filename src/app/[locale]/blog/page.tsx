@@ -3,6 +3,7 @@ import { getLocale, getTranslations, setRequestLocale } from "next-intl/server";
 
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { apiFetch } from "@/lib/api";
@@ -24,8 +25,9 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ loca
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const [t, appLocale, posts] = await Promise.all([
+  const [t, tCrumbs, appLocale, posts] = await Promise.all([
     getTranslations("Blog"),
+    getTranslations("Breadcrumbs"),
     getLocale() as Promise<AppLocale>,
     apiFetch<BlogPost[]>("/api/blog/", { next: { revalidate: 60 } }),
   ]);
@@ -35,7 +37,8 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ loca
       <SiteHeader />
       <main>
         <div className="mx-auto max-w-[1200px] px-4 py-16 sm:px-6 sm:py-20">
-          <h1 className="font-heading text-[32px] font-semibold text-text sm:text-[42px]">{t("heading")}</h1>
+          <Breadcrumbs items={[{ label: tCrumbs("home"), href: "/" }, { label: tCrumbs("blog") }]} />
+          <h1 className="font-heading mt-3 text-[32px] font-semibold text-text sm:text-[42px]">{t("heading")}</h1>
           <p className="mt-3 max-w-[560px] text-[16px] text-muted">{t("lead")}</p>
 
           <div className="mt-10 flex flex-col gap-5">
