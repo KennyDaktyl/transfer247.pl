@@ -15,7 +15,9 @@
     "statusEnRoute": "Unterwegs",
     "statusBusy": "Beschäftigt",
     "noActiveDriver": "Warten auf Fahrerposition…",
-    "vehicleUnknown": "Fahrer"
+    "vehicleUnknown": "Fahrer",
+    "you": "Du",
+    "etaLabel": "~{minutes} Min · {km} km"
   },
   "Auth": {
     "title": "Mit Telefonnummer anmelden",

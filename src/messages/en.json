@@ -15,7 +15,9 @@
     "statusEnRoute": "En route",
     "statusBusy": "Busy",
     "noActiveDriver": "Waiting for driver position…",
-    "vehicleUnknown": "Driver"
+    "vehicleUnknown": "Driver",
+    "you": "You",
+    "etaLabel": "~{minutes} min · {km} km"
   },
   "Auth": {
     "title": "Log in with your phone number",

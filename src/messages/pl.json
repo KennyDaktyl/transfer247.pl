@@ -15,7 +15,9 @@
     "statusEnRoute": "W drodze",
     "statusBusy": "Zajęty",
     "noActiveDriver": "Oczekiwanie na pozycję kierowcy…",
-    "vehicleUnknown": "Kierowca"
+    "vehicleUnknown": "Kierowca",
+    "you": "Ty",
+    "etaLabel": "~{minutes} min · {km} km"
   },
   "Auth": {
     "title": "Zaloguj się numerem telefonu",
