@@ -7,6 +7,7 @@ import { Breadcrumbs } from "@/components/breadcrumbs";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { apiFetch } from "@/lib/api";
+import { absoluteImageUrl } from "@/lib/images";
 import { localize } from "@/lib/localize";
 import { buildAlternates } from "@/lib/seo";
 import type { BlogPost } from "@/lib/types";
@@ -51,14 +52,24 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ loca
                 <Link
                   key={post.slug}
                   href={`/blog/${post.slug}`}
-                  className="border-border bg-surface block rounded-[16px] border p-6 transition-shadow hover:shadow-md"
+                  className="border-border bg-surface flex flex-col gap-5 overflow-hidden rounded-[16px] border transition-shadow hover:shadow-md sm:flex-row"
                 >
-                  <div className="flex items-center gap-3 text-[13px] text-muted">
-                    {tag ? <span className="text-primary font-medium">{tag}</span> : null}
-                    <time dateTime={post.published_at}>{post.published_at}</time>
+                  {post.cover_image ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={absoluteImageUrl(post.cover_image)}
+                      alt={title}
+                      className="h-48 w-full object-cover sm:h-auto sm:w-[280px] sm:shrink-0"
+                    />
+                  ) : null}
+                  <div className="flex flex-col gap-2 p-6 sm:py-6 sm:pl-0">
+                    <div className="flex items-center gap-3 text-[13px] text-muted">
+                      {tag ? <span className="text-primary font-medium">{tag}</span> : null}
+                      <time dateTime={post.published_at}>{post.published_at}</time>
+                    </div>
+                    <h2 className="font-heading text-[20px] font-semibold text-text">{title}</h2>
+                    {excerpt ? <p className="text-[14px] text-muted">{excerpt}</p> : null}
                   </div>
-                  <h2 className="font-heading mt-2 text-[20px] font-semibold text-text">{title}</h2>
-                  {excerpt ? <p className="mt-2 text-[14px] text-muted">{excerpt}</p> : null}
                 </Link>
               );
             })}

@@ -6,12 +6,22 @@ import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { MarkdownContent } from "@/components/markdown-content";
+import { PhotoGallery } from "@/components/photo-gallery";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { apiFetch } from "@/lib/api";
+import { absoluteImageUrl } from "@/lib/images";
 import { localize } from "@/lib/localize";
 import { buildAlternates } from "@/lib/seo";
 import type { BlogPost } from "@/lib/types";
+
+/** Accepts watch/short/embed URL shapes and returns a plain 11-char video
+ * ID, or null if the link doesn't look like YouTube at all — used both to
+ * build the embed src and to validate what an admin pasted into the CMS. */
+function youtubeVideoId(url: string): string | null {
+  const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{11})/);
+  return match ? match[1] : null;
+}
 
 async function getPosts(): Promise<BlogPost[]> {
   try {
@@ -70,6 +80,13 @@ export default async function BlogPostPage({
   const tag = localize(post, "tag", appLocale);
   const title = localize(post, "title", appLocale);
   const body = localize(post, "body", appLocale) || localize(post, "excerpt", appLocale);
+  const videoId = post.youtube_url ? youtubeVideoId(post.youtube_url) : null;
+  const galleryPhotos = post.photos.map((photo) => ({
+    src: absoluteImageUrl(photo.image),
+    thumbnailSrc: absoluteImageUrl(photo.thumbnail || photo.image),
+    alt: photo.caption || title,
+  }));
+  const sortedLinks = [...post.links].sort((a, b) => a.order - b.order);
 
   return (
     <>
@@ -96,8 +113,60 @@ export default async function BlogPostPage({
             {title}
           </h1>
 
-          <div className="mt-8">
-            <MarkdownContent markdown={body} />
+          {post.cover_image ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={absoluteImageUrl(post.cover_image)}
+              alt={title}
+              className="mt-8 h-[240px] w-full rounded-[16px] object-cover sm:h-[380px]"
+            />
+          ) : null}
+
+          <div className="mt-8 grid grid-cols-1 gap-10 lg:grid-cols-[1fr_280px]">
+            <div>
+              <MarkdownContent markdown={body} />
+
+              {videoId ? (
+                <div className="mt-10 aspect-video w-full overflow-hidden rounded-[16px] border border-border">
+                  <iframe
+                    src={`https://www.youtube.com/embed/${videoId}`}
+                    title={title}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="h-full w-full"
+                  />
+                </div>
+              ) : null}
+
+              {galleryPhotos.length > 0 ? (
+                <div className="mt-10">
+                  <h2 className="font-heading text-[20px] font-semibold text-text">{t("galleryHeading")}</h2>
+                  <PhotoGallery photos={galleryPhotos} className="mt-4" />
+                </div>
+              ) : null}
+            </div>
+
+            {sortedLinks.length > 0 ? (
+              <aside className="border-border bg-surface h-fit rounded-[16px] border p-5">
+                <h2 className="font-label text-xs font-semibold tracking-[0.1em] text-muted uppercase">
+                  {t("usefulLinksHeading")}
+                </h2>
+                <ul className="mt-3 flex flex-col gap-2.5">
+                  {sortedLinks.map((link) => (
+                    <li key={link.url}>
+                      <a
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary text-[13.5px] font-medium underline underline-offset-2"
+                      >
+                        {localize(link, "label", appLocale)}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </aside>
+            ) : null}
           </div>
         </div>
       </main>

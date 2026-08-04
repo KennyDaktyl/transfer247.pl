@@ -88,3 +88,33 @@ button:disabled {
   text-decoration: underline;
   text-underline-offset: 2px;
 }
+
+.prose-content table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14.5px;
+}
+
+.prose-content th,
+.prose-content td {
+  border: 1px solid var(--color-border);
+  padding: 10px 14px;
+  text-align: left;
+}
+
+.prose-content th {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.prose-content td {
+  color: var(--color-muted);
+}
+
+.prose-content blockquote {
+  border-left: 3px solid var(--color-primary);
+  padding-left: 1em;
+  color: var(--color-muted);
+  font-style: italic;
+}

@@ -135,6 +135,14 @@ export type Vehicle = {
   photos: VehiclePhoto[];
 };
 
+export type BlogPostLink = {
+  label_pl: string;
+  label_en: string;
+  label_de: string;
+  url: string;
+  order: number;
+};
+
 export type BlogPost = {
   slug: string;
   tag_pl: string;
@@ -150,6 +158,9 @@ export type BlogPost = {
   body_en: string;
   body_de: string;
   cover_image: string | null;
+  youtube_url: string;
+  photos: VehiclePhoto[];
+  links: BlogPostLink[];
   seo_title_pl: string;
   seo_title_en: string;
   seo_title_de: string;
