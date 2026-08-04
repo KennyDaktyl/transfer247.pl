@@ -173,15 +173,22 @@ export function BookingTracker({
   return (
     <div className="isolate overflow-hidden rounded-[14px] border border-border bg-surface">
       <div className="relative">
-        <div className="absolute top-3.5 left-3.5 z-[400] flex items-center gap-1.5 rounded-full border border-border bg-white/90 px-3 py-1.5 text-[12.5px] font-semibold backdrop-blur-sm">
-          <span className={`h-2 w-2 rounded-full ${connectionState === "open" ? "bg-secondary" : "bg-muted"}`} />
-          {driver ? t(STATUS_KEY[driver.status] as never) : t("noActiveDriver")}
-        </div>
-        {eta && (
-          <div className="absolute top-3.5 right-3.5 z-[400] rounded-full border border-border bg-white/90 px-3 py-1.5 text-[12.5px] font-semibold backdrop-blur-sm">
-            {t("etaLabel", { minutes: Math.round(eta.duration_min), distance: formatDistance(eta.distance_km) })}
+        {/* Top-right, not top-left — Leaflet's own zoom control sits at
+            top-left with z-index 1000, well above ours, and was silently
+            covering anything placed there. */}
+        <div className="absolute top-3.5 right-3.5 z-[1200] flex flex-col items-end gap-2">
+          <div className="flex items-center gap-1.5 rounded-full border border-border bg-white px-3 py-1.5 text-[12.5px] font-semibold text-text shadow-sm">
+            <span className={`h-2 w-2 rounded-full ${connectionState === "open" ? "bg-secondary" : "bg-muted"}`} />
+            {driver ? t(STATUS_KEY[driver.status] as never) : t("noActiveDriver")}
           </div>
-        )}
+          {driverPos && myPos && (
+            <div className="rounded-full border border-border bg-white px-3 py-1.5 text-[12.5px] font-semibold text-text shadow-sm">
+              {eta
+                ? t("etaLabel", { minutes: Math.round(eta.duration_min), distance: formatDistance(eta.distance_km) })
+                : t("etaCalculating")}
+            </div>
+          )}
+        </div>
 
         <LiveMapInner drivers={mapDrivers} />
 

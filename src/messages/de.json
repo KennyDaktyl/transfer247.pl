@@ -18,6 +18,7 @@
     "vehicleUnknown": "Fahrer",
     "you": "Du",
     "etaLabel": "~{minutes} Min · {distance}",
+    "etaCalculating": "Entfernung wird berechnet…",
     "geoDenied": "Aktiviere den Standort in deinem Browser, um deine Position und eine genaue Ankunftszeit zu sehen.",
     "geoUnsupported": "Dieser Browser unterstützt keine Standortermittlung.",
     "geoRetry": "Erneut versuchen"
