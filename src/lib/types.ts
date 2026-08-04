@@ -201,6 +201,7 @@ export type Booking = {
   duration_minutes: number | null;
   is_reserved: boolean;
   price: string | null;
+  price_eur: string | null;
   coupon_code: string | null;
   driver_name: string | null;
   driver_vehicle: string | null;

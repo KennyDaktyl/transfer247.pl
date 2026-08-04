@@ -7,9 +7,22 @@ import { useEffect, useState } from "react";
 import { BookingCancelButton } from "@/components/booking-cancel-button";
 import { DepositPaymentForm } from "@/components/deposit-payment-form";
 import { Link } from "@/i18n/navigation";
-import { formatDistance, netFromGross } from "@/lib/format";
+import type { AppLocale } from "@/i18n/routing";
+import { formatDistance, formatPrice, netFromGross } from "@/lib/format";
 import type { Booking, BookingStatus } from "@/lib/types";
 import { useDriverEta } from "@/lib/use-driver-eta";
+
+/** Scales a PLN amount into its EUR equivalent using this specific
+ * booking's own price/price_eur ratio (deposit_amount is a flat PLN
+ * setting, not tied to any one route, so it has no EUR figure of its own —
+ * see CreatePaymentIntentView on the backend for the same scaling). Null
+ * whenever this booking has no price_eur snapshot at all (any
+ * dowieziemycie.pl-style booking, or a custom quote). */
+function eurAmount(plnAmount: string | null | undefined, booking: Booking): string | null {
+  if (!plnAmount || !booking.price || !booking.price_eur) return null;
+  const ratio = Number(booking.price_eur) / Number(booking.price);
+  return (Number(plnAmount) * ratio).toFixed(2);
+}
 
 const BookingRoutePreview = dynamic(
   () => import("./booking-route-preview").then((m) => m.BookingRoutePreview),
@@ -214,6 +227,8 @@ function BookingCard({
   const showSecureNote = Boolean(showPaymentButtons || (PAID_GATE_STATUSES.includes(booking.status) && booking.remaining_amount));
   const isTrackable = TRACKABLE_STATUSES.includes(booking.status);
   const eta = useDriverEta(booking.id, isTrackable);
+  const isEur = locale !== "pl" && Boolean(booking.price_eur);
+  const remainingEur = eurAmount(booking.remaining_amount, booking);
 
   return (
     <div
@@ -302,16 +317,32 @@ function BookingCard({
         <div className="border-border bg-bg mb-3 rounded-[10px] border p-4">
           {booking.price && (
             <div className="mb-3">
-              <div className="font-heading text-text text-[20px] font-bold">{Number(booking.price).toFixed(0)} zł</div>
-              <div className="text-muted text-[11.5px]">
-                {t("vatIncluded", { net: netFromGross(booking.price).toFixed(2) })}
+              <div className="font-heading text-text text-[20px] font-bold">
+                {formatPrice(booking.price, booking.price_eur, locale as AppLocale)}
               </div>
+              {!isEur && (
+                <div className="text-muted text-[11.5px]">
+                  {t("vatIncluded", { net: netFromGross(booking.price).toFixed(2) })}
+                </div>
+              )}
             </div>
           )}
           <div className="flex flex-wrap gap-2">
-            <DepositPaymentForm bookingId={booking.id} amount={booking.deposit_amount!} kind="deposit" showVatNote={false} />
+            <DepositPaymentForm
+              bookingId={booking.id}
+              amount={booking.deposit_amount!}
+              amountEur={eurAmount(booking.deposit_amount, booking)}
+              kind="deposit"
+              showVatNote={false}
+            />
             {booking.price && booking.price !== booking.deposit_amount && (
-              <DepositPaymentForm bookingId={booking.id} amount={booking.price} kind="full" showVatNote={false} />
+              <DepositPaymentForm
+                bookingId={booking.id}
+                amount={booking.price}
+                amountEur={booking.price_eur}
+                kind="full"
+                showVatNote={false}
+              />
             )}
           </div>
         </div>
@@ -327,9 +358,18 @@ function BookingCard({
               {booking.remaining_amount && (
                 <div className="border-border bg-bg flex flex-col gap-2 rounded-[10px] border p-4">
                   <span className="text-muted text-[12px]">
-                    {tPayment("remainingAmount", { amount: Number(booking.remaining_amount).toFixed(0) })}
+                    {tPayment("remainingAmount", {
+                      amount: Number(isEur && remainingEur ? remainingEur : booking.remaining_amount).toFixed(0),
+                      currency: isEur && remainingEur ? "€" : "zł",
+                    })}
                   </span>
-                  <DepositPaymentForm bookingId={booking.id} amount={booking.remaining_amount} kind="remainder" showVatNote={false} />
+                  <DepositPaymentForm
+                    bookingId={booking.id}
+                    amount={booking.remaining_amount}
+                    amountEur={remainingEur}
+                    kind="remainder"
+                    showVatNote={false}
+                  />
                 </div>
               )}
             </>

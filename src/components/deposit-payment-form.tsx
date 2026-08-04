@@ -8,7 +8,7 @@ import {
   useStripe,
 } from "@stripe/react-stripe-js";
 import { loadStripe, type Stripe } from "@stripe/stripe-js";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import type { FormEvent } from "react";
 import { useRef, useState } from "react";
@@ -18,6 +18,7 @@ import { netFromGross } from "@/lib/format";
 
 type Phase = "idle" | "loading" | "form" | "processing";
 export type PaymentKind = "deposit" | "full" | "remainder";
+type Currency = "pln" | "eur";
 
 function Spinner({ className = "text-white" }: { className?: string }) {
   return (
@@ -34,22 +35,37 @@ const LABEL_KEYS: Record<PaymentKind, "payDeposit" | "payFull" | "payRemainder">
   remainder: "payRemainder",
 };
 
+const CURRENCY_SYMBOL: Record<Currency, string> = { pln: "zł", eur: "€" };
+
 export function DepositPaymentForm({
   bookingId,
   amount,
+  amountEur = null,
   kind = "deposit",
   showVatNote = true,
 }: {
   bookingId: number;
   amount: string;
+  /** EUR-equivalent amount, present only for transfer247.pl catalog
+   * bookings that had a real price_eur on their vehicle price row —
+   * without it, this booking simply can't be paid in EUR regardless of
+   * locale (see CreatePaymentIntentView on the backend). */
+  amountEur?: string | null;
   kind?: PaymentKind;
   showVatNote?: boolean;
 }) {
   const t = useTranslations("BookingPayment");
+  const locale = useLocale();
   const [phase, setPhase] = useState<Phase>("idle");
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const stripePromiseRef = useRef<Promise<Stripe | null> | null>(null);
+
+  // PL always pays in PLN, even on a booking that also has a price_eur
+  // snapshot — EUR only kicks in once the customer is actually looking at
+  // EUR prices (en/de), and only when this specific booking has one.
+  const currency: Currency = locale !== "pl" && amountEur ? "eur" : "pln";
+  const displayAmount = currency === "eur" ? amountEur! : amount;
 
   async function startPayment() {
     setPhase("loading");
@@ -58,7 +74,7 @@ export function DepositPaymentForm({
       const res = await fetch(`/api/bookings/${bookingId}/create-payment-intent`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ kind }),
+        body: JSON.stringify({ kind, currency }),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -90,7 +106,8 @@ export function DepositPaymentForm({
         <Elements stripe={stripePromiseRef.current} options={{ clientSecret }}>
           <PaymentElementForm
             bookingId={bookingId}
-            amount={amount}
+            amount={displayAmount}
+            currency={currency}
             kind={kind}
             onProcessing={() => setPhase("processing")}
             onError={(msg) => setError(msg)}
@@ -105,7 +122,10 @@ export function DepositPaymentForm({
 
   return (
     <div className="flex flex-col items-start gap-2">
-      <PaymentBadge label={t("securePayments")} sublabel={t("paymentMethods")} />
+      <PaymentBadge
+        label={t("securePayments")}
+        sublabel={currency === "eur" ? t("paymentMethodsCardOnly") : t("paymentMethods")}
+      />
       <button
         type="button"
         onClick={startPayment}
@@ -113,9 +133,16 @@ export function DepositPaymentForm({
         className="bg-primary hover:bg-primary-hover flex items-center gap-2 rounded-[9px] px-5 py-2.5 text-[14px] font-bold text-white transition-colors disabled:cursor-not-allowed disabled:opacity-60"
       >
         {phase === "loading" && <Spinner />}
-        {phase === "loading" ? t("paying") : t(LABEL_KEYS[kind], { amount: Number(amount).toFixed(0) })}
+        {phase === "loading"
+          ? t("paying")
+          : t(LABEL_KEYS[kind], { amount: Number(displayAmount).toFixed(0), currency: CURRENCY_SYMBOL[currency] })}
       </button>
-      {showVatNote && <span className="text-[12px] text-muted">{t("vatNote", { net: net.toFixed(2) })}</span>}
+      {/* The VAT breakdown is a PLN/Polish-VAT figure — not meaningful once
+          the actual charge is in EUR, so it's skipped there regardless of
+          showVatNote. */}
+      {showVatNote && currency === "pln" && (
+        <span className="text-[12px] text-muted">{t("vatNote", { net: net.toFixed(2) })}</span>
+      )}
       {error && <span className="text-[12px] text-red-600">{error}</span>}
     </div>
   );
@@ -124,12 +151,14 @@ export function DepositPaymentForm({
 function PaymentElementForm({
   bookingId,
   amount,
+  currency,
   kind,
   onProcessing,
   onError,
 }: {
   bookingId: number;
   amount: string;
+  currency: Currency;
   kind: PaymentKind;
   onProcessing: () => void;
   onError: (message: string) => void;
@@ -207,7 +236,9 @@ function PaymentElementForm({
         className="bg-primary hover:bg-primary-hover flex items-center gap-2 rounded-[9px] px-5 py-2.5 text-[14px] font-bold text-white transition-colors disabled:cursor-not-allowed disabled:opacity-60"
       >
         {submitting && <Spinner />}
-        {submitting ? t("paying") : t(LABEL_KEYS[kind], { amount: Number(amount).toFixed(0) })}
+        {submitting
+          ? t("paying")
+          : t(LABEL_KEYS[kind], { amount: Number(amount).toFixed(0), currency: CURRENCY_SYMBOL[currency] })}
       </button>
     </form>
   );
