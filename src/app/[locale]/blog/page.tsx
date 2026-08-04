@@ -102,7 +102,7 @@ export default async function BlogIndexPage({
                       className="h-48 w-full object-cover sm:h-auto sm:w-[280px] sm:shrink-0"
                     />
                   ) : null}
-                  <div className="flex flex-col gap-2 p-6 sm:py-6 sm:pl-0">
+                  <div className={`flex flex-col gap-2 p-6 ${post.cover_image ? "sm:py-6 sm:pl-0" : ""}`}>
                     <div className="flex items-center gap-3 text-[13px] text-muted">
                       {tag ? <span className="text-primary font-medium">{tag}</span> : null}
                       <time dateTime={post.published_at}>{post.published_at}</time>
