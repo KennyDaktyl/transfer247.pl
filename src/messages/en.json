@@ -173,7 +173,12 @@
     "readMore": "Read more",
     "backToIndex": "All articles",
     "galleryHeading": "Gallery",
-    "usefulLinksHeading": "Useful links"
+    "usefulLinksHeading": "Useful links",
+    "searchPlaceholder": "Search the blog…",
+    "searchSubmit": "Search",
+    "searchResultsCount": "Results for “{query}”: {count}",
+    "searchClear": "Clear",
+    "searchNoResults": "No posts match your search."
   },
   "About": {
     "heading": "About transfer247.pl",
@@ -181,6 +186,7 @@
   },
   "Footer": {
     "tagline": "Private airport transfers and tours in Małopolska.",
+    "serviceAreaHeading": "Service area",
     "routes": "Transfers",
     "tours": "Tours",
     "bikeTransport": "Bike Transport",

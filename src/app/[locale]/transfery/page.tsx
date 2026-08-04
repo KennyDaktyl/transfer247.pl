@@ -19,7 +19,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Routes" });
-  return { title: t("heading"), description: t("lead"), alternates: buildAlternates("/transfery") };
+  return { title: t("heading"), description: t("lead"), alternates: buildAlternates("/transfery", locale as AppLocale) };
 }
 
 function RouteGrid({

@@ -4,18 +4,24 @@ import { notFound } from "next/navigation";
 
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
+import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { CatalogBookingForm } from "@/components/catalog-booking-form";
+import { FaqJsonLd } from "@/components/faq-jsonld";
 import { MarkdownContent } from "@/components/markdown-content";
 import { PhotoGallery } from "@/components/photo-gallery";
+import { ServiceJsonLd } from "@/components/service-jsonld";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { apiFetch } from "@/lib/api";
+import { extractFaqPairs } from "@/lib/faq";
 import { formatPrice } from "@/lib/format";
 import { absoluteImageUrl } from "@/lib/images";
 import { localize } from "@/lib/localize";
 import { buildAlternates } from "@/lib/seo";
 import type { FixedRoute } from "@/lib/types";
+
+const SERVED_PLACES = ["Kraków", "Balice", "Wieliczka", "Skawina", "Niepołomice", "Zakopane", "Katowice"];
 
 async function getRoutes(): Promise<FixedRoute[]> {
   try {
@@ -54,7 +60,7 @@ export async function generateMetadata({
     localize(route, "name", appLocale);
   const description = localize(route, "seo_description", appLocale);
 
-  return { title, description, alternates: buildAlternates(`/transfery/${slug}`) };
+  return { title, description, alternates: buildAlternates(`/transfery/${slug}`, locale as AppLocale) };
 }
 
 export default async function RouteDetailPage({
@@ -78,28 +84,38 @@ export default async function RouteDetailPage({
 
   const h1 = localize(route, "h1", appLocale) || localize(route, "name", appLocale);
   const body = localize(route, "body", appLocale);
+  const description = localize(route, "seo_description", appLocale) || body.slice(0, 200);
   const otherRoutes = allRoutes.filter((r) => r.slug !== route.slug);
   const galleryPhotos = route.photos.map((photo) => ({
     src: absoluteImageUrl(photo.image),
     thumbnailSrc: absoluteImageUrl(photo.thumbnail || photo.image),
     alt: photo.caption || h1,
   }));
+  const faqs = extractFaqPairs(body);
+  const breadcrumbItems = [
+    { label: tCrumbs("home"), href: "/" },
+    {
+      label: route.category === "DWORZEC_PKP" ? tNav("stationRoutes") : tNav("airportRoutes"),
+      href: route.category === "DWORZEC_PKP" ? "/transfery#dworzec-pkp" : "/transfery#lotniskowe",
+    },
+    { label: h1 },
+  ];
 
   return (
     <>
+      <BreadcrumbJsonLd items={breadcrumbItems} locale={locale} />
+      <FaqJsonLd faqs={faqs} />
+      <ServiceJsonLd
+        name={h1}
+        description={description}
+        areaServed={SERVED_PLACES}
+        priceFrom={route.price_from ? Number(route.price_from) : undefined}
+        url={`/${locale}/transfery/${slug}`}
+      />
       <SiteHeader />
       <main>
         <div className="mx-auto max-w-[1200px] px-4 py-14 sm:px-6 sm:py-20">
-          <Breadcrumbs
-            items={[
-              { label: tCrumbs("home"), href: "/" },
-              {
-                label: route.category === "DWORZEC_PKP" ? tNav("stationRoutes") : tNav("airportRoutes"),
-                href: route.category === "DWORZEC_PKP" ? "/transfery#dworzec-pkp" : "/transfery#lotniskowe",
-              },
-              { label: h1 },
-            ]}
-          />
+          <Breadcrumbs items={breadcrumbItems} />
 
           <Link href="/transfery" className="text-primary mt-3 inline-block text-[13px] font-medium">
             ← {t("backToIndex")}

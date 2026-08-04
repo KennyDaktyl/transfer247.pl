@@ -4,18 +4,24 @@ import { notFound } from "next/navigation";
 
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
+import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { CatalogBookingForm } from "@/components/catalog-booking-form";
+import { FaqJsonLd } from "@/components/faq-jsonld";
 import { MarkdownContent } from "@/components/markdown-content";
 import { PhotoGallery } from "@/components/photo-gallery";
+import { ServiceJsonLd } from "@/components/service-jsonld";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { apiFetch } from "@/lib/api";
+import { extractFaqPairs } from "@/lib/faq";
 import { formatPrice } from "@/lib/format";
 import { absoluteImageUrl } from "@/lib/images";
 import { localize } from "@/lib/localize";
 import { buildAlternates } from "@/lib/seo";
 import type { Tour } from "@/lib/types";
+
+const SERVED_PLACES = ["Kraków", "Balice", "Wieliczka", "Oświęcim"];
 
 async function getTours(): Promise<Tour[]> {
   try {
@@ -54,7 +60,7 @@ export async function generateMetadata({
     localize(tour, "title", appLocale);
   const description = localize(tour, "seo_description", appLocale) || localize(tour, "summary", appLocale);
 
-  return { title, description, alternates: buildAlternates(`/wycieczki/${slug}`) };
+  return { title, description, alternates: buildAlternates(`/wycieczki/${slug}`, locale as AppLocale) };
 }
 
 export default async function TourDetailPage({
@@ -77,25 +83,36 @@ export default async function TourDetailPage({
 
   const h1 = localize(tour, "h1", appLocale) || localize(tour, "title", appLocale);
   const body = localize(tour, "body", appLocale);
+  const description = localize(tour, "seo_description", appLocale) || localize(tour, "summary", appLocale);
   const otherTours = allTours.filter((other) => other.slug !== tour.slug);
   const galleryPhotos = tour.photos.map((photo) => ({
     src: absoluteImageUrl(photo.image),
     thumbnailSrc: absoluteImageUrl(photo.thumbnail || photo.image),
     alt: photo.caption || h1,
   }));
+  const faqs = extractFaqPairs(body);
+  const breadcrumbItems = [
+    { label: tCrumbs("home"), href: "/" },
+    { label: tCrumbs("tours"), href: "/wycieczki" },
+    { label: h1 },
+  ];
 
   return (
     <>
+      <BreadcrumbJsonLd items={breadcrumbItems} locale={locale} />
+      <FaqJsonLd faqs={faqs} />
+      <ServiceJsonLd
+        name={h1}
+        description={description}
+        areaServed={SERVED_PLACES}
+        priceFrom={tour.price_from ? Number(tour.price_from) : undefined}
+        url={`/${locale}/wycieczki/${slug}`}
+        serviceType="Guided day trip"
+      />
       <SiteHeader />
       <main>
         <div className="mx-auto max-w-[1200px] px-4 py-14 sm:px-6 sm:py-20">
-          <Breadcrumbs
-            items={[
-              { label: tCrumbs("home"), href: "/" },
-              { label: tCrumbs("tours"), href: "/wycieczki" },
-              { label: h1 },
-            ]}
-          />
+          <Breadcrumbs items={breadcrumbItems} />
 
           <Link href="/wycieczki" className="text-primary mt-3 inline-block text-[13px] font-medium">
             ← {t("backToIndex")}

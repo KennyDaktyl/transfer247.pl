@@ -19,19 +19,34 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Blog" });
-  return { title: t("heading"), description: t("lead"), alternates: buildAlternates("/blog") };
+  return { title: t("heading"), description: t("lead"), alternates: buildAlternates("/blog", locale as AppLocale) };
 }
 
-export default async function BlogIndexPage({ params }: { params: Promise<{ locale: string }> }) {
+export default async function BlogIndexPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<{ q?: string }>;
+}) {
   const { locale } = await params;
+  const { q } = await searchParams;
   setRequestLocale(locale);
 
-  const [t, tCrumbs, appLocale, posts] = await Promise.all([
+  const [t, tCrumbs, appLocale, allPosts] = await Promise.all([
     getTranslations("Blog"),
     getTranslations("Breadcrumbs"),
     getLocale() as Promise<AppLocale>,
     apiFetch<BlogPost[]>("/api/blog/", { next: { revalidate: 60 } }),
   ]);
+
+  const query = q?.trim().toLowerCase() ?? "";
+  const posts = query
+    ? allPosts.filter((post) => {
+        const haystack = `${localize(post, "title", appLocale)} ${localize(post, "excerpt", appLocale)} ${localize(post, "body", appLocale)}`.toLowerCase();
+        return haystack.includes(query);
+      })
+    : allPosts;
 
   return (
     <>
@@ -42,7 +57,32 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ loca
           <h1 className="font-heading mt-3 text-[32px] font-semibold text-text sm:text-[42px]">{t("heading")}</h1>
           <p className="mt-3 max-w-[560px] text-[16px] text-muted">{t("lead")}</p>
 
+          <form action="/blog" method="get" className="mt-6 flex max-w-[420px] gap-2">
+            <input
+              type="search"
+              name="q"
+              defaultValue={q ?? ""}
+              placeholder={t("searchPlaceholder")}
+              className="border-border bg-surface flex-1 rounded-[10px] border px-4 py-2.5 text-[14px] text-text outline-none focus:border-primary"
+            />
+            <button
+              type="submit"
+              className="bg-primary hover:bg-primary-hover rounded-[10px] px-5 py-2.5 text-[14px] font-semibold text-white transition-colors"
+            >
+              {t("searchSubmit")}
+            </button>
+          </form>
+          {query ? (
+            <p className="mt-3 text-[13px] text-muted">
+              {t("searchResultsCount", { count: posts.length, query: q ?? "" })}{" "}
+              <Link href="/blog" className="text-primary underline">
+                {t("searchClear")}
+              </Link>
+            </p>
+          ) : null}
+
           <div className="mt-10 flex flex-col gap-5">
+            {posts.length === 0 ? <p className="text-muted">{t("searchNoResults")}</p> : null}
             {posts.map((post) => {
               const tag = localize(post, "tag", appLocale);
               const title = localize(post, "title", appLocale);

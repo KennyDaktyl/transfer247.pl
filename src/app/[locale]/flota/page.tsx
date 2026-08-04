@@ -19,7 +19,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Fleet" });
-  return { title: t("heading"), description: t("lead"), alternates: buildAlternates("/flota") };
+  return { title: t("heading"), description: t("lead"), alternates: buildAlternates("/flota", locale as AppLocale) };
 }
 
 function VehiclePlaceholder() {

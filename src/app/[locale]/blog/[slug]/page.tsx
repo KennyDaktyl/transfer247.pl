@@ -4,12 +4,15 @@ import { notFound } from "next/navigation";
 
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
+import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 import { Breadcrumbs } from "@/components/breadcrumbs";
+import { FaqJsonLd } from "@/components/faq-jsonld";
 import { MarkdownContent } from "@/components/markdown-content";
 import { PhotoGallery } from "@/components/photo-gallery";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { apiFetch } from "@/lib/api";
+import { extractFaqPairs } from "@/lib/faq";
 import { absoluteImageUrl } from "@/lib/images";
 import { localize } from "@/lib/localize";
 import { buildAlternates } from "@/lib/seo";
@@ -57,7 +60,7 @@ export async function generateMetadata({
   const title = localize(post, "seo_title", appLocale) || localize(post, "title", appLocale);
   const description = localize(post, "seo_description", appLocale) || localize(post, "excerpt", appLocale);
 
-  return { title, description, alternates: buildAlternates(`/blog/${slug}`) };
+  return { title, description, alternates: buildAlternates(`/blog/${slug}`, locale as AppLocale) };
 }
 
 export default async function BlogPostPage({
@@ -87,19 +90,21 @@ export default async function BlogPostPage({
     alt: photo.caption || title,
   }));
   const sortedLinks = [...post.links].sort((a, b) => a.order - b.order);
+  const faqs = extractFaqPairs(body);
+  const breadcrumbItems = [
+    { label: tCrumbs("home"), href: "/" },
+    { label: tCrumbs("blog"), href: "/blog" },
+    { label: title },
+  ];
 
   return (
     <>
+      <BreadcrumbJsonLd items={breadcrumbItems} locale={locale} />
+      <FaqJsonLd faqs={faqs} />
       <SiteHeader />
       <main>
         <div className="mx-auto max-w-[1200px] px-4 py-14 sm:px-6 sm:py-20">
-          <Breadcrumbs
-            items={[
-              { label: tCrumbs("home"), href: "/" },
-              { label: tCrumbs("blog"), href: "/blog" },
-              { label: title },
-            ]}
-          />
+          <Breadcrumbs items={breadcrumbItems} />
 
           <Link href="/blog" className="text-primary mt-3 inline-block text-[13px] font-medium">
             ← {t("backToIndex")}

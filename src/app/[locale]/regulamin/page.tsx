@@ -30,7 +30,7 @@ export async function generateMetadata({
   return {
     title: localize(page, "seo_title", appLocale) || localize(page, "title", appLocale),
     description: localize(page, "seo_description", appLocale) || undefined,
-    alternates: buildAlternates("/regulamin"),
+    alternates: buildAlternates("/regulamin", locale as AppLocale),
   };
 }
 

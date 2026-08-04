@@ -173,7 +173,12 @@
     "readMore": "Weiterlesen",
     "backToIndex": "Alle Artikel",
     "galleryHeading": "Galerie",
-    "usefulLinksHeading": "Nützliche Links"
+    "usefulLinksHeading": "Nützliche Links",
+    "searchPlaceholder": "Blog durchsuchen…",
+    "searchSubmit": "Suchen",
+    "searchResultsCount": "Ergebnisse für „{query}“: {count}",
+    "searchClear": "Zurücksetzen",
+    "searchNoResults": "Keine passenden Artikel gefunden."
   },
   "About": {
     "heading": "Über transfer247.pl",
@@ -181,6 +186,7 @@
   },
   "Footer": {
     "tagline": "Private Flughafentransfers und Ausflüge in Kleinpolen.",
+    "serviceAreaHeading": "Servicegebiet",
     "routes": "Transfers",
     "tours": "Ausflüge",
     "bikeTransport": "Fahrradtransport",

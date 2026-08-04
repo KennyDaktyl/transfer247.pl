@@ -173,7 +173,12 @@
     "readMore": "Czytaj dalej",
     "backToIndex": "Wszystkie wpisy",
     "galleryHeading": "Galeria",
-    "usefulLinksHeading": "Przydatne linki"
+    "usefulLinksHeading": "Przydatne linki",
+    "searchPlaceholder": "Szukaj w blogu…",
+    "searchSubmit": "Szukaj",
+    "searchResultsCount": "Wyniki dla „{query}”: {count}",
+    "searchClear": "Wyczyść",
+    "searchNoResults": "Brak wpisów pasujących do wyszukiwania."
   },
   "About": {
     "heading": "O transfer247.pl",
@@ -181,6 +186,7 @@
   },
   "Footer": {
     "tagline": "Prywatne transfery lotniskowe i wycieczki w Małopolsce.",
+    "serviceAreaHeading": "Obsługiwany obszar",
     "routes": "Transfery",
     "tours": "Wycieczki",
     "bikeTransport": "Przewóz rowerów",

@@ -19,7 +19,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Tours" });
-  return { title: t("heading"), description: t("lead"), alternates: buildAlternates("/wycieczki") };
+  return { title: t("heading"), description: t("lead"), alternates: buildAlternates("/wycieczki", locale as AppLocale) };
 }
 
 export default async function ToursIndexPage({ params }: { params: Promise<{ locale: string }> }) {
