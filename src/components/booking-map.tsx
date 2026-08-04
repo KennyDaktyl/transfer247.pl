@@ -87,10 +87,14 @@ export function BookingMap({
   onDropoffChange: (pos: LatLng) => void;
 }) {
   const points = useMemo(() => [pickup, dropoff].filter((p): p is LatLng => p !== null), [pickup, dropoff]);
-  const routeLine = useMemo(
+  const roadRouteLine = useMemo(
     () => (routeGeometry && routeGeometry.length > 1 ? routeGeometry.map(([lat, lng]) => ({ lat, lng })) : null),
     [routeGeometry],
   );
+  // Road geometry only arrives once the estimate fetch resolves — until then
+  // (or if it fails), still draw a straight line between the two pins so the
+  // map is never left with two disconnected markers and nothing joining them.
+  const routeLine = roadRouteLine ?? (points.length > 1 ? points : null);
   const fitPoints = routeLine ?? points;
 
   function handlePick(pos: LatLng) {
@@ -114,7 +118,14 @@ export function BookingMap({
         <InvalidateSizeOnResize />
         <FitBounds points={fitPoints} />
         {routeLine && (
-          <Polyline positions={routeLine} pathOptions={{ color: "#c2410c", weight: 4, opacity: 0.85 }} />
+          <Polyline
+            positions={routeLine}
+            pathOptions={
+              roadRouteLine
+                ? { color: "#c2410c", weight: 4, opacity: 0.85 }
+                : { color: "#c2410c", weight: 3, opacity: 0.6, dashArray: "6 6" }
+            }
+          />
         )}
         {pickup && (
           <Marker

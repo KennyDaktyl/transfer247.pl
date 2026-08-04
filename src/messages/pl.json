@@ -188,6 +188,8 @@
     "dateLabel": "Data",
     "timeLabel": "Godzina",
     "passengersLabel": "Liczba pasażerów",
+    "flightNumberLabel": "Numer lotu (opcjonalnie)",
+    "flightNumberPlaceholder": "np. FR1234",
     "pickupDetailsLabel": "Adres odbioru / hotel",
     "pickupDetailsPlaceholder": "np. Hotel Wawel, ul. Poselska 22",
     "nameLabel": "Imię",

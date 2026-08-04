@@ -67,15 +67,20 @@ function formatCountdown(ms: number): string {
 }
 
 function useCountdown(deadline: string | null): string | null {
-  const [now, setNow] = useState(() => Date.now());
+  // `now` starts as null so the server-rendered HTML and the client's first
+  // hydration pass produce identical output (no countdown text yet) — the
+  // real clock value is only read once mounted, avoiding a text mismatch
+  // between the server's render time and the client's (React error #418).
+  const [now, setNow] = useState<number | null>(null);
 
   useEffect(() => {
     if (!deadline) return;
+    setNow(Date.now());
     const interval = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(interval);
   }, [deadline]);
 
-  if (!deadline) return null;
+  if (!deadline || now === null) return null;
   return formatCountdown(new Date(deadline).getTime() - now);
 }
 
@@ -253,6 +258,11 @@ function BookingCard({
             {booking.distance_km && `${booking.distance_km} ${t("km")}`}
             {booking.distance_km && booking.duration_minutes && " · "}
             {booking.duration_minutes && `~${booking.duration_minutes} ${t("min")}`}
+          </span>
+        )}
+        {booking.flight_number && (
+          <span className="border-border bg-bg text-muted flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-[12.5px]">
+            ✈ {booking.flight_number}
           </span>
         )}
         {booking.booked_vehicle_id && (

@@ -183,6 +183,7 @@ export type Booking = {
   dropoff_address: string;
   dropoff_lat: string | null;
   dropoff_lng: string | null;
+  flight_number: string;
   scheduled_at: string;
   status: BookingStatus;
   distance_km: string | null;

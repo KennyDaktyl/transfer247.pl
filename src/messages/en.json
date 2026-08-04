@@ -188,6 +188,8 @@
     "dateLabel": "Date",
     "timeLabel": "Time",
     "passengersLabel": "Passengers",
+    "flightNumberLabel": "Flight number (optional)",
+    "flightNumberPlaceholder": "e.g. FR1234",
     "pickupDetailsLabel": "Pickup address / hotel",
     "pickupDetailsPlaceholder": "e.g. Hotel Wawel, ul. Poselska 22",
     "nameLabel": "Name",

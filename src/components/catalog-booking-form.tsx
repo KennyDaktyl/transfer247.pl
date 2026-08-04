@@ -55,6 +55,7 @@ export function CatalogBookingForm({
   const [locating, setLocating] = useState(false);
   const [customerName, setCustomerName] = useState("");
   const [customerEmail, setCustomerEmail] = useState("");
+  const [flightNumber, setFlightNumber] = useState("");
   const [phone, setPhone] = useState("+48");
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error" | "unauthenticated">("idle");
   const [estimate, setEstimate] = useState<RouteEstimate | null>(null);
@@ -174,6 +175,7 @@ export function CatalogBookingForm({
           dropoff_details: dropoffText,
           dropoff_lat: dropoff?.lat,
           dropoff_lng: dropoff?.lng,
+          flight_number: flightNumber || undefined,
           customer_name: customerName,
           customer_email: customerEmail || undefined,
         }),
@@ -274,21 +276,35 @@ export function CatalogBookingForm({
           </div>
         </div>
 
-        <div className="flex flex-col gap-1.5">
-          <label className="text-[11.5px] font-semibold tracking-[0.08em] text-muted uppercase">
-            {t("passengersLabel")}
-          </label>
-          <select
-            value={passengers}
-            onChange={(e) => setPassengers(Number(e.target.value))}
-            className="border-border bg-bg text-text focus:border-primary rounded-lg border px-3 py-[11px] text-[14.5px] outline-none"
-          >
-            {Array.from({ length: maxPassengers }, (_, i) => i + 1).map((n) => (
-              <option key={n} value={n}>
-                {n}
-              </option>
-            ))}
-          </select>
+        <div className="grid grid-cols-2 gap-3">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-[11.5px] font-semibold tracking-[0.08em] text-muted uppercase">
+              {t("passengersLabel")}
+            </label>
+            <select
+              value={passengers}
+              onChange={(e) => setPassengers(Number(e.target.value))}
+              className="border-border bg-bg text-text focus:border-primary rounded-lg border px-3 py-[11px] text-[14.5px] outline-none"
+            >
+              {Array.from({ length: maxPassengers }, (_, i) => i + 1).map((n) => (
+                <option key={n} value={n}>
+                  {n}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-[11.5px] font-semibold tracking-[0.08em] text-muted uppercase">
+              {t("flightNumberLabel")}
+            </label>
+            <input
+              type="text"
+              value={flightNumber}
+              onChange={(e) => setFlightNumber(e.target.value.toUpperCase())}
+              placeholder={t("flightNumberPlaceholder")}
+              className="border-border bg-bg text-text focus:border-primary rounded-lg border px-3 py-[11px] text-[14.5px] outline-none"
+            />
+          </div>
         </div>
 
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-[400px_1fr]">
