@@ -17,7 +17,10 @@
     "noActiveDriver": "Oczekiwanie na pozycję kierowcy…",
     "vehicleUnknown": "Kierowca",
     "you": "Ty",
-    "etaLabel": "~{minutes} min · {km} km"
+    "etaLabel": "~{minutes} min · {distance}",
+    "geoDenied": "Włącz lokalizację w przeglądarce, aby zobaczyć swoją pozycję i dokładny czas dojazdu.",
+    "geoUnsupported": "Ta przeglądarka nie obsługuje lokalizacji.",
+    "geoRetry": "Spróbuj ponownie"
   },
   "Auth": {
     "title": "Zaloguj się numerem telefonu",

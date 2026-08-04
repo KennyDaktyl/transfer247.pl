@@ -17,7 +17,10 @@
     "noActiveDriver": "Warten auf Fahrerposition…",
     "vehicleUnknown": "Fahrer",
     "you": "Du",
-    "etaLabel": "~{minutes} Min · {km} km"
+    "etaLabel": "~{minutes} Min · {distance}",
+    "geoDenied": "Aktiviere den Standort in deinem Browser, um deine Position und eine genaue Ankunftszeit zu sehen.",
+    "geoUnsupported": "Dieser Browser unterstützt keine Standortermittlung.",
+    "geoRetry": "Erneut versuchen"
   },
   "Auth": {
     "title": "Mit Telefonnummer anmelden",
