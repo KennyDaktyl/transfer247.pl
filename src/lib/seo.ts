@@ -17,6 +17,6 @@ export function buildAlternates(path: string, locale: AppLocale) {
   for (const loc of routing.locales) {
     languages[loc] = `${siteUrl()}/${loc}${path}`;
   }
-  languages["x-default"] = `${siteUrl()}/${routing.defaultLocale}${path}`;
+  languages["x-default"] = `${siteUrl()}/en${path}`;
   return { canonical: `${siteUrl()}/${locale}${path}`, languages };
 }

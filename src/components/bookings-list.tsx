@@ -283,6 +283,16 @@ function BookingCard({
             ✈ {booking.flight_number}
           </span>
         )}
+        {booking.child_seat_ages.length > 0 && (
+          <span className="border-border bg-bg text-muted flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-[12.5px]">
+            {t("childSeats", { ages: booking.child_seat_ages.join(", ") })}
+          </span>
+        )}
+        {booking.bike_count > 0 && (
+          <span className="border-border bg-bg text-muted flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-[12.5px]">
+            {t("bikes", { count: booking.bike_count })}
+          </span>
+        )}
         {booking.booked_vehicle_id && (
           <Link
             href={`/flota#vehicle-${booking.booked_vehicle_id}`}
