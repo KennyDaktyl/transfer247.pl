@@ -47,6 +47,9 @@ export function CatalogBookingForm({
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [passengers, setPassengers] = useState(1);
+  const [childSeatAges, setChildSeatAges] = useState<number[]>([]);
+  const [bikeTransport, setBikeTransport] = useState(false);
+  const [bikeCount, setBikeCount] = useState(1);
   const [pickup, setPickup] = useState<LatLng | null>(null);
   const [pickupText, setPickupText] = useState("");
   const [dropoff, setDropoff] = useState<LatLng | null>(null);
@@ -152,6 +155,24 @@ export function CatalogBookingForm({
   }, [status]);
 
   const canSubmit = vehicleId != null && date && time && pickupText && dropoffText && customerName;
+  const visibleChildSeatAges = childSeatAges.slice(0, passengers);
+
+  function addChildSeat() {
+    setChildSeatAges((prev) => {
+      if (prev.length >= maxPassengers) return prev;
+      const next = [...prev, 3];
+      if (next.length > passengers) setPassengers(next.length);
+      return next;
+    });
+  }
+
+  function updateChildSeatAge(index: number, age: number) {
+    setChildSeatAges((prev) => prev.map((item, i) => (i === index ? age : item)));
+  }
+
+  function removeChildSeat(index: number) {
+    setChildSeatAges((prev) => prev.filter((_, i) => i !== index));
+  }
 
   async function handleSubmit() {
     if (!canSubmit) {
@@ -169,6 +190,8 @@ export function CatalogBookingForm({
           vehicle_id: vehicleId,
           scheduled_at: scheduledAt,
           passenger_count: passengers,
+          child_seat_ages: visibleChildSeatAges,
+          bike_count: bikeTransport ? bikeCount : 0,
           pickup_details: pickupText,
           pickup_lat: pickup?.lat,
           pickup_lng: pickup?.lng,
@@ -305,6 +328,87 @@ export function CatalogBookingForm({
               className="border-border bg-bg text-text focus:border-primary rounded-lg border px-3 py-[11px] text-[14.5px] outline-none"
             />
           </div>
+        </div>
+
+        <div className="border-border bg-bg rounded-[12px] border p-4">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h3 className="text-[14px] font-semibold text-text">{t("childrenTitle")}</h3>
+              <p className="mt-1 text-[12.5px] text-muted">{t("childrenHelp")}</p>
+            </div>
+            <button
+              type="button"
+              onClick={addChildSeat}
+              disabled={childSeatAges.length >= maxPassengers}
+              className="border-border hover:border-primary rounded-[999px] border px-3 py-2 text-[13px] font-semibold text-text transition-colors disabled:opacity-50"
+            >
+              {t("addChild")}
+            </button>
+          </div>
+          {visibleChildSeatAges.length > 0 ? (
+            <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
+              {visibleChildSeatAges.map((age, index) => (
+                <div key={index} className="flex items-end gap-2">
+                  <label className="flex flex-1 flex-col gap-1.5">
+                    <span className="text-[11.5px] font-semibold tracking-[0.08em] text-muted uppercase">
+                      {t("childAgeLabel", { number: index + 1 })}
+                    </span>
+                    <select
+                      value={age}
+                      onChange={(e) => updateChildSeatAge(index, Number(e.target.value))}
+                      className="border-border bg-surface text-text focus:border-primary rounded-lg border px-3 py-[11px] text-[14.5px] outline-none"
+                    >
+                      {Array.from({ length: 13 }, (_, i) => i).map((n) => (
+                        <option key={n} value={n}>
+                          {t("childAgeOption", { age: n })}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => removeChildSeat(index)}
+                    className="border-border hover:border-red-500 rounded-lg border px-3 py-[11px] text-[13px] font-semibold text-muted transition-colors"
+                  >
+                    {t("removeChild")}
+                  </button>
+                </div>
+              ))}
+            </div>
+          ) : null}
+        </div>
+
+        <div className="border-border bg-bg rounded-[12px] border p-4">
+          <label className="flex items-start gap-3">
+            <input
+              type="checkbox"
+              checked={bikeTransport}
+              onChange={(e) => setBikeTransport(e.target.checked)}
+              className="border-border mt-0.5 h-4 w-4 rounded accent-[var(--color-primary)]"
+            />
+            <span>
+              <span className="block text-[14px] font-semibold text-text">{t("bikeTransportLabel")}</span>
+              <span className="mt-1 block text-[12.5px] text-muted">{t("bikeTransportHelp")}</span>
+            </span>
+          </label>
+          {bikeTransport ? (
+            <label className="mt-3 flex max-w-[180px] flex-col gap-1.5">
+              <span className="text-[11.5px] font-semibold tracking-[0.08em] text-muted uppercase">
+                {t("bikeCountLabel")}
+              </span>
+              <select
+                value={bikeCount}
+                onChange={(e) => setBikeCount(Number(e.target.value))}
+                className="border-border bg-surface text-text focus:border-primary rounded-lg border px-3 py-[11px] text-[14.5px] outline-none"
+              >
+                {[1, 2, 3, 4].map((n) => (
+                  <option key={n} value={n}>
+                    {n}
+                  </option>
+                ))}
+              </select>
+            </label>
+          ) : null}
         </div>
 
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-[400px_1fr]">

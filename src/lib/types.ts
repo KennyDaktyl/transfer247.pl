@@ -196,6 +196,9 @@ export type Booking = {
   dropoff_lng: string | null;
   flight_number: string;
   scheduled_at: string;
+  passenger_count: number;
+  child_seat_ages: number[];
+  bike_count: number;
   status: BookingStatus;
   distance_km: string | null;
   duration_minutes: number | null;
