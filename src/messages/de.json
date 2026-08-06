@@ -58,7 +58,8 @@
     "emptyCancelled": "Sie haben keine stornierten Fahrten.",
     "seats": "{count} Plätze",
     "downloadConfirmation": "Bestätigung herunterladen",
-    "bookSimilar": "Ähnliche Fahrt buchen"
+    "bookSimilar": "Ähnliche Fahrt buchen",
+    "totalPriceLabel": "Gesamtpreis der Fahrt"
   },
   "BookingStatus": {
     "NOWA": "Neu (wartet auf Bestätigung)",

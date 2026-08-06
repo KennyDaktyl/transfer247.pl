@@ -317,6 +317,9 @@ function BookingCard({
         <div className="border-border bg-bg mb-3 rounded-[10px] border p-4">
           {booking.price && (
             <div className="mb-3">
+              <div className="text-muted text-[11px] font-semibold tracking-wide uppercase">
+                {t("totalPriceLabel")}
+              </div>
               <div className="font-heading text-text text-[20px] font-bold">
                 {formatPrice(booking.price, booking.price_eur, locale as AppLocale)}
               </div>
