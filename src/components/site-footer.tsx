@@ -1,5 +1,6 @@
 import { getLocale, getTranslations } from "next-intl/server";
 
+import { ObfuscatedEmail } from "@/components/obfuscated-email";
 import { PaymentBadge } from "@/components/payment-badge";
 import { Link } from "@/i18n/navigation";
 import { apiFetch } from "@/lib/api";
@@ -35,9 +36,7 @@ export async function SiteFooter() {
               <a href="tel:+48506029980" className="hover:text-text">
                 +48 506 029 980
               </a>
-              <a href="mailto:kontakt@transfer247.pl" className="hover:text-text">
-                kontakt@transfer247.pl
-              </a>
+              <ObfuscatedEmail user="kontakt" domain="transfer247.pl" className="hover:text-text" />
               <a
                 href={MAPS_URL}
                 target="_blank"

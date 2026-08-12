@@ -229,6 +229,7 @@
     "success": "Booking received — awaiting confirmation.",
     "successPanelLink": "View in customer panel",
     "error": "Couldn't submit the booking. Please try again.",
+    "missingFields": "Fill in the fields marked in red to book the ride.",
     "pickupLabel": "Pickup",
     "pickupPlaceholder": "e.g. Balice Airport, Terminal 1",
     "dropoffLabel": "Destination",

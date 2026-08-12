@@ -229,6 +229,7 @@
     "success": "Rezerwacja przyjęta — czeka na potwierdzenie.",
     "successPanelLink": "Zobacz w panelu klienta",
     "error": "Nie udało się złożyć rezerwacji. Spróbuj ponownie.",
+    "missingFields": "Uzupełnij pola oznaczone na czerwono, aby zarezerwować kurs.",
     "pickupLabel": "Skąd",
     "pickupPlaceholder": "np. Lotnisko Balice, Terminal 1",
     "dropoffLabel": "Dokąd",

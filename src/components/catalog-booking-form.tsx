@@ -2,7 +2,7 @@
 
 import { useLocale, useTranslations } from "next-intl";
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
@@ -63,6 +63,14 @@ export function CatalogBookingForm({
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error" | "unauthenticated">("idle");
   const [estimate, setEstimate] = useState<RouteEstimate | null>(null);
   const [attemptedSubmit, setAttemptedSubmit] = useState(false);
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+
+  const dropoffInputRef = useRef<HTMLInputElement>(null);
+  const nameInputRef = useRef<HTMLInputElement>(null);
+
+  function markTouched(field: string) {
+    setTouched((prev) => ({ ...prev, [field]: true }));
+  }
 
   // A vehicle switch can shrink the seat cap below whatever the customer
   // already picked — never silently submit more passengers than fit.
@@ -115,7 +123,8 @@ export function CatalogBookingForm({
       async (pos) => {
         const coords = { lat: roundCoord(pos.coords.latitude), lng: roundCoord(pos.coords.longitude) };
         setPickup(coords);
-        setActiveField("pickup");
+        markTouched("pickup");
+        setActiveField("dropoff");
         const address = await reverseGeocode(coords.lat, coords.lng);
         if (address) setPickupText(address);
         setLocating(false);
@@ -130,15 +139,26 @@ export function CatalogBookingForm({
     if (field === "pickup") {
       setPickup(coords);
       setPickupText(s.label);
+      markTouched("pickup");
+      setActiveField("dropoff");
+      dropoffInputRef.current?.focus();
     } else {
       setDropoff(coords);
       setDropoffText(s.label);
+      markTouched("dropoff");
+      nameInputRef.current?.focus();
     }
   }
 
   async function handleMapChange(field: "pickup" | "dropoff", pos: LatLng) {
-    if (field === "pickup") setPickup(pos);
-    else setDropoff(pos);
+    if (field === "pickup") {
+      setPickup(pos);
+      markTouched("pickup");
+      setActiveField("dropoff");
+    } else {
+      setDropoff(pos);
+      markTouched("dropoff");
+    }
     const address = await reverseGeocode(pos.lat, pos.lng);
     if (address) {
       if (field === "pickup") setPickupText(address);
@@ -279,8 +299,9 @@ export function CatalogBookingForm({
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
+              onBlur={() => markTouched("date")}
               className={`bg-bg text-text focus:border-primary rounded-lg border px-3 py-[11px] text-[14.5px] outline-none ${
-                attemptedSubmit && !date ? "border-red-500" : "border-border"
+                (touched.date || attemptedSubmit) && !date ? "border-red-500" : date ? "border-green-500" : "border-border"
               }`}
             />
           </div>
@@ -292,8 +313,9 @@ export function CatalogBookingForm({
               type="time"
               value={time}
               onChange={(e) => setTime(e.target.value)}
+              onBlur={() => markTouched("time")}
               className={`bg-bg text-text focus:border-primary rounded-lg border px-3 py-[11px] text-[14.5px] outline-none ${
-                attemptedSubmit && !time ? "border-red-500" : "border-border"
+                (touched.time || attemptedSubmit) && !time ? "border-red-500" : time ? "border-green-500" : "border-border"
               }`}
             />
           </div>
@@ -420,10 +442,12 @@ export function CatalogBookingForm({
                 value={pickupText}
                 onTextChange={setPickupText}
                 onFocus={() => setActiveField("pickup")}
+                onBlur={() => markTouched("pickup")}
                 onSelect={(s) => handleSelectSuggestion("pickup", s)}
                 onClear={() => setPickup(null)}
                 required
-                error={attemptedSubmit && !pickupText}
+                error={(touched.pickup || attemptedSubmit) && !pickupText}
+                valid={!!pickupText}
               />
               <button
                 type="button"
@@ -435,15 +459,18 @@ export function CatalogBookingForm({
               </button>
             </div>
             <AddressSearchField
+              ref={dropoffInputRef}
               label={t("dropoffLabel")}
               placeholder={t("dropoffPlaceholder")}
               value={dropoffText}
               onTextChange={setDropoffText}
               onFocus={() => setActiveField("dropoff")}
+              onBlur={() => markTouched("dropoff")}
               onSelect={(s) => handleSelectSuggestion("dropoff", s)}
               onClear={() => setDropoff(null)}
               required
-              error={attemptedSubmit && !dropoffText}
+              error={(touched.dropoff || attemptedSubmit) && !dropoffText}
+              valid={!!dropoffText}
             />
           </div>
           <div className="min-h-[240px]">
@@ -476,12 +503,18 @@ export function CatalogBookingForm({
               {t("nameLabel")} <span className="text-red-600">*</span>
             </label>
             <input
+              ref={nameInputRef}
               type="text"
               value={customerName}
               onChange={(e) => setCustomerName(e.target.value)}
+              onBlur={() => markTouched("name")}
               placeholder={t("namePlaceholder")}
               className={`bg-bg text-text focus:border-primary rounded-lg border px-3 py-[11px] text-[14.5px] outline-none ${
-                attemptedSubmit && !customerName ? "border-red-500" : "border-border"
+                (touched.name || attemptedSubmit) && !customerName
+                  ? "border-red-500"
+                  : customerName
+                    ? "border-green-500"
+                    : "border-border"
               }`}
             />
           </div>
@@ -502,11 +535,14 @@ export function CatalogBookingForm({
         <button
           type="button"
           onClick={handleSubmit}
-          disabled={!canSubmit || status === "submitting"}
+          disabled={status === "submitting"}
           className="bg-primary hover:bg-primary-hover w-full rounded-[9px] py-[13px] text-[15px] font-bold text-white transition-colors disabled:opacity-60"
         >
           {status === "submitting" ? t("submitting") : t("submit")}
         </button>
+        {attemptedSubmit && !canSubmit && (
+          <p className="text-center text-[12.5px] font-semibold text-red-600">{t("missingFields")}</p>
+        )}
 
         {status === "error" && <p className="text-center text-xs font-semibold text-red-600">{t("error")}</p>}
 

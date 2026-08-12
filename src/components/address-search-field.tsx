@@ -1,30 +1,25 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 
 import { searchAddress, type AddressSuggestion } from "@/lib/geocode";
 
-export function AddressSearchField({
-  label,
-  value,
-  onTextChange,
-  onSelect,
-  onClear,
-  onFocus,
-  placeholder,
-  required,
-  error,
-}: {
+export const AddressSearchField = forwardRef<HTMLInputElement, {
   label: string;
   value: string;
   onTextChange: (text: string) => void;
   onSelect: (suggestion: AddressSuggestion) => void;
   onClear?: () => void;
   onFocus?: () => void;
+  onBlur?: () => void;
   placeholder?: string;
   required?: boolean;
   error?: boolean;
-}) {
+  valid?: boolean;
+}>(function AddressSearchField(
+  { label, value, onTextChange, onSelect, onClear, onFocus, onBlur, placeholder, required, error, valid },
+  inputRef,
+) {
   const [suggestions, setSuggestions] = useState<AddressSuggestion[]>([]);
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -56,6 +51,7 @@ export function AddressSearchField({
       </label>
       <div className="relative">
         <input
+          ref={inputRef}
           type="text"
           value={value}
           placeholder={placeholder}
@@ -63,14 +59,20 @@ export function AddressSearchField({
             setOpen(true);
             onFocus?.();
           }}
+          onBlur={onBlur}
           onChange={(e) => {
             onTextChange(e.target.value);
             setOpen(true);
           }}
           className={`bg-bg text-text focus:border-primary w-full rounded-lg border px-3 py-[11px] pr-9 text-[14.5px] outline-none ${
-            error ? "border-red-500" : "border-border"
+            error ? "border-red-500" : valid ? "border-green-500" : "border-border"
           }`}
         />
+        {valid && !error && (
+          <span aria-hidden className="absolute top-1/2 right-9 -translate-y-1/2 text-[13px] text-green-600">
+            ✓
+          </span>
+        )}
         {value && (
           <button
             type="button"
@@ -107,4 +109,4 @@ export function AddressSearchField({
       )}
     </div>
   );
-}
+});
