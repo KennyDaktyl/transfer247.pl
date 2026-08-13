@@ -11,9 +11,11 @@ import { formatPrice } from "@/lib/format";
 import { reverseGeocode, type AddressSuggestion } from "@/lib/geocode";
 import { absoluteImageUrl } from "@/lib/images";
 import type { RouteEstimate, VehiclePrice } from "@/lib/types";
+import { useToasts } from "@/lib/use-toasts";
 
 import { AddressSearchField } from "./address-search-field";
 import { PhoneVerifyStep } from "./phone-verify-step";
+import { ToastStack } from "./toast";
 
 const BookingMap = dynamic(() => import("./booking-map").then((m) => m.BookingMap), {
   ssr: false,
@@ -21,6 +23,7 @@ const BookingMap = dynamic(() => import("./booking-map").then((m) => m.BookingMa
 });
 
 type LatLng = { lat: number; lng: number };
+const FORM_STORAGE_KEY = "transfer247:booking-form-draft";
 
 // Geocoders (Nominatim) and the browser's Geolocation API can return more
 // decimal places than the backend's DecimalField(decimal_places=6) accepts.
@@ -39,6 +42,7 @@ export function CatalogBookingForm({
 }) {
   const t = useTranslations("CatalogBooking");
   const locale = useLocale() as AppLocale;
+  const { toasts, pushToast, dismissToast } = useToasts();
 
   const [vehicleId, setVehicleId] = useState<number | null>(vehiclePrices[0]?.vehicle_id ?? null);
   const selectedVehicle = vehiclePrices.find((vp) => vp.vehicle_id === vehicleId) ?? null;
@@ -64,12 +68,77 @@ export function CatalogBookingForm({
   const [estimate, setEstimate] = useState<RouteEstimate | null>(null);
   const [attemptedSubmit, setAttemptedSubmit] = useState(false);
   const [touched, setTouched] = useState<Record<string, boolean>>({});
+  const [formHydrated, setFormHydrated] = useState(false);
 
+  const dateInputRef = useRef<HTMLInputElement>(null);
+  const timeInputRef = useRef<HTMLInputElement>(null);
   const dropoffInputRef = useRef<HTMLInputElement>(null);
   const nameInputRef = useRef<HTMLInputElement>(null);
+  const mapSectionRef = useRef<HTMLDivElement>(null);
 
   function markTouched(field: string) {
     setTouched((prev) => ({ ...prev, [field]: true }));
+  }
+
+  // Restores whatever the customer had already typed if they navigate away
+  // (e.g. to check /flota) and come back — sessionStorage rather than
+  // localStorage since this is a working draft, not something that should
+  // outlive the tab. Only ever read once, right after mount.
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      try {
+        const raw = sessionStorage.getItem(FORM_STORAGE_KEY);
+        if (raw) {
+          const saved = JSON.parse(raw);
+          if (saved.vehicleId != null) setVehicleId(saved.vehicleId);
+          if (saved.date) setDate(saved.date);
+          if (saved.time) setTime(saved.time);
+          if (saved.passengers) setPassengers(saved.passengers);
+          if (saved.childSeatAges) setChildSeatAges(saved.childSeatAges);
+          if (saved.bikeTransport) setBikeTransport(saved.bikeTransport);
+          if (saved.bikeCount) setBikeCount(saved.bikeCount);
+          if (saved.pickup) setPickup(saved.pickup);
+          if (saved.pickupText) setPickupText(saved.pickupText);
+          if (saved.dropoff) setDropoff(saved.dropoff);
+          if (saved.dropoffText) setDropoffText(saved.dropoffText);
+          if (saved.customerName) setCustomerName(saved.customerName);
+          if (saved.customerEmail) setCustomerEmail(saved.customerEmail);
+          if (saved.flightNumber) setFlightNumber(saved.flightNumber);
+          if (saved.phone) setPhone(saved.phone);
+        }
+      } catch {
+        // Corrupt or blocked storage — just start from a blank form.
+      }
+      setFormHydrated(true);
+    }, 0);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Waits for the restore above to finish (formHydrated) so this doesn't
+  // immediately overwrite a just-restored draft with the pre-restore blank
+  // values from that same first render.
+  useEffect(() => {
+    if (!formHydrated) return;
+    try {
+      sessionStorage.setItem(
+        FORM_STORAGE_KEY,
+        JSON.stringify({
+          vehicleId, date, time, passengers, childSeatAges, bikeTransport, bikeCount,
+          pickup, pickupText, dropoff, dropoffText, customerName, customerEmail, flightNumber, phone,
+        }),
+      );
+    } catch {
+      // Storage full/blocked (private browsing) — losing the draft on
+      // navigation is an acceptable degradation, not worth surfacing.
+    }
+  }, [
+    formHydrated, vehicleId, date, time, passengers, childSeatAges, bikeTransport, bikeCount,
+    pickup, pickupText, dropoff, dropoffText, customerName, customerEmail, flightNumber, phone,
+  ]);
+
+  function armMapField(field: "pickup" | "dropoff") {
+    setActiveField(field);
+    mapSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   // A vehicle switch can shrink the seat cap below whatever the customer
@@ -105,15 +174,20 @@ export function CatalogBookingForm({
           signal: controller.signal,
           headers: withSiteHeader(),
         });
-        if (res.ok) setEstimate(await res.json());
-      } catch {
-        // ignore — stale/aborted request or transient network hiccup
+        if (res.ok) {
+          setEstimate(await res.json());
+        } else {
+          pushToast("error", t("estimateFetchError"));
+        }
+      } catch (err) {
+        if ((err as Error)?.name !== "AbortError") pushToast("error", t("estimateFetchError"));
       }
     }, 500);
     return () => {
       clearTimeout(timer);
       controller.abort();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pickup, dropoff, date, time]);
 
   async function handleUseMyLocation() {
@@ -228,19 +302,31 @@ export function CatalogBookingForm({
         return;
       }
       setStatus(res.ok ? "success" : "error");
+      pushToast(res.ok ? "success" : "error", res.ok ? t("submitSuccessToast") : t("submitErrorToast"));
+      if (res.ok) {
+        try {
+          sessionStorage.removeItem(FORM_STORAGE_KEY);
+        } catch {
+          // Nothing to clean up if storage was blocked in the first place.
+        }
+      }
     } catch {
       setStatus("error");
+      pushToast("error", t("submitErrorToast"));
     }
   }
 
   if (status === "success") {
     return (
-      <div className="border-border bg-surface mt-6 rounded-[16px] border p-6 text-center">
-        <p className="text-[14px] font-semibold text-text">{t("success")}</p>
-        <Link href="/panel" className="text-primary mt-2 inline-block text-[13.5px] underline">
-          {t("successPanelLink")}
-        </Link>
-      </div>
+      <>
+        <div className="border-border bg-surface mt-6 rounded-[16px] border p-6 text-center">
+          <p className="text-[14px] font-semibold text-text">{t("success")}</p>
+          <Link href="/panel" className="text-primary mt-2 inline-block text-[13.5px] underline">
+            {t("successPanelLink")}
+          </Link>
+        </div>
+        <ToastStack toasts={toasts} onDismiss={dismissToast} />
+      </>
     );
   }
 
@@ -260,7 +346,10 @@ export function CatalogBookingForm({
                 <button
                   key={vp.vehicle_id}
                   type="button"
-                  onClick={() => setVehicleId(vp.vehicle_id)}
+                  onClick={() => {
+                    setVehicleId(vp.vehicle_id);
+                    dateInputRef.current?.focus();
+                  }}
                   className={`overflow-hidden rounded-[12px] border text-left transition-colors ${
                     selected ? "border-primary" : "border-border hover:border-text/30"
                   }`}
@@ -296,9 +385,13 @@ export function CatalogBookingForm({
               {t("dateLabel")} <span className="text-red-600">*</span>
             </label>
             <input
+              ref={dateInputRef}
               type="date"
               value={date}
-              onChange={(e) => setDate(e.target.value)}
+              onChange={(e) => {
+                setDate(e.target.value);
+                if (e.target.value) timeInputRef.current?.focus();
+              }}
               onBlur={() => markTouched("date")}
               className={`bg-bg text-text focus:border-primary rounded-lg border px-3 py-[11px] text-[14.5px] outline-none ${
                 (touched.date || attemptedSubmit) && !date ? "border-red-500" : date ? "border-green-500" : "border-border"
@@ -310,6 +403,7 @@ export function CatalogBookingForm({
               {t("timeLabel")} <span className="text-red-600">*</span>
             </label>
             <input
+              ref={timeInputRef}
               type="time"
               value={time}
               onChange={(e) => setTime(e.target.value)}
@@ -449,39 +543,62 @@ export function CatalogBookingForm({
                 error={(touched.pickup || attemptedSubmit) && !pickupText}
                 valid={!!pickupText}
               />
+              <div className="flex flex-wrap gap-x-4 gap-y-1">
+                <button
+                  type="button"
+                  onClick={handleUseMyLocation}
+                  disabled={locating}
+                  className="text-primary text-left text-[12.5px] font-semibold transition-opacity hover:opacity-80 disabled:opacity-50"
+                >
+                  📍 {locating ? t("locating") : t("useMyLocation")}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => armMapField("pickup")}
+                  className="text-primary text-left text-[12.5px] font-semibold transition-opacity hover:opacity-80"
+                >
+                  🗺️ {t("pickOnMapFrom")}
+                </button>
+              </div>
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <AddressSearchField
+                ref={dropoffInputRef}
+                label={t("dropoffLabel")}
+                placeholder={t("dropoffPlaceholder")}
+                value={dropoffText}
+                onTextChange={setDropoffText}
+                onFocus={() => setActiveField("dropoff")}
+                onBlur={() => markTouched("dropoff")}
+                onSelect={(s) => handleSelectSuggestion("dropoff", s)}
+                onClear={() => setDropoff(null)}
+                required
+                error={(touched.dropoff || attemptedSubmit) && !dropoffText}
+                valid={!!dropoffText}
+              />
               <button
                 type="button"
-                onClick={handleUseMyLocation}
-                disabled={locating}
-                className="text-primary text-left text-[12.5px] font-semibold transition-opacity hover:opacity-80 disabled:opacity-50"
+                onClick={() => armMapField("dropoff")}
+                className="text-primary text-left text-[12.5px] font-semibold transition-opacity hover:opacity-80"
               >
-                📍 {locating ? t("locating") : t("useMyLocation")}
+                🗺️ {t("pickOnMapTo")}
               </button>
             </div>
-            <AddressSearchField
-              ref={dropoffInputRef}
-              label={t("dropoffLabel")}
-              placeholder={t("dropoffPlaceholder")}
-              value={dropoffText}
-              onTextChange={setDropoffText}
-              onFocus={() => setActiveField("dropoff")}
-              onBlur={() => markTouched("dropoff")}
-              onSelect={(s) => handleSelectSuggestion("dropoff", s)}
-              onClear={() => setDropoff(null)}
-              required
-              error={(touched.dropoff || attemptedSubmit) && !dropoffText}
-              valid={!!dropoffText}
-            />
           </div>
-          <div className="min-h-[240px]">
-            <BookingMap
-              pickup={pickup}
-              dropoff={dropoff}
-              activeField={activeField}
-              routeGeometry={estimate?.geometry}
-              onPickupChange={(pos) => handleMapChange("pickup", pos)}
-              onDropoffChange={(pos) => handleMapChange("dropoff", pos)}
-            />
+          <div ref={mapSectionRef} className="flex flex-col gap-1.5">
+            <p className="text-primary text-[11.5px] font-semibold">
+              {activeField === "pickup" ? t("mapCaptionPickup") : t("mapCaptionDropoff")}
+            </p>
+            <div className="min-h-[240px]">
+              <BookingMap
+                pickup={pickup}
+                dropoff={dropoff}
+                activeField={activeField}
+                routeGeometry={estimate?.geometry}
+                onPickupChange={(pos) => handleMapChange("pickup", pos)}
+                onDropoffChange={(pos) => handleMapChange("dropoff", pos)}
+              />
+            </div>
           </div>
         </div>
 
@@ -553,6 +670,7 @@ export function CatalogBookingForm({
           </div>
         )}
       </div>
+      <ToastStack toasts={toasts} onDismiss={dismissToast} />
     </div>
   );
 }
