@@ -6,6 +6,7 @@ import { Breadcrumbs } from "@/components/breadcrumbs";
 import { PhotoGallery } from "@/components/photo-gallery";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { Link } from "@/i18n/navigation";
 import { apiFetch } from "@/lib/api";
 import { absoluteImageUrl } from "@/lib/images";
 import { localize } from "@/lib/localize";
@@ -97,6 +98,14 @@ export default async function FleetPage({ params }: { params: Promise<{ locale: 
                 </article>
               );
             })}
+          </div>
+
+          <div className="border-border bg-surface mt-10 rounded-[16px] border p-6">
+            <h2 className="font-heading text-[19px] font-semibold text-text">{t("bikeTransportHeading")}</h2>
+            <p className="mt-2 max-w-[560px] text-[14px] leading-relaxed text-muted">{t("bikeTransportBody")}</p>
+            <Link href="/przewoz-rowerow" className="text-primary mt-3 inline-block text-[14px] font-medium">
+              {t("bikeTransportCta")}
+            </Link>
           </div>
         </div>
       </main>

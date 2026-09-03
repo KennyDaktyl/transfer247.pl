@@ -26,6 +26,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...urlsFor("/flota"),
     ...urlsFor("/blog"),
     ...urlsFor("/kontakt"),
+    ...urlsFor("/przewoz-rowerow"),
     ...routes.flatMap((route) => urlsFor(`/transfery/${route.slug}`)),
     ...tours.flatMap((tour) => urlsFor(`/wycieczki/${tour.slug}`)),
     ...posts.flatMap((post) => urlsFor(`/blog/${post.slug}`)),

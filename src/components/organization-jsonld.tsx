@@ -25,7 +25,15 @@ export function OrganizationJsonLd() {
       addressCountry: "PL",
     },
     areaServed: SERVED_PLACES.map((name) => ({ "@type": "Place", name })),
-    priceRange: "PLN",
+    priceRange: "89-449 PLN",
+    openingHoursSpecification: {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: [
+        "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday",
+      ],
+      opens: "00:00",
+      closes: "23:59",
+    },
   };
 
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }} />;

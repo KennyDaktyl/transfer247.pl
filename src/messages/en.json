@@ -169,7 +169,10 @@
   "Fleet": {
     "heading": "Our fleet",
     "lead": "Our vehicles, matched to passenger count and luggage.",
-    "seats": "seats"
+    "seats": "seats",
+    "bikeTransportHeading": "Travelling with bikes?",
+    "bikeTransportBody": "Our vehicle carries a Thule VeloSpace bike rack for up to 4 bikes — available as an add-on to any transfer or tour.",
+    "bikeTransportCta": "See bike transport →"
   },
   "Blog": {
     "heading": "Blog",

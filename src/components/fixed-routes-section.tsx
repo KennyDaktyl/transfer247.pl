@@ -35,6 +35,7 @@ export async function FixedRoutesSection() {
             <Link
               key={route.slug}
               href={`/transfery/${route.slug}`}
+              aria-label={localize(route, "h1", locale) || localize(route, "name", locale)}
               className="border-border bg-surface block rounded-[16px] border p-6 transition-shadow hover:shadow-md"
             >
               <div className="text-[13px] font-medium text-muted">{route.duration}</div>

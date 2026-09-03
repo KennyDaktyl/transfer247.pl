@@ -169,7 +169,10 @@
   "Fleet": {
     "heading": "Unsere Flotte",
     "lead": "Unsere Fahrzeuge, passend zu Personenzahl und Gepäck.",
-    "seats": "Plätze"
+    "seats": "Plätze",
+    "bikeTransportHeading": "Reisen Sie mit Fahrrädern?",
+    "bikeTransportBody": "Unser Fahrzeug ist mit einem Thule VeloSpace Fahrradträger für bis zu 4 Fahrräder ausgestattet — als Zusatzoption zu jedem Transfer oder jeder Tour buchbar.",
+    "bikeTransportCta": "Fahrradtransport ansehen →"
   },
   "Blog": {
     "heading": "Blog",

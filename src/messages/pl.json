@@ -169,7 +169,10 @@
   "Fleet": {
     "heading": "Nasza flota",
     "lead": "Nasze pojazdy, dopasowane do liczby pasażerów i bagażu.",
-    "seats": "miejsc"
+    "seats": "miejsc",
+    "bikeTransportHeading": "Jedziesz z rowerem?",
+    "bikeTransportBody": "Nasz samochód wyposażony jest w bagażnik rowerowy Thule VeloSpace na 4 rowery — dostępny jako dodatek do dowolnego transferu lub wycieczki.",
+    "bikeTransportCta": "Zobacz przewóz rowerów →"
   },
   "Blog": {
     "heading": "Blog",
