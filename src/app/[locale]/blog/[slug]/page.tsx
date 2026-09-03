@@ -129,7 +129,7 @@ export default async function BlogPostPage({
 
           <div className="mt-8 grid grid-cols-1 gap-10 lg:grid-cols-[1fr_280px]">
             <div>
-              <MarkdownContent markdown={body} />
+              <MarkdownContent markdown={body} locale={appLocale} />
 
               {videoId ? (
                 <div className="mt-10 aspect-video w-full overflow-hidden rounded-[16px] border border-border">

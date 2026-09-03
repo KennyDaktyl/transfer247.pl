@@ -51,7 +51,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
           </h1>
           {page ? (
             <div className="mt-8">
-              <MarkdownContent markdown={localize(page, "body", appLocale)} />
+              <MarkdownContent markdown={localize(page, "body", appLocale)} locale={appLocale} />
             </div>
           ) : null}
         </div>

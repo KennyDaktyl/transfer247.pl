@@ -50,7 +50,7 @@ export default async function RegulaminPage({ params }: { params: Promise<{ loca
           </h1>
           {page ? (
             <div className="mt-8 max-w-[760px]">
-              <MarkdownContent markdown={localize(page, "body", appLocale)} />
+              <MarkdownContent markdown={localize(page, "body", appLocale)} locale={appLocale} />
             </div>
           ) : null}
         </div>

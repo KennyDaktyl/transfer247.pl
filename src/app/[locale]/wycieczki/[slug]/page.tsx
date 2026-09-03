@@ -166,7 +166,7 @@ export default async function TourDetailPage({
           )}
 
           <div className="mt-10">
-            <MarkdownContent markdown={body} />
+            <MarkdownContent markdown={body} locale={appLocale} />
           </div>
 
           {galleryPhotos.length > 0 ? (

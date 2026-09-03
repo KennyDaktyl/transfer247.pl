@@ -17,6 +17,8 @@ export function buildAlternates(path: string, locale: AppLocale) {
   for (const loc of routing.locales) {
     languages[loc] = `${siteUrl()}/${loc}${path}`;
   }
-  languages["x-default"] = `${siteUrl()}/en${path}`;
+  // x-default must match routing.defaultLocale ("pl") — this is the Polish
+  // transport market's primary site, not an English-first one.
+  languages["x-default"] = `${siteUrl()}/pl${path}`;
   return { canonical: `${siteUrl()}/${locale}${path}`, languages };
 }

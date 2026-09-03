@@ -169,7 +169,7 @@ export default async function RouteDetailPage({
           )}
 
           <div className="mt-10">
-            <MarkdownContent markdown={body} />
+            <MarkdownContent markdown={body} locale={appLocale} />
           </div>
 
           {galleryPhotos.length > 0 ? (
