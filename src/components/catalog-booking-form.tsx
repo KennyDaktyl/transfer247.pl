@@ -359,10 +359,10 @@ export function CatalogBookingForm({
                     <img
                       src={absoluteImageUrl(vp.vehicle_cover_image)}
                       alt={vp.vehicle_name}
-                      className="h-28 w-full object-cover"
+                      className="aspect-square w-full object-cover"
                     />
                   ) : (
-                    <div className="bg-bg flex h-28 w-full items-center justify-center text-[12px] text-muted">
+                    <div className="bg-bg flex aspect-square w-full items-center justify-center text-[12px] text-muted">
                       {vp.vehicle_name}
                     </div>
                   )}

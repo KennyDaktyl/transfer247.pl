@@ -9,7 +9,7 @@ import type { Vehicle } from "@/lib/types";
 
 function VehiclePlaceholder() {
   return (
-    <div className="bg-surface flex aspect-[4/3] w-full items-center justify-center rounded-[12px]">
+    <div className="bg-surface flex aspect-square w-full items-center justify-center rounded-[12px]">
       <svg width="56" height="56" viewBox="0 0 24 24" fill="none" className="text-border">
         <path
           d="M3 13l1.5-4.5A2 2 0 0 1 6.4 7h11.2a2 2 0 0 1 1.9 1.5L21 13M5 13h14a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1v-1H6v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1Z"
@@ -61,7 +61,7 @@ export async function FleetTeaserSection() {
                     <img
                       src={absoluteImageUrl(vehicle.cover_photo)}
                       alt={vehicle.name}
-                      className="aspect-[4/3] w-full rounded-[12px] object-cover"
+                      className="aspect-square w-full rounded-[12px] object-cover"
                     />
                   ) : (
                     <VehiclePlaceholder />
