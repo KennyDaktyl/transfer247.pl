@@ -3,7 +3,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { apiFetch } from "@/lib/api";
 import { getSession } from "@/lib/auth";
 import { localize } from "@/lib/localize";
-import type { FixedRoute, Tour } from "@/lib/types";
+import type { ContactInfo, FixedRoute, Tour } from "@/lib/types";
 import type { AppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 
@@ -13,11 +13,12 @@ import { MobileNav } from "./mobile-nav";
 import { NavDropdown } from "./nav-dropdown";
 
 export async function SiteHeader() {
-  const [t, locale, routes, tours, { customer }] = await Promise.all([
+  const [t, locale, routes, tours, contact, { customer }] = await Promise.all([
     getTranslations("Nav"),
     getLocale() as Promise<AppLocale>,
     apiFetch<FixedRoute[]>("/api/fixed-routes/", { next: { revalidate: 60 } }),
     apiFetch<Tour[]>("/api/tours/", { next: { revalidate: 60 } }),
+    apiFetch<ContactInfo>("/api/contact-info/", { next: { revalidate: 60 } }),
     getSession(),
   ]);
 
@@ -73,7 +74,7 @@ export async function SiteHeader() {
             )}
           </div>
           <a
-            href="tel:+48506029980"
+            href={`tel:${contact.phone}`}
             aria-label={t("call")}
             className="border-border hover:border-primary hover:text-primary hidden shrink-0 items-center gap-1.5 rounded-[999px] border px-3 py-2 text-[14px] font-medium text-text transition-colors lg:flex"
           >
@@ -100,6 +101,7 @@ export async function SiteHeader() {
             toursLabel={t("tours")}
             flatLinks={flatLinks}
             callLabel={t("call")}
+            phone={contact.phone}
             loginHref={loginHref}
             loginLabel={loginLabel}
             isLoggedIn={Boolean(customer)}

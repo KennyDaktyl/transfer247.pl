@@ -68,6 +68,7 @@ export function MobileNav({
   toursLabel,
   flatLinks,
   callLabel,
+  phone,
   loginHref,
   loginLabel,
   isLoggedIn,
@@ -81,6 +82,7 @@ export function MobileNav({
   toursLabel: string;
   flatLinks: NavItem[];
   callLabel: string;
+  phone: string;
   loginHref: string;
   loginLabel: string;
   isLoggedIn: boolean;
@@ -145,7 +147,7 @@ export function MobileNav({
               </Link>
             ))}
             <a
-              href="tel:+48506029980"
+              href={`tel:${phone}`}
               className="border-border text-primary rounded-md border-b px-2 py-3 font-medium transition-colors hover:bg-bg"
             >
               {callLabel}

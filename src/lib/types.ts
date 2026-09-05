@@ -19,6 +19,18 @@ export type HomeContent = {
   about_de: string;
 };
 
+export type ContactInfo = {
+  phone: string;
+  phone_display: string;
+  email: string;
+  legal_name: string;
+  nip: string;
+  address_street: string;
+  address_postal_code: string;
+  address_city: string;
+  address_country: string;
+};
+
 /** A price line tied to a real vehicle from the fleet — however many a
  * route/tour has is however many the admin actually priced it for. */
 export type VehiclePrice = {

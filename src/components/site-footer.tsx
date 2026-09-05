@@ -6,22 +6,25 @@ import { Link } from "@/i18n/navigation";
 import { apiFetch } from "@/lib/api";
 import { localize } from "@/lib/localize";
 import type { AppLocale } from "@/i18n/routing";
-import type { FixedRoute, Tour } from "@/lib/types";
+import type { ContactInfo, FixedRoute, Tour } from "@/lib/types";
 
 const SERVED_PLACES = [
   "Kraków", "Balice", "Wieliczka", "Skawina", "Niepołomice", "Zakopane", "Katowice", "Energylandia",
 ];
-const MAPS_URL = "https://www.google.com/maps/search/?api=1&query=ul.+Wspólna+2,+32-061+Rybna";
 
 export async function SiteFooter() {
-  const [t, tNav, tPayment, locale, routes, tours] = await Promise.all([
+  const [t, tNav, tPayment, locale, routes, tours, contact] = await Promise.all([
     getTranslations("Footer"),
     getTranslations("Nav"),
     getTranslations("BookingPayment"),
     getLocale() as Promise<AppLocale>,
     apiFetch<FixedRoute[]>("/api/fixed-routes/", { next: { revalidate: 60 } }),
     apiFetch<Tour[]>("/api/tours/", { next: { revalidate: 60 } }),
+    apiFetch<ContactInfo>("/api/contact-info/", { next: { revalidate: 60 } }),
   ]);
+  const [emailUser, emailDomain] = contact.email.split("@");
+  const address = `${contact.address_street}, ${contact.address_postal_code} ${contact.address_city}`;
+  const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
 
   return (
     <footer className="border-border bg-surface border-t">
@@ -33,17 +36,12 @@ export async function SiteFooter() {
             </span>
             <p className="mt-3 max-w-[220px] text-[14px] text-muted">{t("tagline")}</p>
             <div className="mt-4 flex flex-col gap-1.5 text-[13.5px] text-muted">
-              <a href="tel:+48506029980" className="hover:text-text">
-                +48 506 029 980
+              <a href={`tel:${contact.phone}`} className="hover:text-text">
+                {contact.phone_display}
               </a>
-              <ObfuscatedEmail user="kontakt" domain="transfer247.pl" className="hover:text-text" />
-              <a
-                href={MAPS_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-text"
-              >
-                ul. Wspólna 2, 32-061 Rybna →
+              <ObfuscatedEmail user={emailUser} domain={emailDomain} className="hover:text-text" />
+              <a href={mapsUrl} target="_blank" rel="noopener noreferrer" className="hover:text-text">
+                {address} →
               </a>
             </div>
             <div className="mt-4">
@@ -102,7 +100,9 @@ export async function SiteFooter() {
         </div>
         <div className="border-border mt-10 flex flex-wrap items-center justify-between gap-4 border-t pt-6">
           <div className="flex flex-col gap-1 text-[12.5px] text-muted">
-            <span>Michał Pielak MIKTEL · NIP 6782805234 · ul. Wspólna 2, 32-061 Rybna</span>
+            <span>
+              {contact.legal_name} · NIP {contact.nip} · {address}
+            </span>
             <span>
               © {new Date().getFullYear()} transfer247.pl — {t("rights")}
             </span>
