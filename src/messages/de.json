@@ -130,11 +130,24 @@
   },
   "Hero": {
     "ctaBook": "Transfer buchen",
-    "ctaRoutes": "Strecken & Preise ansehen",
-    "paymentTrust": "Zahlung per Karte online oder BLIK",
-    "driverLabel": "Ihr Fahrer",
-    "driverAlt": "Fahrer von transfer247.pl",
-    "vehicleAlt": "Volkswagen Multivan — das Fahrzeug von transfer247.pl"
+    "ctaRoutes": "Strecken & Preise ansehen"
+  },
+  "VehicleShowcase": {
+    "eyebrow": "Mein Auto",
+    "lead": "Ein Auto, ein Fahrer. Klimaanlage, Platz für große Koffer, Kindersitze auf Wunsch. Sehen Sie die Fotos, bevor Sie buchen — ohne die Flottenseite zu öffnen.",
+    "seats": "bis zu {count} Fahrgäste",
+    "seeFullFleet": "Gesamte Flotte ansehen",
+    "driverEyebrow": "Ihr Fahrer",
+    "driverHeading": "Sie erkennen mich sofort",
+    "driverBody": "Ich hole Sie persönlich vom Flughafen ab — keine Subunternehmer, keine zufälligen Fahrer.",
+    "paymentEyebrow": "Zahlung",
+    "paymentHeading": "Zahlen Sie im Auto mit Karte",
+    "paymentMethodContactless": "Kontaktlos",
+    "paymentMethodCash": "Bargeld",
+    "ctaBook": "Transfer buchen",
+    "ctaNote": "Festpreis, keine Nachtzuschläge. Rechnung mit MwSt. auf Wunsch.",
+    "vehicleAlt": "Volkswagen — Fahrzeug von transfer247.pl",
+    "driverAlt": "Fahrer von transfer247.pl"
   },
   "Routes": {
     "heading": "Transfers – Feste Strecken, fester Preis 24/7",

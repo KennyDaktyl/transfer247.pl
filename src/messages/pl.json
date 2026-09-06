@@ -130,11 +130,24 @@
   },
   "Hero": {
     "ctaBook": "Zarezerwuj transfer",
-    "ctaRoutes": "Zobacz trasy i ceny",
-    "paymentTrust": "Płatność kartą online lub BLIK",
-    "driverLabel": "Twój kierowca",
-    "driverAlt": "Kierowca transfer247.pl",
-    "vehicleAlt": "Volkswagen Multivan — pojazd transfer247.pl"
+    "ctaRoutes": "Zobacz trasy i ceny"
+  },
+  "VehicleShowcase": {
+    "eyebrow": "Moje auto",
+    "lead": "Jedno auto, jeden kierowca. Klimatyzacja, miejsce na duże walizki, foteliki dla dzieci na życzenie. Zobacz zdjęcia, zanim zarezerwujesz — bez wchodzenia na stronę floty.",
+    "seats": "do {count} pasażerów",
+    "seeFullFleet": "Zobacz pełną flotę",
+    "driverEyebrow": "Twój kierowca",
+    "driverHeading": "Poznasz mnie od razu",
+    "driverBody": "To ja odbieram Cię z lotniska — bez podwykonawców i przypadkowych kierowców.",
+    "paymentEyebrow": "Płatność",
+    "paymentHeading": "Zapłacisz kartą w aucie",
+    "paymentMethodContactless": "Zbliżeniowo",
+    "paymentMethodCash": "Gotówka",
+    "ctaBook": "Zarezerwuj transfer",
+    "ctaNote": "Stała cena, bez dopłat nocnych. Faktura VAT na życzenie.",
+    "vehicleAlt": "Volkswagen — pojazd transfer247.pl",
+    "driverAlt": "Kierowca transfer247.pl"
   },
   "Routes": {
     "heading": "Transfery — stałe trasy, stała cena 24/7",

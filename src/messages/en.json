@@ -130,11 +130,24 @@
   },
   "Hero": {
     "ctaBook": "Book a transfer",
-    "ctaRoutes": "See routes & prices",
-    "paymentTrust": "Pay by card online or BLIK",
-    "driverLabel": "Your driver",
-    "driverAlt": "transfer247.pl driver",
-    "vehicleAlt": "Volkswagen Multivan — the transfer247.pl vehicle"
+    "ctaRoutes": "See routes & prices"
+  },
+  "VehicleShowcase": {
+    "eyebrow": "My car",
+    "lead": "One car, one driver. Air conditioning, room for large suitcases, child seats on request. See the photos before you book — no need to open the fleet page.",
+    "seats": "up to {count} passengers",
+    "seeFullFleet": "See the full fleet",
+    "driverEyebrow": "Your driver",
+    "driverHeading": "You'll recognise me right away",
+    "driverBody": "I'm the one picking you up at the airport — no subcontractors, no random drivers.",
+    "paymentEyebrow": "Payment",
+    "paymentHeading": "Pay by card in the car",
+    "paymentMethodContactless": "Contactless",
+    "paymentMethodCash": "Cash",
+    "ctaBook": "Book a transfer",
+    "ctaNote": "Fixed price, no night surcharges. VAT invoice on request.",
+    "vehicleAlt": "Volkswagen — transfer247.pl vehicle",
+    "driverAlt": "transfer247.pl driver"
   },
   "Routes": {
     "heading": "Transfers – Fixed Routes, Fixed Price 24/7",

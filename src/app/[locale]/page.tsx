@@ -8,6 +8,7 @@ import { HeroSection } from "@/components/hero-section";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { ToursSection } from "@/components/tours-section";
+import { VehicleShowcaseSection } from "@/components/vehicle-showcase-section";
 import type { AppLocale } from "@/i18n/routing";
 import { buildAlternates } from "@/lib/seo";
 
@@ -29,6 +30,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <SiteHeader />
       <main>
         <HeroSection />
+        <VehicleShowcaseSection />
         <FixedRoutesSection />
         <ToursSection />
         <FleetTeaserSection />

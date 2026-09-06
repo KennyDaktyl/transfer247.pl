@@ -31,6 +31,18 @@ export type ContactInfo = {
   address_country: string;
 };
 
+export type ShowcaseCategory = "DRIVER" | "VEHICLE" | "TRIP" | "NEWS";
+
+export type ShowcasePhoto = {
+  category: ShowcaseCategory;
+  image: string;
+  thumbnail: string;
+  caption_pl: string;
+  caption_en: string;
+  caption_de: string;
+  order: number;
+};
+
 /** A price line tied to a real vehicle from the fleet — however many a
  * route/tour has is however many the admin actually priced it for. */
 export type VehiclePrice = {

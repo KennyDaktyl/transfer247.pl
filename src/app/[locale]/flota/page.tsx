@@ -40,6 +40,77 @@ function VehiclePlaceholder() {
   );
 }
 
+/** One vehicle. `solo` lays it out wide — image beside the copy — so a
+ * single-car fleet fills the page instead of sitting in a lonely
+ * half-width column; the stacked variant is used when there are two or more. */
+function VehicleCard({
+  vehicle,
+  locale,
+  seatsLabel,
+  solo,
+}: {
+  vehicle: Vehicle;
+  locale: AppLocale;
+  seatsLabel: string;
+  solo: boolean;
+}) {
+  const description = localize(vehicle, "description", locale);
+  const galleryPhotos = vehicle.photos.map((photo) => ({
+    src: absoluteImageUrl(photo.image),
+    thumbnailSrc: absoluteImageUrl(photo.thumbnail || photo.image),
+    alt: photo.caption || vehicle.name,
+  }));
+
+  const cover = vehicle.cover_photo ? (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={absoluteImageUrl(vehicle.cover_photo)}
+      alt={vehicle.name}
+      className="aspect-square w-full rounded-[12px] object-cover"
+    />
+  ) : (
+    <VehiclePlaceholder />
+  );
+
+  if (solo) {
+    return (
+      <article
+        id={`vehicle-${vehicle.id}`}
+        className="border-border bg-surface scroll-mt-24 grid gap-6 rounded-[18px] border p-5 sm:p-7 md:grid-cols-[minmax(0,380px)_1fr] md:gap-9"
+      >
+        <div>
+          {cover}
+          {galleryPhotos.length > 0 ? <PhotoGallery photos={galleryPhotos} className="mt-3" /> : null}
+        </div>
+        <div className="md:py-2">
+          <h2 className="font-heading text-[24px] font-semibold text-text sm:text-[28px]">{vehicle.name}</h2>
+          <div className="mt-1.5 text-[14px] font-medium text-muted">
+            {vehicle.seats} {seatsLabel}
+          </div>
+          {description ? (
+            <p className="mt-4 max-w-[60ch] text-[15px] leading-relaxed text-muted">{description}</p>
+          ) : null}
+        </div>
+      </article>
+    );
+  }
+
+  return (
+    <article
+      id={`vehicle-${vehicle.id}`}
+      className="border-border bg-surface scroll-mt-24 rounded-[16px] border p-5"
+    >
+      {cover}
+      <h2 className="font-heading mt-5 text-[21px] font-semibold text-text">{vehicle.name}</h2>
+      <div className="mt-1 text-[13px] font-medium text-muted">
+        {vehicle.seats} {seatsLabel}
+      </div>
+      {description ? <p className="mt-3 text-[14px] leading-relaxed text-muted">{description}</p> : null}
+      {galleryPhotos.length > 0 ? <PhotoGallery photos={galleryPhotos} className="mt-4" /> : null}
+    </article>
+  );
+}
+
 export default async function FleetPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
@@ -53,6 +124,8 @@ export default async function FleetPage({ params }: { params: Promise<{ locale: 
     apiFetch<Vehicle[]>("/api/fleet/vehicles/", { next: { revalidate: 60 } }),
   ]);
 
+  const solo = vehicles.length === 1;
+
   return (
     <>
       <SiteHeader />
@@ -62,42 +135,16 @@ export default async function FleetPage({ params }: { params: Promise<{ locale: 
           <h1 className="font-heading mt-3 text-[32px] font-semibold text-text sm:text-[42px]">{t("heading")}</h1>
           <p className="mt-3 max-w-[560px] text-[16px] text-muted">{t("lead")}</p>
 
-          <div className="mt-10 grid gap-8 sm:grid-cols-2">
-            {vehicles.map((vehicle) => {
-              const description = localize(vehicle, "description", appLocale);
-              const galleryPhotos = vehicle.photos.map((photo) => ({
-                src: absoluteImageUrl(photo.image),
-                thumbnailSrc: absoluteImageUrl(photo.thumbnail || photo.image),
-                alt: photo.caption || vehicle.name,
-              }));
-
-              return (
-                <article
-                  key={vehicle.id}
-                  id={`vehicle-${vehicle.id}`}
-                  className="border-border bg-surface scroll-mt-24 rounded-[16px] border p-5"
-                >
-                  {vehicle.cover_photo ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={absoluteImageUrl(vehicle.cover_photo)}
-                      alt={vehicle.name}
-                      className="aspect-square w-full rounded-[12px] object-cover"
-                    />
-                  ) : (
-                    <VehiclePlaceholder />
-                  )}
-
-                  <h2 className="font-heading mt-5 text-[21px] font-semibold text-text">{vehicle.name}</h2>
-                  <div className="mt-1 text-[13px] font-medium text-muted">
-                    {vehicle.seats} {t("seats")}
-                  </div>
-                  {description ? <p className="mt-3 text-[14px] leading-relaxed text-muted">{description}</p> : null}
-
-                  {galleryPhotos.length > 0 ? <PhotoGallery photos={galleryPhotos} className="mt-4" /> : null}
-                </article>
-              );
-            })}
+          <div className={solo ? "mt-10" : "mt-10 grid gap-8 sm:grid-cols-2"}>
+            {vehicles.map((vehicle) => (
+              <VehicleCard
+                key={vehicle.id}
+                vehicle={vehicle}
+                locale={appLocale}
+                seatsLabel={t("seats")}
+                solo={solo}
+              />
+            ))}
           </div>
 
           <div className="border-border bg-surface mt-10 rounded-[16px] border p-6">
