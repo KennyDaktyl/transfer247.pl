@@ -130,7 +130,11 @@
   },
   "Hero": {
     "ctaBook": "Book a transfer",
-    "ctaRoutes": "See routes & prices"
+    "ctaRoutes": "See routes & prices",
+    "paymentTrust": "Pay by card online or BLIK",
+    "driverLabel": "Your driver",
+    "driverAlt": "transfer247.pl driver",
+    "vehicleAlt": "Volkswagen Multivan — the transfer247.pl vehicle"
   },
   "Routes": {
     "heading": "Transfers – Fixed Routes, Fixed Price 24/7",
@@ -201,7 +205,15 @@
     "blog": "Blog",
     "contact": "Contact",
     "rights": "All rights reserved.",
-    "terms": "Terms of Service"
+    "terms": "Terms of Service",
+    "cookieSettings": "Cookie settings"
+  },
+  "CookieConsent": {
+    "title": "Cookie consent",
+    "text": "We use Google Analytics to understand how you use the site and what to improve. Nothing loads until you click \"Accept all\" — you can also reject it.",
+    "privacyLinkText": "Terms of Service",
+    "acceptAll": "Accept all",
+    "reject": "Reject"
   },
   "CatalogBooking": {
     "title": "Book this ride",

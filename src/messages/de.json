@@ -130,7 +130,11 @@
   },
   "Hero": {
     "ctaBook": "Transfer buchen",
-    "ctaRoutes": "Strecken & Preise ansehen"
+    "ctaRoutes": "Strecken & Preise ansehen",
+    "paymentTrust": "Zahlung per Karte online oder BLIK",
+    "driverLabel": "Ihr Fahrer",
+    "driverAlt": "Fahrer von transfer247.pl",
+    "vehicleAlt": "Volkswagen Multivan — das Fahrzeug von transfer247.pl"
   },
   "Routes": {
     "heading": "Transfers – Feste Strecken, fester Preis 24/7",
@@ -201,7 +205,15 @@
     "blog": "Blog",
     "contact": "Kontakt",
     "rights": "Alle Rechte vorbehalten.",
-    "terms": "AGB"
+    "terms": "AGB",
+    "cookieSettings": "Cookie-Einstellungen"
+  },
+  "CookieConsent": {
+    "title": "Cookie-Zustimmung",
+    "text": "Wir verwenden Google Analytics, um zu verstehen, wie Sie die Seite nutzen. Nichts wird geladen, bevor Sie auf „Alle akzeptieren“ klicken — Sie können auch ablehnen.",
+    "privacyLinkText": "AGB",
+    "acceptAll": "Alle akzeptieren",
+    "reject": "Ablehnen"
   },
   "CatalogBooking": {
     "title": "Diese Fahrt buchen",

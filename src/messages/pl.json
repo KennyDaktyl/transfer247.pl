@@ -130,7 +130,11 @@
   },
   "Hero": {
     "ctaBook": "Zarezerwuj transfer",
-    "ctaRoutes": "Zobacz trasy i ceny"
+    "ctaRoutes": "Zobacz trasy i ceny",
+    "paymentTrust": "Płatność kartą online lub BLIK",
+    "driverLabel": "Twój kierowca",
+    "driverAlt": "Kierowca transfer247.pl",
+    "vehicleAlt": "Volkswagen Multivan — pojazd transfer247.pl"
   },
   "Routes": {
     "heading": "Transfery — stałe trasy, stała cena 24/7",
@@ -201,7 +205,15 @@
     "blog": "Blog",
     "contact": "Kontakt",
     "rights": "Wszystkie prawa zastrzeżone.",
-    "terms": "Regulamin"
+    "terms": "Regulamin",
+    "cookieSettings": "Ustawienia cookies"
+  },
+  "CookieConsent": {
+    "title": "Zgoda na cookies",
+    "text": "Używamy Google Analytics, żeby zrozumieć, jak korzystacie ze strony i co warto poprawić. Nic się nie włączy, dopóki nie klikniesz „Akceptuj wszystko” — możesz też odrzucić.",
+    "privacyLinkText": "Regulamin",
+    "acceptAll": "Akceptuj wszystko",
+    "reject": "Odrzuć"
   },
   "CatalogBooking": {
     "title": "Zarezerwuj ten kurs",

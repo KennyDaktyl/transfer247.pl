@@ -1,5 +1,6 @@
 import { getLocale, getTranslations } from "next-intl/server";
 
+import { CookieSettingsLink } from "@/components/cookie-settings-link";
 import { ObfuscatedEmail } from "@/components/obfuscated-email";
 import { PaymentBadge } from "@/components/payment-badge";
 import { Link } from "@/i18n/navigation";
@@ -96,6 +97,10 @@ export async function SiteFooter() {
             <Link href="/regulamin" className="mt-2 block text-[14px] text-muted hover:text-text">
               {t("terms")}
             </Link>
+            <CookieSettingsLink
+              label={t("cookieSettings")}
+              className="mt-2 block text-left text-[14px] text-muted hover:text-text"
+            />
           </div>
         </div>
         <div className="border-border mt-10 flex flex-wrap items-center justify-between gap-4 border-t pt-6">
