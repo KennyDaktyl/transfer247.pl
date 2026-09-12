@@ -24,15 +24,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     apiFetch<BlogPost[]>("/api/blog/", { cache: "no-store" }).catch(() => []),
   ]);
 
+  const airportRoutes = routes.filter((route) => route.category === "LOTNISKO");
+  const transferRoutes = routes.filter((route) => route.category === "TRANSFER");
+
   return [
     ...urlsFor(""),
+    ...urlsFor("/transfery-lotniskowe"),
     ...urlsFor("/transfery"),
     ...urlsFor("/wycieczki"),
     ...urlsFor("/flota"),
     ...urlsFor("/blog"),
     ...urlsFor("/kontakt"),
     ...urlsFor("/przewoz-rowerow"),
-    ...routes.flatMap((route) => urlsFor(`/transfery/${route.slug}`)),
+    ...airportRoutes.flatMap((route) => urlsFor(`/transfery-lotniskowe/${route.slug}`)),
+    ...transferRoutes.flatMap((route) => urlsFor(`/transfery/${route.slug}`)),
     ...tours.flatMap((tour) => urlsFor(`/wycieczki/${tour.slug}`)),
     ...posts.flatMap((post) => urlsFor(`/blog/${post.slug}`)),
   ];

@@ -98,7 +98,7 @@
   },
   "Nav": {
     "airportRoutes": "Flughafentransfers",
-    "stationRoutes": "Transfers ab Hauptbahnhof",
+    "transferRoutes": "Transfers",
     "tours": "Ausflüge",
     "bikeTransport": "Fahrradtransport",
     "fleet": "Flotte",
@@ -150,12 +150,10 @@
     "driverAlt": "Fahrer von transfer247.pl"
   },
   "Routes": {
-    "heading": "Transfers – Feste Strecken, fester Preis 24/7",
-    "lead": "Transfer ab Flughafen Krakau-Balice und Katowice-Pyrzowice sowie ab dem Krakauer Hauptbahnhof. Keine Taxameter, keine Nachtzuschläge — Sie kennen den Preis vor der Buchung.",
+    "heading": "Transfers – Einwegfahrten, fester Preis 24/7",
+    "lead": "Ein Transfer in eine Richtung an eine Adresse Ihrer Wahl in Krakau und Umgebung — z. B. vom Hauptbahnhof zum Energylandia, zu Ihrem Hotel oder anderswohin. Keine Taxameter, keine Nachtzuschläge — Sie kennen den Preis vor der Buchung.",
     "airportHeading": "Flughafentransfers",
     "airportLead": "Transfer ab Flughafen Krakau-Balice und Katowice-Pyrzowice.",
-    "stationHeading": "Transfers ab Hauptbahnhof",
-    "stationLead": "Transfer ab dem Krakauer Hauptbahnhof — z. B. zum Energylandia, zu Ihrem Hotel oder an jede Adresse.",
     "from": "ab",
     "priceOnRequest": "Preis auf Anfrage",
     "vehicleOptions": "Fahrzeugvarianten",

@@ -19,7 +19,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Routes" });
-  return { title: t("heading"), description: t("lead"), alternates: buildAlternates("/transfery", locale as AppLocale) };
+  return {
+    title: t("airportHeading"),
+    description: t("airportLead"),
+    alternates: buildAlternates("/transfery-lotniskowe", locale as AppLocale),
+  };
 }
 
 function RouteGrid({
@@ -38,7 +42,7 @@ function RouteGrid({
       {routes.map((route) => (
         <Link
           key={route.slug}
-          href={`/transfery/${route.slug}`}
+          href={`/transfery-lotniskowe/${route.slug}`}
           className="border-border bg-surface block rounded-[16px] border p-6 transition-shadow hover:shadow-md"
         >
           <div className="text-[13px] font-medium text-muted">{route.duration}</div>
@@ -60,32 +64,30 @@ function RouteGrid({
   );
 }
 
-export default async function RoutesIndexPage({ params }: { params: Promise<{ locale: string }> }) {
+export default async function AirportRoutesIndexPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const [t, tCrumbs, appLocale, allRoutes] = await Promise.all([
+  const [t, tCrumbs, tNav, appLocale, allRoutes] = await Promise.all([
     getTranslations("Routes"),
     getTranslations("Breadcrumbs"),
+    getTranslations("Nav"),
     getLocale() as Promise<AppLocale>,
     apiFetch<FixedRoute[]>("/api/fixed-routes/", { next: { revalidate: 60 } }),
   ]);
 
-  // Airport transfers moved to their own URL (/transfery-lotniskowe) —
-  // "lotniskowe" is a strong enough keyword to deserve a dedicated page
-  // instead of a section anchored inside this one. This page is now just
-  // the generic one-way-transfer category (train station, Energylandia,
-  // or any future single-direction route that isn't airport-specific).
-  const routes = allRoutes.filter((r) => r.category === "TRANSFER");
+  const routes = allRoutes.filter((r) => r.category === "LOTNISKO");
 
   return (
     <>
       <SiteHeader />
       <main>
         <div className="mx-auto max-w-[1200px] px-4 py-16 sm:px-6 sm:py-20">
-          <Breadcrumbs items={[{ label: tCrumbs("home"), href: "/" }, { label: tCrumbs("transfers") }]} />
-          <h1 className="font-heading mt-3 text-[32px] font-semibold text-text sm:text-[42px]">{t("heading")}</h1>
-          <p className="mt-3 max-w-[560px] text-[16px] text-muted">{t("lead")}</p>
+          <Breadcrumbs items={[{ label: tCrumbs("home"), href: "/" }, { label: tNav("airportRoutes") }]} />
+          <h1 className="font-heading mt-3 text-[32px] font-semibold text-text sm:text-[42px]">
+            {t("airportHeading")}
+          </h1>
+          <p className="mt-3 max-w-[560px] text-[16px] text-muted">{t("airportLead")}</p>
           <p className="mt-1.5 text-[12px] text-muted">{t("vatNote")}</p>
 
           {routes.length > 0 ? (

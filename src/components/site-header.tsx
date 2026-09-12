@@ -22,9 +22,12 @@ export async function SiteHeader() {
     getSession(),
   ]);
 
-  const toNavItem = (r: FixedRoute) => ({ href: `/transfery/${r.slug}`, label: localize(r, "name", locale) });
-  const airportRouteItems = routes.filter((r) => r.category === "LOTNISKO").map(toNavItem);
-  const stationRouteItems = routes.filter((r) => r.category === "DWORZEC_PKP").map(toNavItem);
+  const airportRouteItems = routes
+    .filter((r) => r.category === "LOTNISKO")
+    .map((r) => ({ href: `/transfery-lotniskowe/${r.slug}`, label: localize(r, "name", locale) }));
+  const transferRouteItems = routes
+    .filter((r) => r.category === "TRANSFER")
+    .map((r) => ({ href: `/transfery/${r.slug}`, label: localize(r, "name", locale) }));
   const tourItems = [
     ...tours.map((tour) => ({ href: `/wycieczki/${tour.slug}`, label: localize(tour, "title", locale) })),
     { href: "/przewoz-rowerow", label: t("bikeTransport") },
@@ -47,8 +50,8 @@ export async function SiteHeader() {
         </Link>
 
         <nav className="hidden shrink-0 items-center gap-4 text-[13.5px] text-muted lg:flex xl:gap-5">
-          <NavDropdown label={t("airportRoutes")} indexHref="/transfery#lotniskowe" items={airportRouteItems} />
-          <NavDropdown label={t("stationRoutes")} indexHref="/transfery#dworzec-pkp" items={stationRouteItems} />
+          <NavDropdown label={t("airportRoutes")} indexHref="/transfery-lotniskowe" items={airportRouteItems} />
+          <NavDropdown label={t("transferRoutes")} indexHref="/transfery" items={transferRouteItems} />
           <NavDropdown label={t("tours")} indexHref="/wycieczki" items={tourItems} />
           {flatLinks.map((link) => (
             <Link key={link.href} href={link.href} className="whitespace-nowrap transition-colors hover:text-text">
@@ -94,10 +97,10 @@ export async function SiteHeader() {
           </Link>
           <MobileNav
             airportRouteItems={airportRouteItems}
-            stationRouteItems={stationRouteItems}
+            transferRouteItems={transferRouteItems}
             tourItems={tourItems}
             airportRoutesLabel={t("airportRoutes")}
-            stationRoutesLabel={t("stationRoutes")}
+            transferRoutesLabel={t("transferRoutes")}
             toursLabel={t("tours")}
             flatLinks={flatLinks}
             callLabel={t("call")}

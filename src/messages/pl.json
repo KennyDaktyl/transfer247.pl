@@ -98,7 +98,7 @@
   },
   "Nav": {
     "airportRoutes": "Transfery lotniskowe",
-    "stationRoutes": "Transfery z dworca PKP",
+    "transferRoutes": "Transfery",
     "tours": "Wycieczki",
     "bikeTransport": "Przewóz rowerów",
     "fleet": "Flota",
@@ -150,12 +150,10 @@
     "driverAlt": "Kierowca transfer247.pl"
   },
   "Routes": {
-    "heading": "Transfery — stałe trasy, stała cena 24/7",
-    "lead": "Transfer z lotniska Kraków-Balice i Katowice-Pyrzowice oraz z dworca PKP. Bez liczników i dopłat nocnych — cenę znasz zanim zarezerwujesz.",
+    "heading": "Transfery — kursy w jedną stronę, stała cena 24/7",
+    "lead": "Transfer w jedną stronę pod wybrany adres w Krakowie i okolicy — np. z dworca PKP na Energylandię, do hotelu czy w inne miejsce. Bez liczników i dopłat nocnych — cenę znasz zanim zarezerwujesz.",
     "airportHeading": "Transfery lotniskowe",
     "airportLead": "Transfer z lotniska Kraków-Balice i Katowice-Pyrzowice.",
-    "stationHeading": "Transfery z dworca PKP",
-    "stationLead": "Transfer z dworca PKP w Krakowie — np. na Energylandię, do hotelu czy pod wybrany adres.",
     "from": "od",
     "priceOnRequest": "Wycena indywidualna",
     "vehicleOptions": "warianty pojazdu",

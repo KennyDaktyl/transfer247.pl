@@ -98,7 +98,7 @@
   },
   "Nav": {
     "airportRoutes": "Airport Transfers",
-    "stationRoutes": "Train Station Transfers",
+    "transferRoutes": "Transfers",
     "tours": "Tours",
     "bikeTransport": "Bike Transport",
     "fleet": "Fleet",
@@ -150,12 +150,10 @@
     "driverAlt": "transfer247.pl driver"
   },
   "Routes": {
-    "heading": "Transfers – Fixed Routes, Fixed Price 24/7",
-    "lead": "Transfer from Kraków Balice and Katowice Pyrzowice airports, and from Kraków's train station. No meters, no night surcharges — you know the price before you book.",
+    "heading": "Transfers – One-Way Rides, Fixed Price 24/7",
+    "lead": "A one-way transfer to your chosen address in Kraków and the area — e.g. from the train station to Energylandia, your hotel, or anywhere else. No meters, no night surcharges — you know the price before you book.",
     "airportHeading": "Airport Transfers",
     "airportLead": "Transfer from Kraków Balice and Katowice Pyrzowice airports.",
-    "stationHeading": "Train Station Transfers",
-    "stationLead": "Transfer from Kraków's main train station — e.g. to Energylandia, your hotel, or any address.",
     "from": "from",
     "priceOnRequest": "Custom quote",
     "vehicleOptions": "vehicle options",

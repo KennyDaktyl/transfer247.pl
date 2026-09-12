@@ -61,10 +61,10 @@ function CollapsibleGroup({ label, indexHref, items, onNavigate }: {
 
 export function MobileNav({
   airportRouteItems,
-  stationRouteItems,
+  transferRouteItems,
   tourItems,
   airportRoutesLabel,
-  stationRoutesLabel,
+  transferRoutesLabel,
   toursLabel,
   flatLinks,
   callLabel,
@@ -75,10 +75,10 @@ export function MobileNav({
   logoutLabel,
 }: {
   airportRouteItems: NavItem[];
-  stationRouteItems: NavItem[];
+  transferRouteItems: NavItem[];
   tourItems: NavItem[];
   airportRoutesLabel: string;
-  stationRoutesLabel: string;
+  transferRoutesLabel: string;
   toursLabel: string;
   flatLinks: NavItem[];
   callLabel: string;
@@ -120,14 +120,14 @@ export function MobileNav({
           <nav className="flex flex-col text-[16px]">
             <CollapsibleGroup
               label={airportRoutesLabel}
-              indexHref="/transfery#lotniskowe"
+              indexHref="/transfery-lotniskowe"
               items={airportRouteItems}
               onNavigate={() => setOpen(false)}
             />
             <CollapsibleGroup
-              label={stationRoutesLabel}
-              indexHref="/transfery#dworzec-pkp"
-              items={stationRouteItems}
+              label={transferRoutesLabel}
+              indexHref="/transfery"
+              items={transferRouteItems}
               onNavigate={() => setOpen(false)}
             />
             <CollapsibleGroup

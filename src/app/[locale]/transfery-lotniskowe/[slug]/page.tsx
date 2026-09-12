@@ -41,7 +41,7 @@ async function getRoute(slug: string): Promise<FixedRoute | null> {
 
 export async function generateStaticParams() {
   const routes = await getRoutes();
-  return routes.filter((r) => r.category === "TRANSFER").map((r) => ({ slug: r.slug }));
+  return routes.filter((r) => r.category === "LOTNISKO").map((r) => ({ slug: r.slug }));
 }
 
 export async function generateMetadata({
@@ -60,10 +60,10 @@ export async function generateMetadata({
     localize(route, "name", appLocale);
   const description = localize(route, "seo_description", appLocale);
 
-  return { title, description, alternates: buildAlternates(`/transfery/${slug}`, locale as AppLocale) };
+  return { title, description, alternates: buildAlternates(`/transfery-lotniskowe/${slug}`, locale as AppLocale) };
 }
 
-export default async function RouteDetailPage({
+export default async function AirportRouteDetailPage({
   params,
 }: {
   params: Promise<{ locale: string; slug: string }>;
@@ -82,17 +82,16 @@ export default async function RouteDetailPage({
 
   if (!route) notFound();
 
-  // Airport transfers live under /transfery-lotniskowe now — send anyone
-  // hitting the old combined URL (old bookmarks, external backlinks,
-  // stale search results) to the current canonical address.
-  if (route.category === "LOTNISKO") {
-    permanentRedirect({ href: `/transfery-lotniskowe/${slug}`, locale: appLocale });
+  // The generic one-way category lives at /transfery — send anyone
+  // hitting this prefix for a non-airport route to its real address.
+  if (route.category !== "LOTNISKO") {
+    permanentRedirect({ href: `/transfery/${slug}`, locale: appLocale });
   }
 
   const h1 = localize(route, "h1", appLocale) || localize(route, "name", appLocale);
   const body = localize(route, "body", appLocale);
   const description = localize(route, "seo_description", appLocale) || body.slice(0, 200);
-  const otherRoutes = allRoutes.filter((r) => r.category === "TRANSFER" && r.slug !== route.slug);
+  const otherRoutes = allRoutes.filter((r) => r.category === "LOTNISKO" && r.slug !== route.slug);
   const galleryPhotos = route.photos.map((photo) => ({
     src: absoluteImageUrl(photo.image),
     thumbnailSrc: absoluteImageUrl(photo.thumbnail || photo.image),
@@ -101,7 +100,7 @@ export default async function RouteDetailPage({
   const faqs = extractFaqPairs(body);
   const breadcrumbItems = [
     { label: tCrumbs("home"), href: "/" },
-    { label: tNav("transferRoutes"), href: "/transfery" },
+    { label: tNav("airportRoutes"), href: "/transfery-lotniskowe" },
     { label: h1 },
   ];
 
@@ -114,14 +113,14 @@ export default async function RouteDetailPage({
         description={description}
         areaServed={SERVED_PLACES}
         priceFrom={route.price_from ? Number(route.price_from) : undefined}
-        url={`/${locale}/transfery/${slug}`}
+        url={`/${locale}/transfery-lotniskowe/${slug}`}
       />
       <SiteHeader />
       <main>
         <div className="mx-auto max-w-[1200px] px-4 py-14 sm:px-6 sm:py-20">
           <Breadcrumbs items={breadcrumbItems} />
 
-          <Link href="/transfery" className="text-primary mt-3 inline-block text-[13px] font-medium">
+          <Link href="/transfery-lotniskowe" className="text-primary mt-3 inline-block text-[13px] font-medium">
             ← {t("backToIndex")}
           </Link>
 
@@ -190,7 +189,7 @@ export default async function RouteDetailPage({
                 {otherRoutes.map((r) => (
                   <Link
                     key={r.slug}
-                    href={`/transfery/${r.slug}`}
+                    href={`/transfery-lotniskowe/${r.slug}`}
                     className="border-border rounded-[999px] border px-4 py-2 text-[13.5px] text-muted transition-colors hover:border-primary hover:text-text"
                   >
                     {localize(r, "name", appLocale)}

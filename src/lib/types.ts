@@ -61,7 +61,7 @@ export type FixedRoutePhoto = {
   order: number;
 };
 
-export type FixedRouteCategory = "LOTNISKO" | "DWORZEC_PKP";
+export type FixedRouteCategory = "LOTNISKO" | "TRANSFER";
 
 export type FixedRoute = {
   slug: string;
