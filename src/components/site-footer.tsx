@@ -14,7 +14,7 @@ const SERVED_PLACES = [
 ];
 
 export async function SiteFooter() {
-  const [t, tNav, tPayment, locale, routes, tours, contact] = await Promise.all([
+  const [t, tNav, tPayment, locale, allRoutes, tours, contact] = await Promise.all([
     getTranslations("Footer"),
     getTranslations("Nav"),
     getTranslations("BookingPayment"),
@@ -23,6 +23,8 @@ export async function SiteFooter() {
     apiFetch<Tour[]>("/api/tours/", { next: { revalidate: 60 } }),
     apiFetch<ContactInfo>("/api/contact-info/", { next: { revalidate: 60 } }),
   ]);
+  const airportRoutes = allRoutes.filter((route) => route.category === "LOTNISKO");
+  const transferRoutes = allRoutes.filter((route) => route.category === "TRANSFER");
   const [emailUser, emailDomain] = contact.email.split("@");
   const address = `${contact.address_street}, ${contact.address_postal_code} ${contact.address_city}`;
   const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
@@ -53,9 +55,25 @@ export async function SiteFooter() {
             </div>
           </div>
           <div>
-            <div className="mb-3 text-[13px] font-semibold tracking-wide text-text uppercase">{t("routes")}</div>
+            <div className="mb-3 text-[13px] font-semibold tracking-wide text-text uppercase">
+              {tNav("airportRoutes")}
+            </div>
             <div className="flex flex-col gap-2">
-              {routes.map((route) => (
+              {airportRoutes.map((route) => (
+                <Link
+                  key={route.slug}
+                  href={`/transfery-lotniskowe/${route.slug}`}
+                  className="text-[14px] text-muted hover:text-text"
+                >
+                  {localize(route, "name", locale)}
+                </Link>
+              ))}
+            </div>
+            <div className="mt-5 mb-3 text-[13px] font-semibold tracking-wide text-text uppercase">
+              {t("routes")}
+            </div>
+            <div className="flex flex-col gap-2">
+              {transferRoutes.map((route) => (
                 <Link
                   key={route.slug}
                   href={`/transfery/${route.slug}`}
