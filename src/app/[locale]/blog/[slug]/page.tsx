@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
+import { BlogPostingJsonLd } from "@/components/blog-posting-jsonld";
 import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { FaqJsonLd } from "@/components/faq-jsonld";
@@ -11,6 +12,7 @@ import { MarkdownContent } from "@/components/markdown-content";
 import { PhotoGallery } from "@/components/photo-gallery";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { fetchYoutubeTitle, VideoObjectJsonLd } from "@/components/video-object-jsonld";
 import { apiFetch } from "@/lib/api";
 import { extractFaqPairs } from "@/lib/faq";
 import { absoluteImageUrl } from "@/lib/images";
@@ -83,7 +85,9 @@ export default async function BlogPostPage({
   const tag = localize(post, "tag", appLocale);
   const title = localize(post, "title", appLocale);
   const body = localize(post, "body", appLocale) || localize(post, "excerpt", appLocale);
+  const description = localize(post, "seo_description", appLocale) || localize(post, "excerpt", appLocale);
   const videoId = post.youtube_url ? youtubeVideoId(post.youtube_url) : null;
+  const videoTitle = videoId ? await fetchYoutubeTitle(videoId) : null;
   const galleryPhotos = post.photos.map((photo) => ({
     src: absoluteImageUrl(photo.image),
     thumbnailSrc: absoluteImageUrl(photo.thumbnail || photo.image),
@@ -101,6 +105,21 @@ export default async function BlogPostPage({
     <>
       <BreadcrumbJsonLd items={breadcrumbItems} locale={locale} />
       <FaqJsonLd faqs={faqs} />
+      <BlogPostingJsonLd
+        headline={title}
+        description={description}
+        url={`/${locale}/blog/${slug}`}
+        image={post.cover_image ? absoluteImageUrl(post.cover_image) : undefined}
+        datePublished={post.published_at}
+      />
+      {videoId ? (
+        <VideoObjectJsonLd
+          name={videoTitle || title}
+          description={description}
+          videoId={videoId}
+          uploadDate={post.published_at}
+        />
+      ) : null}
       <SiteHeader />
       <main>
         <div className="mx-auto max-w-[1200px] px-4 py-14 sm:px-6 sm:py-20">

@@ -98,6 +98,11 @@ export default async function RouteDetailPage({
     thumbnailSrc: absoluteImageUrl(photo.thumbnail || photo.image),
     alt: photo.caption || h1,
   }));
+  // A real photo of the route/vehicle beats the generic geometric og:image
+  // fallback that Service would otherwise have no image at all — prefer a
+  // shot of this specific route, then fall back to whichever real vehicle
+  // serves it.
+  const jsonLdImage = route.photos[0]?.image ?? route.vehicle_prices[0]?.vehicle_cover_image ?? null;
   const faqs = extractFaqPairs(body);
   const breadcrumbItems = [
     { label: tCrumbs("home"), href: "/" },
@@ -115,6 +120,7 @@ export default async function RouteDetailPage({
         areaServed={SERVED_PLACES}
         priceFrom={route.price_from ? Number(route.price_from) : undefined}
         url={`/${locale}/transfery/${slug}`}
+        image={jsonLdImage ? absoluteImageUrl(jsonLdImage) : undefined}
       />
       <SiteHeader />
       <main>

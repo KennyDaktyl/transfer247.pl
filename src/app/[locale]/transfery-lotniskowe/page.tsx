@@ -3,6 +3,7 @@ import { getLocale, getTranslations, setRequestLocale } from "next-intl/server";
 
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
+import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -77,13 +78,15 @@ export default async function AirportRoutesIndexPage({ params }: { params: Promi
   ]);
 
   const routes = allRoutes.filter((r) => r.category === "LOTNISKO");
+  const breadcrumbItems = [{ label: tCrumbs("home"), href: "/" }, { label: tNav("airportRoutes") }];
 
   return (
     <>
+      <BreadcrumbJsonLd items={breadcrumbItems} locale={locale} />
       <SiteHeader />
       <main>
         <div className="mx-auto max-w-[1200px] px-4 py-16 sm:px-6 sm:py-20">
-          <Breadcrumbs items={[{ label: tCrumbs("home"), href: "/" }, { label: tNav("airportRoutes") }]} />
+          <Breadcrumbs items={breadcrumbItems} />
           <h1 className="font-heading mt-3 text-[32px] font-semibold text-text sm:text-[42px]">
             {t("airportHeading")}
           </h1>

@@ -90,6 +90,10 @@ export default async function TourDetailPage({
     thumbnailSrc: absoluteImageUrl(photo.thumbnail || photo.image),
     alt: photo.caption || h1,
   }));
+  // A real photo beats the generic geometric og:image fallback Service
+  // would otherwise have no image at all.
+  const jsonLdImage =
+    tour.cover_image ?? tour.photos[0]?.image ?? tour.vehicle_prices[0]?.vehicle_cover_image ?? null;
   const faqs = extractFaqPairs(body);
   const breadcrumbItems = [
     { label: tCrumbs("home"), href: "/" },
@@ -107,6 +111,7 @@ export default async function TourDetailPage({
         areaServed={SERVED_PLACES}
         priceFrom={tour.price_from ? Number(tour.price_from) : undefined}
         url={`/${locale}/wycieczki/${slug}`}
+        image={jsonLdImage ? absoluteImageUrl(jsonLdImage) : undefined}
         serviceType="Guided day trip"
       />
       <SiteHeader />

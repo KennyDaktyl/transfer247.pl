@@ -10,6 +10,7 @@ export function ServiceJsonLd({
   areaServed,
   priceFrom,
   url,
+  image,
   serviceType = "Airport transfer",
 }: {
   name: string;
@@ -17,6 +18,7 @@ export function ServiceJsonLd({
   areaServed: string[];
   priceFrom?: number;
   url: string;
+  image?: string;
   serviceType?: string;
 }) {
   const data = {
@@ -26,6 +28,7 @@ export function ServiceJsonLd({
     name,
     description,
     url: `${siteUrl()}${url}`,
+    ...(image ? { image } : {}),
     provider: { "@type": "TaxiService", name: "transfer247.pl", url: siteUrl() },
     areaServed: areaServed.map((place) => ({ "@type": "Place", name: place })),
     ...(priceFrom
