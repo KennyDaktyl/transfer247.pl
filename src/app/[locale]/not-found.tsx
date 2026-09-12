@@ -8,7 +8,8 @@ export default async function NotFound() {
   const [t, tNav] = await Promise.all([getTranslations("NotFound"), getTranslations("Nav")]);
 
   const links = [
-    { href: "/transfery", label: tNav("airportRoutes") },
+    { href: "/transfery-lotniskowe", label: tNav("airportRoutes") },
+    { href: "/transfery", label: tNav("transferRoutes") },
     { href: "/wycieczki", label: tNav("tours") },
     { href: "/flota", label: tNav("fleet") },
     { href: "/kontakt", label: tNav("contact") },

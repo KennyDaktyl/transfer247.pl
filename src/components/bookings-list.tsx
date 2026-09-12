@@ -408,7 +408,7 @@ function BookingCard({
       <div className="border-border flex flex-wrap items-center justify-between gap-3 border-t pt-3">
         <div className="flex flex-wrap items-center gap-4">
           {booking.status === "ZAKONCZONA" && (
-            <Link href="/transfery" className="text-primary text-[12.5px] font-semibold underline">
+            <Link href="/transfery-lotniskowe" className="text-primary text-[12.5px] font-semibold underline">
               {t("bookSimilar")}
             </Link>
           )}

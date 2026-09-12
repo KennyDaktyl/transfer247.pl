@@ -120,7 +120,7 @@ export async function VehicleShowcaseSection() {
 
         <div className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-3">
           <Link
-            href="/transfery"
+            href="/transfery-lotniskowe"
             className="bg-primary hover:bg-primary-hover rounded-[999px] px-7 py-3 text-[15px] font-medium text-white transition-colors"
           >
             {t("ctaBook")}

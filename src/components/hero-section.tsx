@@ -38,7 +38,7 @@ export async function HeroSection() {
 
         <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
           <Link
-            href="/transfery"
+            href="/transfery-lotniskowe"
             className="bg-primary hover:bg-primary-hover rounded-[999px] px-7 py-3 text-[15px] font-medium text-white transition-colors"
           >
             {t("ctaBook")}

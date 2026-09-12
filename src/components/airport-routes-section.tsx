@@ -7,38 +7,41 @@ import { localize } from "@/lib/localize";
 import type { FixedRoute } from "@/lib/types";
 import type { AppLocale } from "@/i18n/routing";
 
-export async function FixedRoutesSection() {
-  const [t, locale, allRoutes] = await Promise.all([
+/** Homepage teaser for airport transfers — kept as its own section (mirrors
+ * the standalone /transfery-lotniskowe page) so this brand's flagship,
+ * highest-volume keyword gets top billing on the homepage instead of being
+ * mixed into the generic one-way-transfer grid below it. */
+export async function AirportRoutesSection() {
+  const [t, locale, routes] = await Promise.all([
     getTranslations("Routes"),
     getLocale() as Promise<AppLocale>,
     apiFetch<FixedRoute[]>("/api/fixed-routes/", { next: { revalidate: 60 } }),
   ]);
 
-  // Airport transfers get their own homepage section (AirportRoutesSection)
-  // and their own page (/transfery-lotniskowe) — this one is just the
-  // generic one-way-transfer category now.
-  const routes = allRoutes.filter((r) => r.category === "TRANSFER");
-  if (routes.length === 0) return null;
+  const airportRoutes = routes.filter((r) => r.category === "LOTNISKO");
+  if (airportRoutes.length === 0) return null;
 
   return (
-    <section id="trasy" className="bg-bg scroll-mt-20">
+    <section id="lotniskowe" className="bg-bg scroll-mt-20">
       <div className="mx-auto max-w-[1200px] px-4 py-16 sm:px-6 sm:py-24">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h2 className="font-heading text-[28px] font-semibold text-text sm:text-[36px]">{t("heading")}</h2>
-            <p className="mt-3 max-w-[560px] text-[15px] text-muted sm:text-[16px]">{t("lead")}</p>
+            <h2 className="font-heading text-[28px] font-semibold text-text sm:text-[36px]">
+              {t("airportHeading")}
+            </h2>
+            <p className="mt-3 max-w-[560px] text-[15px] text-muted sm:text-[16px]">{t("airportLead")}</p>
             <p className="mt-1.5 text-[12px] text-muted">{t("vatNote")}</p>
           </div>
-          <Link href="/transfery" className="text-primary text-[14px] font-medium whitespace-nowrap">
+          <Link href="/transfery-lotniskowe" className="text-primary text-[14px] font-medium whitespace-nowrap">
             {t("backToIndex")} →
           </Link>
         </div>
 
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {routes.map((route) => (
+          {airportRoutes.map((route) => (
             <Link
               key={route.slug}
-              href={`/transfery/${route.slug}`}
+              href={`/transfery-lotniskowe/${route.slug}`}
               aria-label={localize(route, "h1", locale) || localize(route, "name", locale)}
               className="border-border bg-surface block rounded-[16px] border p-6 transition-shadow hover:shadow-md"
             >

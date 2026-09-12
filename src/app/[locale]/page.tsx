@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 
 import { AboutSection } from "@/components/about-section";
+import { AirportRoutesSection } from "@/components/airport-routes-section";
 import { FixedRoutesSection } from "@/components/fixed-routes-section";
 import { FleetTeaserSection } from "@/components/fleet-teaser-section";
 import { HeroSection } from "@/components/hero-section";
@@ -31,6 +32,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <main>
         <HeroSection />
         <VehicleShowcaseSection />
+        <AirportRoutesSection />
         <FixedRoutesSection />
         <ToursSection />
         <FleetTeaserSection />

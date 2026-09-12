@@ -90,7 +90,7 @@ export async function SiteHeader() {
             <span className="hidden xl:inline">{t("call")}</span>
           </a>
           <Link
-            href="/transfery"
+            href="/transfery-lotniskowe"
             className="bg-primary hover:bg-primary-hover rounded-[999px] px-4 py-2 text-[14px] font-medium text-white transition-colors"
           >
             {t("bookNow")}
