@@ -20,6 +20,10 @@ const LOCALE_PREFIX_RE = new RegExp(`^/(?:${routing.locales.join("|")})(?:/|$)`)
 function localizeMarkdownLinks(markdown: string, locale: AppLocale): string {
   return markdown.replace(/(!?)(\]\()(\/[^)\s]*)/g, (match, bang: string, open: string, path: string) => {
     if (bang || LOCALE_PREFIX_RE.test(path)) return match;
+    // A bare root-relative anchor ("/#fleet", linking to a homepage section)
+    // would otherwise become "/pl/#fleet" — the leading "/" is the anchor's,
+    // not a path segment, so drop it before appending to the locale prefix.
+    if (path.startsWith("/#")) return `${bang}${open}/${locale}${path.slice(1)}`;
     return `${bang}${open}/${locale}${path}`;
   });
 }
