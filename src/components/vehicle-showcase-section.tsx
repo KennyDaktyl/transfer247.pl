@@ -7,6 +7,7 @@ import { absoluteImageUrl } from "@/lib/images";
 import { localize } from "@/lib/localize";
 import type { ShowcasePhoto, Vehicle } from "@/lib/types";
 
+import { SinglePhotoLightbox } from "./single-photo-lightbox";
 import { VehicleShowcaseGallery } from "./vehicle-showcase-gallery";
 
 const PAYMENT_BRANDS = ["VISA", "Mastercard", "BLIK"];
@@ -70,11 +71,11 @@ export async function VehicleShowcaseSection() {
         <div className="mt-6 grid gap-4 md:grid-cols-2">
           {driverPhoto ? (
             <div className="border-border bg-surface flex items-center gap-4 rounded-[16px] border p-5">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={absoluteImageUrl(driverPhoto.thumbnail || driverPhoto.image)}
+              <SinglePhotoLightbox
+                src={absoluteImageUrl(driverPhoto.image)}
+                thumbnailSrc={absoluteImageUrl(driverPhoto.thumbnail || driverPhoto.image)}
                 alt={localize(driverPhoto, "caption", locale) || t("driverAlt")}
-                className="border-primary h-16 w-16 shrink-0 rounded-full border-2 object-cover"
+                className="border-primary h-16 w-16 rounded-full border-2 object-cover"
               />
               <div>
                 <p className="text-[11px] font-semibold tracking-[0.12em] text-muted uppercase">
@@ -114,6 +115,35 @@ export async function VehicleShowcaseSection() {
                   </span>
                 ))}
               </div>
+            </div>
+          </div>
+
+          <div className="border-border bg-surface flex items-start gap-4 rounded-[16px] border p-5 md:col-span-2">
+            <span className="bg-primary/10 text-primary flex h-14 w-14 shrink-0 items-center justify-center rounded-[14px]">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M12 3l7 3v5c0 4.8-3 8.9-7 10-4-1.1-7-5.2-7-10V6l7-3Z"
+                  stroke="currentColor"
+                  strokeWidth="1.7"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M9 12.3l2.1 2.1L15.5 10"
+                  stroke="currentColor"
+                  strokeWidth="1.7"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </span>
+            <div>
+              <p className="text-[11px] font-semibold tracking-[0.12em] text-muted uppercase">
+                {t("licenseEyebrow")}
+              </p>
+              <h3 className="font-heading mt-0.5 text-[19px] font-semibold text-text">
+                {t("licenseHeading")}
+              </h3>
+              <p className="mt-1 text-[13.5px] leading-relaxed text-muted">{t("licenseBody")}</p>
             </div>
           </div>
         </div>

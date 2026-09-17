@@ -61,16 +61,13 @@ function VehicleCard({
     alt: photo.caption || vehicle.name,
   }));
 
-  const cover = vehicle.cover_photo ? (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={absoluteImageUrl(vehicle.cover_photo)}
-      alt={vehicle.name}
-      className="aspect-square w-full rounded-[12px] object-cover"
-    />
-  ) : (
-    <VehiclePlaceholder />
-  );
+  const coverPhoto = vehicle.cover_photo
+    ? {
+        src: absoluteImageUrl(vehicle.cover_photo),
+        thumbnailSrc: absoluteImageUrl(vehicle.cover_photo),
+        alt: vehicle.name,
+      }
+    : undefined;
 
   if (solo) {
     return (
@@ -79,8 +76,14 @@ function VehicleCard({
         className="border-border bg-surface scroll-mt-24 grid gap-6 rounded-[18px] border p-5 sm:p-7 md:grid-cols-[minmax(0,380px)_1fr] md:gap-9"
       >
         <div>
-          {cover}
-          {galleryPhotos.length > 0 ? <PhotoGallery photos={galleryPhotos} className="mt-3" /> : null}
+          {coverPhoto ? (
+            <PhotoGallery photos={galleryPhotos} coverPhoto={coverPhoto} className="mt-3" />
+          ) : (
+            <>
+              <VehiclePlaceholder />
+              {galleryPhotos.length > 0 ? <PhotoGallery photos={galleryPhotos} className="mt-3" /> : null}
+            </>
+          )}
         </div>
         <div className="md:py-2">
           <h2 className="font-heading text-[24px] font-semibold text-text sm:text-[28px]">{vehicle.name}</h2>
@@ -95,18 +98,32 @@ function VehicleCard({
     );
   }
 
-  return (
-    <article
-      id={`vehicle-${vehicle.id}`}
-      className="border-border bg-surface scroll-mt-24 rounded-[16px] border p-5"
-    >
-      {cover}
+  const details = (
+    <>
       <h2 className="font-heading mt-5 text-[21px] font-semibold text-text">{vehicle.name}</h2>
       <div className="mt-1 text-[13px] font-medium text-muted">
         {vehicle.seats} {seatsLabel}
       </div>
       {description ? <p className="mt-3 text-[14px] leading-relaxed text-muted">{description}</p> : null}
-      {galleryPhotos.length > 0 ? <PhotoGallery photos={galleryPhotos} className="mt-4" /> : null}
+    </>
+  );
+
+  return (
+    <article
+      id={`vehicle-${vehicle.id}`}
+      className="border-border bg-surface scroll-mt-24 rounded-[16px] border p-5"
+    >
+      {coverPhoto ? (
+        <PhotoGallery photos={galleryPhotos} coverPhoto={coverPhoto} className="mt-4">
+          {details}
+        </PhotoGallery>
+      ) : (
+        <>
+          <VehiclePlaceholder />
+          {details}
+          {galleryPhotos.length > 0 ? <PhotoGallery photos={galleryPhotos} className="mt-4" /> : null}
+        </>
+      )}
     </article>
   );
 }
