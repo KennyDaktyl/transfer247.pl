@@ -65,6 +65,10 @@ export function CatalogBookingForm({
   const [flightNumber, setFlightNumber] = useState("");
   const [phone, setPhone] = useState("+48");
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error" | "unauthenticated">("idle");
+  // Business-rule rejections from the backend ("that time slot is taken",
+  // "bookings paused") — shown verbatim instead of a generic "try again",
+  // which tells the customer nothing they can act on.
+  const [serverError, setServerError] = useState<string | null>(null);
   const [estimate, setEstimate] = useState<RouteEstimate | null>(null);
   const [attemptedSubmit, setAttemptedSubmit] = useState(false);
   const [touched, setTouched] = useState<Record<string, boolean>>({});
@@ -301,8 +305,19 @@ export function CatalogBookingForm({
         setStatus("unauthenticated");
         return;
       }
+      let message: string | null = null;
+      if (!res.ok) {
+        try {
+          const data = await res.json();
+          const first = Array.isArray(data?.non_field_errors) ? data.non_field_errors[0] : data?.detail;
+          if (typeof first === "string") message = first;
+        } catch {
+          // Non-JSON error body — fall back to the generic message.
+        }
+      }
+      setServerError(message);
       setStatus(res.ok ? "success" : "error");
-      pushToast(res.ok ? "success" : "error", res.ok ? t("submitSuccessToast") : t("submitErrorToast"));
+      pushToast(res.ok ? "success" : "error", res.ok ? t("submitSuccessToast") : (message ?? t("submitErrorToast")));
       if (res.ok) {
         try {
           sessionStorage.removeItem(FORM_STORAGE_KEY);
@@ -661,7 +676,7 @@ export function CatalogBookingForm({
           <p className="text-center text-[12.5px] font-semibold text-red-600">{t("missingFields")}</p>
         )}
 
-        {status === "error" && <p className="text-center text-xs font-semibold text-red-600">{t("error")}</p>}
+        {status === "error" && <p className="text-center text-xs font-semibold text-red-600">{serverError ?? t("error")}</p>}
 
         {status === "unauthenticated" && (
           <div className="flex flex-col gap-2">
