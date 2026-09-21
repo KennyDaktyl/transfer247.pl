@@ -14,8 +14,11 @@ repeatedly shown up in Google Search Console's Coverage report as "contains
 a redirect" / "crawled, not indexed" / 404 counts creeping up after a
 content push.
 
-Run the crawl-based checker against the **live site** after publishing (or
-periodically) to catch these before/soon after they reach GSC:
+Run the crawl-based checker against the **live site after every deploy and after
+publishing content** (`npm run check-links`, non-zero exit on problems). There is
+**no CI in this repo** — nothing runs it automatically, so skipping this step
+is exactly how a regression reaches Google Search Console unnoticed. Run it
+(or periodically) to catch these before/soon after they reach GSC:
 
 ```sh
 node scripts/check-internal-links.mjs                       # crawls https://transfer247.pl
@@ -31,6 +34,10 @@ It walks `sitemap.xml`, fetches every listed page, and reports:
   `/transfery-lotniskowe` split),
 - sitemap URLs that don't resolve with a direct 200,
 - pages missing `<link rel="canonical">`,
+- every URL a page *declares* to crawlers — `<link rel=canonical|alternate>` and the
+  HTTP `Link` response header (hreflang) — must resolve 200, not redirect. (This
+  is the check whose absence let next-intl's default `Link` header advertise an
+  unprefixed x-default on every page for weeks.)
 - pages sharing an identical `<title>`+`<h1>` under a different path
   (possible duplicate content).
 

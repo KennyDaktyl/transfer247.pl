@@ -17,7 +17,11 @@
  *   3. BROKEN — internal links that 404 or otherwise error.
  *   4. SITEMAP URLS THAT REDIRECT/404 — sitemap.xml should only ever list
  *      canonical, directly-resolving URLs.
- *   5. POSSIBLE DUPLICATES — distinct paths (ignoring locale) sharing an
+ *   5. DECLARED URLS — every URL a page advertises via <link rel=canonical|alternate>
+ *      (hreflang) or the HTTP `Link` header must resolve 200 directly. (Added after GSC
+ *      kept counting "page with redirect" while checks 1-4 were green: next-intl's
+ *      middleware put an unprefixed x-default in the Link header on every page.)
+ *   6. POSSIBLE DUPLICATES — distinct paths (ignoring locale) sharing an
  *      identical <title>+<h1> pair, or pages missing <link rel="canonical">.
  *
  * Usage:
@@ -34,6 +38,7 @@ const BASE_URL = (process.argv[2] || process.env.BASE_URL || "https://transfer24
 const LOCALES = ["pl", "en", "de"];
 const CONCURRENCY = 6;
 const REQUEST_DELAY_MS = 30;
+const CONCURRENT_PROBES = CONCURRENCY;
 
 /** @type {string} */
 const HOST = new URL(BASE_URL).host;
@@ -41,7 +46,7 @@ const HOST = new URL(BASE_URL).host;
 async function fetchText(url) {
   const res = await fetch(url, { redirect: "manual", headers: { "User-Agent": "internal-link-checker/1.0" } });
   const body = res.status >= 200 && res.status < 300 ? await res.text() : "";
-  return { status: res.status, location: res.headers.get("location"), body };
+  return { status: res.status, location: res.headers.get("location"), link: res.headers.get("link") || "", body };
 }
 
 function extractLocs(sitemapXml) {
@@ -60,6 +65,21 @@ function extractTag(html, tag) {
 function extractCanonical(html) {
   const m = html.match(/<link[^>]*rel=["']canonical["'][^>]*href=["']([^"']+)["']/i);
   return m ? m[1] : null;
+}
+
+/** URLs a page *declares* to crawlers outside of <a href>: <link rel=canonical|alternate>
+ * in the HTML and rel="alternate" entries in the HTTP Link header (next-intl's middleware
+ * emits its own hreflang set there, independent of the HTML). Googlebot reads both. */
+function extractDeclaredUrls(html, linkHeader) {
+  const urls = [];
+  for (const m of html.matchAll(/<link\b[^>]*>/gi)) {
+    const tag = m[0];
+    if (!/rel=["'](canonical|alternate)["']/i.test(tag)) continue;
+    const h = tag.match(/href=["']([^"']+)["']/i);
+    if (h) urls.push({ url: h[1], via: "html <link>" });
+  }
+  for (const m of linkHeader.matchAll(/<([^>]+)>;\s*rel="alternate"/gi)) urls.push({ url: m[1], via: "HTTP Link header" });
+  return urls;
 }
 
 function classifyHref(rawHref, sourceUrl) {
@@ -110,10 +130,22 @@ async function main() {
 
   const sitemapIssues = [];
   const hrefsBySource = new Map(); // href -> Set(sourceUrl)
+  const declaredBySource = new Map(); // url -> { via:Set, sources:Set }
   const pageMeta = []; // { url, title, h1, canonical }
 
   await mapWithConcurrency(sitemapUrls, CONCURRENCY, async (url) => {
-    const { status, location, body } = await fetchText(url);
+    const { status, location, link, body } = await fetchText(url);
+    if (status === 200) {
+      for (const d of extractDeclaredUrls(body, link)) {
+        let abs;
+        try { abs = new URL(d.url, url); } catch { continue; }
+        if (abs.host !== HOST) continue;
+        const key = `${abs.origin}${abs.pathname}`;
+        if (!declaredBySource.has(key)) declaredBySource.set(key, { via: new Set(), sources: new Set() });
+        declaredBySource.get(key).via.add(d.via);
+        declaredBySource.get(key).sources.add(url);
+      }
+    }
     if (status !== 200) {
       sitemapIssues.push({ url, status, location });
       return;
@@ -147,6 +179,15 @@ async function main() {
       redirectingLinks.push({ href, to: location, sources: [...info.sources] });
     } else if (status >= 400) {
       brokenLinks.push({ href, status, sources: [...info.sources] });
+    }
+  });
+
+  const declaredIssues = [];
+  await mapWithConcurrency([...declaredBySource.keys()], CONCURRENT_PROBES, async (u) => {
+    const { status, location } = await fetchText(u);
+    if (status !== 200) {
+      const info = declaredBySource.get(u);
+      declaredIssues.push({ url: u, status, location, via: [...info.via], sources: [...info.sources] });
     }
   });
 
@@ -194,6 +235,12 @@ async function main() {
     console.log(`    linked from: ${b.sources.slice(0, 3).join(", ")}${b.sources.length > 3 ? ` (+${b.sources.length - 3} more)` : ""}`);
   }
 
+  section(`CANONICAL/HREFLANG/Link-HEADER URLS THAT DON'T RESOLVE 200 (${declaredIssues.length})`);
+  for (const d of declaredIssues) {
+    console.log(`  ${d.url} -> ${d.status}${d.location ? ` (Location: ${d.location})` : ""}   [declared via: ${d.via.join(", ")}]`);
+    console.log(`    declared on ${d.sources.length} pages, e.g. ${d.sources.slice(0, 2).join(", ")}`);
+  }
+
   section(`PAGES MISSING <link rel="canonical"> (${missingCanonical.length})`);
   for (const u of missingCanonical) console.log(`  ${u}`);
 
@@ -205,7 +252,7 @@ async function main() {
 
   console.log(`\nCrawled ${pageMeta.length}/${sitemapUrls.length} sitemap pages, checked ${uniqueHrefs.length} unique internal link targets.\n`);
 
-  const hasBlockingIssues = sitemapIssues.length > 0 || missingPrefix.length > 0 || brokenLinks.length > 0;
+  const hasBlockingIssues = declaredIssues.length > 0 || sitemapIssues.length > 0 || missingPrefix.length > 0 || brokenLinks.length > 0;
   process.exit(hasBlockingIssues ? 1 : 0);
 }
 
