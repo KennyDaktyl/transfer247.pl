@@ -333,6 +333,7 @@ export function CatalogBookingForm({
           flight_number: flightNumber || undefined,
           customer_name: customerName,
           customer_email: customerEmail || undefined,
+          language: locale,
         }),
       });
       if (res.status === 401) {
