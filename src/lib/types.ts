@@ -50,6 +50,7 @@ export type VehiclePrice = {
   vehicle_name: string;
   vehicle_seats: number;
   vehicle_cover_image: string | null;
+  vehicle_photos: VehiclePhoto[];
   price: string;
   price_eur: string | null;
 };

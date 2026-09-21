@@ -232,6 +232,7 @@
   "CatalogBooking": {
     "title": "Diese Fahrt buchen",
     "vehicleLabel": "Fahrzeug",
+    "vehiclePhotos": "Fahrzeugfotos ansehen",
     "dateLabel": "Datum",
     "timeLabel": "Uhrzeit",
     "passengersLabel": "Passagiere",

@@ -232,6 +232,7 @@
   "CatalogBooking": {
     "title": "Book this ride",
     "vehicleLabel": "Vehicle",
+    "vehiclePhotos": "View vehicle photos",
     "dateLabel": "Date",
     "timeLabel": "Time",
     "passengersLabel": "Passengers",

@@ -3,6 +3,8 @@
 import { useLocale, useTranslations } from "next-intl";
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
 
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
@@ -56,6 +58,21 @@ export function CatalogBookingForm({
 
   const [vehicleId, setVehicleId] = useState<number | null>(vehiclePrices[0]?.vehicle_id ?? null);
   const selectedVehicle = vehiclePrices.find((vp) => vp.vehicle_id === vehicleId) ?? null;
+  // Gallery of the selected vehicle: cover first, then its published photos.
+  // The cover is the big tile in the card, the first two gallery photos sit
+  // beside/below it, and any of them opens the full lightbox.
+  const [lightboxIndex, setLightboxIndex] = useState(-1);
+  const vehicleCover = selectedVehicle?.vehicle_cover_image ?? null;
+  const vehiclePhotos = selectedVehicle?.vehicle_photos ?? [];
+  const lightboxSlides = [
+    ...(vehicleCover ? [{ src: absoluteImageUrl(vehicleCover), alt: selectedVehicle?.vehicle_name ?? "" }] : []),
+    ...vehiclePhotos.map((photo) => ({
+      src: absoluteImageUrl(photo.image),
+      alt: photo.caption || (selectedVehicle?.vehicle_name ?? ""),
+    })),
+  ];
+  const extraPhotos = vehiclePhotos.slice(0, 2);
+  const extraPhotoOffset = vehicleCover ? 1 : 0;
   const maxPassengers = selectedVehicle?.vehicle_seats ?? 1;
 
   const [date, setDate] = useState("");
@@ -392,40 +409,92 @@ export function CatalogBookingForm({
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             {vehiclePrices.map((vp) => {
               const selected = vp.vehicle_id === vehicleId;
+              const pickVehicle = () => {
+                setVehicleId(vp.vehicle_id);
+              };
               return (
-                <button
+                <div
                   key={vp.vehicle_id}
-                  type="button"
-                  onClick={() => {
-                    setVehicleId(vp.vehicle_id);
-                    dateInputRef.current?.focus();
-                  }}
-                  className={`overflow-hidden rounded-[12px] border text-left transition-colors ${
+                  className={`overflow-hidden rounded-[12px] border transition-colors ${
                     selected ? "border-primary" : "border-border hover:border-text/30"
                   }`}
                 >
                   {vp.vehicle_cover_image ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={absoluteImageUrl(vp.vehicle_cover_image)}
-                      alt={vp.vehicle_name}
-                      className="aspect-square w-full object-cover"
-                    />
+                    <button
+                      type="button"
+                      aria-label={t("vehiclePhotos")}
+                      onClick={() => {
+                        pickVehicle();
+                        setLightboxIndex(0);
+                      }}
+                      className="block w-full cursor-zoom-in"
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={absoluteImageUrl(vp.vehicle_cover_image)}
+                        alt={vp.vehicle_name}
+                        className="aspect-square w-full object-cover"
+                      />
+                    </button>
                   ) : (
                     <div className="bg-bg flex aspect-square w-full items-center justify-center text-[12px] text-muted">
                       {vp.vehicle_name}
                     </div>
                   )}
-                  <div className="p-3">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      pickVehicle();
+                      dateInputRef.current?.focus();
+                    }}
+                    className="block w-full p-3 text-left"
+                  >
                     <div className="text-[14px] font-semibold text-text">{vp.vehicle_name}</div>
                     <div className="mt-0.5 flex items-center justify-between text-[13px]">
                       <span className="text-muted">{vp.vehicle_seats} os.</span>
                       <span className="font-semibold text-text">{formatPrice(vp.price, vp.price_eur, locale)}</span>
                     </div>
-                  </div>
-                </button>
+                  </button>
+                </div>
               );
             })}
+
+            {extraPhotos.length > 0 ? (
+              // Two more shots of the selected vehicle: stacked in the free right
+              // column when there is a single vehicle, otherwise a row under the
+              // cards; on mobile always a two-up row under the main photo.
+              <div
+                className={`grid grid-cols-2 gap-3 ${
+                  vehiclePrices.length === 1 ? "sm:grid-cols-1 sm:grid-rows-2" : "sm:col-span-2"
+                }`}
+              >
+                {extraPhotos.map((photo, i) => {
+                  const hidden = i === extraPhotos.length - 1 ? vehiclePhotos.length - extraPhotos.length : 0;
+                  return (
+                    <button
+                      key={photo.image}
+                      type="button"
+                      aria-label={t("vehiclePhotos")}
+                      onClick={() => setLightboxIndex(extraPhotoOffset + i)}
+                      className="border-border relative aspect-[4/3] cursor-zoom-in overflow-hidden rounded-[12px] border sm:aspect-auto sm:min-h-0"
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={absoluteImageUrl(photo.thumbnail || photo.image)}
+                        alt={photo.caption || selectedVehicle?.vehicle_name || ""}
+                        loading="lazy"
+                        className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 hover:scale-[1.03]"
+                      />
+                      {hidden > 0 ? (
+                        <span className="absolute right-2 bottom-2 rounded-full bg-black/65 px-2.5 py-1 text-[12px] font-semibold text-white">
+                          +{hidden}
+                        </span>
+                      ) : null}
+                    </button>
+                  );
+                })}
+              </div>
+            ) : null}
           </div>
         </div>
 
@@ -721,6 +790,12 @@ export function CatalogBookingForm({
         )}
       </div>
       <ToastStack toasts={toasts} onDismiss={dismissToast} />
+      <Lightbox
+        open={lightboxIndex >= 0}
+        index={Math.max(lightboxIndex, 0)}
+        close={() => setLightboxIndex(-1)}
+        slides={lightboxSlides}
+      />
     </div>
   );
 }

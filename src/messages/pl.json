@@ -232,6 +232,7 @@
   "CatalogBooking": {
     "title": "Zarezerwuj ten kurs",
     "vehicleLabel": "Pojazd",
+    "vehiclePhotos": "Zobacz zdjęcia pojazdu",
     "dateLabel": "Data",
     "timeLabel": "Godzina",
     "passengersLabel": "Liczba pasażerów",
