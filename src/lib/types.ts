@@ -244,9 +244,13 @@ export type Booking = {
   confirmed_at: string | null;
   payment_deadline: string | null;
   deposit_amount: string | null;
+  /** EUR deposit — the booking's own EUR field, or the default rule when it
+   * was left empty (see BookingSettings on the backend). */
+  deposit_amount_eur: string | null;
   paid_at: string | null;
   remainder_paid_at: string | null;
   remaining_amount: string | null;
+  remaining_amount_eur: string | null;
   booked_vehicle_id: number | null;
   booked_vehicle_name: string | null;
   booked_vehicle_plate: string | null;

@@ -12,18 +12,6 @@ import { formatDistance, formatPrice, netFromGross } from "@/lib/format";
 import type { Booking, BookingStatus } from "@/lib/types";
 import { useDriverEta } from "@/lib/use-driver-eta";
 
-/** Scales a PLN amount into its EUR equivalent using this specific
- * booking's own price/price_eur ratio (deposit_amount is a flat PLN
- * setting, not tied to any one route, so it has no EUR figure of its own —
- * see CreatePaymentIntentView on the backend for the same scaling). Null
- * whenever this booking has no price_eur snapshot at all (any
- * dowieziemycie.pl-style booking, or a custom quote). */
-function eurAmount(plnAmount: string | null | undefined, booking: Booking): string | null {
-  if (!plnAmount || !booking.price || !booking.price_eur) return null;
-  const ratio = Number(booking.price_eur) / Number(booking.price);
-  return (Number(plnAmount) * ratio).toFixed(2);
-}
-
 const BookingRoutePreview = dynamic(
   () => import("./booking-route-preview").then((m) => m.BookingRoutePreview),
   { ssr: false, loading: () => <div className="bg-bg h-[140px] w-full animate-pulse rounded-lg" /> },
@@ -228,7 +216,11 @@ function BookingCard({
   const isTrackable = TRACKABLE_STATUSES.includes(booking.status);
   const eta = useDriverEta(booking.id, isTrackable);
   const isEur = locale !== "pl" && Boolean(booking.price_eur);
-  const remainingEur = eurAmount(booking.remaining_amount, booking);
+  // EUR figures come from the backend (the deposit set for that currency, or the
+  // default rule) — the same amounts the payment endpoint charges. Only offered
+  // for catalog bookings that have a EUR price at all, like the server allows.
+  const depositEur = booking.price_eur ? booking.deposit_amount_eur : null;
+  const remainingEur = booking.price_eur ? booking.remaining_amount_eur : null;
 
   return (
     <div
@@ -344,7 +336,7 @@ function BookingCard({
             <DepositPaymentForm
               bookingId={booking.id}
               amount={booking.deposit_amount!}
-              amountEur={eurAmount(booking.deposit_amount, booking)}
+              amountEur={depositEur}
               kind="deposit"
               showVatNote={false}
             />
