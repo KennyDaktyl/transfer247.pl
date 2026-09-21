@@ -10,7 +10,7 @@ import { publicApiBaseUrl, withSiteHeader } from "@/lib/api";
 import { formatPrice } from "@/lib/format";
 import { reverseGeocode, type AddressSuggestion } from "@/lib/geocode";
 import { absoluteImageUrl } from "@/lib/images";
-import type { RouteEstimate, VehiclePrice } from "@/lib/types";
+import type { RouteEstimate, RoutePoint, VehiclePrice } from "@/lib/types";
 import { useToasts } from "@/lib/use-toasts";
 
 import { AddressSearchField } from "./address-search-field";
@@ -23,7 +23,7 @@ const BookingMap = dynamic(() => import("./booking-map").then((m) => m.BookingMa
 });
 
 type LatLng = { lat: number; lng: number };
-const FORM_STORAGE_KEY = "transfer247:booking-form-draft";
+const FORM_STORAGE_PREFIX = "transfer247:booking-form-draft";
 
 // Geocoders (Nominatim) and the browser's Geolocation API can return more
 // decimal places than the backend's DecimalField(decimal_places=6) accepts.
@@ -35,11 +35,21 @@ export function CatalogBookingForm({
   kind,
   catalogSlug,
   vehiclePrices,
+  defaultPickup = null,
+  defaultDropoff = null,
 }: {
   kind: "route" | "tour";
   catalogSlug: string;
   vehiclePrices: VehiclePrice[];
+  /** Start/end the admin pinned on the route — pre-filled as if the customer
+   * had chosen them (the route preview and price appear immediately); they
+   * can still change either one to an exact street address. */
+  defaultPickup?: RoutePoint | null;
+  defaultDropoff?: RoutePoint | null;
 }) {
+  // One draft per route/tour: with pre-filled defaults, a single shared draft
+  // would carry route A's start/end into route B's form.
+  const FORM_STORAGE_KEY = `${FORM_STORAGE_PREFIX}:${kind}:${catalogSlug}`;
   const t = useTranslations("CatalogBooking");
   const locale = useLocale() as AppLocale;
   const { toasts, pushToast, dismissToast } = useToasts();
@@ -84,12 +94,33 @@ export function CatalogBookingForm({
     setTouched((prev) => ({ ...prev, [field]: true }));
   }
 
+  function applyDefaultPoint(field: "pickup" | "dropoff", point: RoutePoint | null) {
+    if (!point) return;
+    const coords = { lat: roundCoord(point.lat), lng: roundCoord(point.lng) };
+    const setCoords = field === "pickup" ? setPickup : setDropoff;
+    const setText = field === "pickup" ? setPickupText : setDropoffText;
+    setCoords(coords);
+    setText(point.label);
+    markTouched(field);
+    if (!point.label) {
+      // Pin without an address text — fill it in from the map, unless the
+      // customer typed something in the meantime.
+      reverseGeocode(coords.lat, coords.lng).then((address) => {
+        if (address) setText((prev) => prev || address);
+      });
+    }
+  }
+
   // Restores whatever the customer had already typed if they navigate away
   // (e.g. to check /flota) and come back — sessionStorage rather than
   // localStorage since this is a working draft, not something that should
   // outlive the tab. Only ever read once, right after mount.
   useEffect(() => {
     const timer = setTimeout(() => {
+      // Admin-pinned defaults first; a restored draft (below) overrides them,
+      // so whatever the customer already changed is never clobbered.
+      applyDefaultPoint("pickup", defaultPickup);
+      applyDefaultPoint("dropoff", defaultDropoff);
       try {
         const raw = sessionStorage.getItem(FORM_STORAGE_KEY);
         if (raw) {
@@ -116,6 +147,9 @@ export function CatalogBookingForm({
       setFormHydrated(true);
     }, 0);
     return () => clearTimeout(timer);
+    // Deliberately once, on mount: defaults/draft are read a single time, and
+    // re-running on prop identity changes would overwrite what the customer typed.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Waits for the restore above to finish (formHydrated) so this doesn't
@@ -136,7 +170,7 @@ export function CatalogBookingForm({
       // navigation is an acceptable degradation, not worth surfacing.
     }
   }, [
-    formHydrated, vehicleId, date, time, passengers, childSeatAges, bikeTransport, bikeCount,
+    FORM_STORAGE_KEY, formHydrated, vehicleId, date, time, passengers, childSeatAges, bikeTransport, bikeCount,
     pickup, pickupText, dropoff, dropoffText, customerName, customerEmail, flightNumber, phone,
   ]);
 

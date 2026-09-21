@@ -168,7 +168,13 @@ export default async function RouteDetailPage({
           </div>
 
           {route.vehicle_prices.length > 0 ? (
-            <CatalogBookingForm kind="route" catalogSlug={route.slug} vehiclePrices={route.vehicle_prices} />
+            <CatalogBookingForm
+              kind="route"
+              catalogSlug={route.slug}
+              vehiclePrices={route.vehicle_prices}
+              defaultPickup={route.default_pickup}
+              defaultDropoff={route.default_dropoff}
+            />
           ) : (
             <Link
               href="/kontakt"

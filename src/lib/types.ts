@@ -63,6 +63,9 @@ export type FixedRoutePhoto = {
 
 export type FixedRouteCategory = "LOTNISKO" | "TRANSFER";
 
+/** Admin-pinned start/end of a fixed route — pre-fills the booking form. */
+export type RoutePoint = { label: string; lat: number; lng: number };
+
 export type FixedRoute = {
   slug: string;
   category: FixedRouteCategory;
@@ -87,6 +90,8 @@ export type FixedRoute = {
   seo_description_de: string;
   photos: FixedRoutePhoto[];
   order: number;
+  default_pickup: RoutePoint | null;
+  default_dropoff: RoutePoint | null;
 };
 
 export type TourPhoto = {
