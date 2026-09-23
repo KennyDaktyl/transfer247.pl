@@ -1,6 +1,7 @@
 import { getTranslations } from "next-intl/server";
 
 import { apiFetch } from "@/lib/api";
+import { TrackedContactLink } from "@/components/tracked-contact-link";
 import type { ContactInfo } from "@/lib/types";
 
 export async function WhatsAppButton() {
@@ -11,7 +12,9 @@ export async function WhatsAppButton() {
   const whatsappNumber = contact.phone.replace(/\D/g, "");
 
   return (
-    <a
+    <TrackedContactLink
+      kind="whatsapp"
+      location="floating_button"
       href={`https://wa.me/${whatsappNumber}`}
       target="_blank"
       rel="noopener noreferrer"
@@ -29,6 +32,6 @@ export async function WhatsAppButton() {
           fill="currentColor"
         />
       </svg>
-    </a>
+    </TrackedContactLink>
   );
 }

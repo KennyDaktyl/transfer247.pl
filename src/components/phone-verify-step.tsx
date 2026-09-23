@@ -3,6 +3,7 @@
 import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 
+import { trackEvent } from "@/lib/analytics";
 import { isCompletePhoneNumber } from "@/lib/countries";
 
 import { PhoneInput } from "./phone-input";
@@ -40,6 +41,7 @@ export function PhoneVerifyStep({
         body: JSON.stringify({ phone, language: locale }),
       });
       if (!res.ok) throw new Error();
+      trackEvent("otp_requested");
       setStep("code");
     } catch {
       setError(t("errorRequest"));
@@ -58,6 +60,7 @@ export function PhoneVerifyStep({
         body: JSON.stringify({ phone, code, intent: "customer" }),
       });
       if (!res.ok) throw new Error();
+      trackEvent("otp_verified");
       onVerified();
     } catch {
       setError(t("errorVerify"));

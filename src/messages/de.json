@@ -224,7 +224,7 @@
   },
   "CookieConsent": {
     "title": "Cookie-Zustimmung",
-    "text": "Wir verwenden Google Analytics, um zu verstehen, wie Sie die Seite nutzen. Nichts wird geladen, bevor Sie auf „Alle akzeptieren“ klicken — Sie können auch ablehnen.",
+    "text": "Wir verwenden Google Analytics und Werbe-Cookies (Google Ads), um zu verstehen, wie Sie die Seite nutzen, die Kampagnenleistung zu messen und Verbesserungen zu erkennen. Nichts wird geladen, bevor Sie auf „Alle akzeptieren“ klicken — Sie können auch ablehnen.",
     "privacyLinkText": "AGB",
     "acceptAll": "Alle akzeptieren",
     "reject": "Ablehnen"

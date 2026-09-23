@@ -9,6 +9,7 @@ import "yet-another-react-lightbox/styles.css";
 import { Link } from "@/i18n/navigation";
 import type { AppLocale } from "@/i18n/routing";
 import { publicApiBaseUrl, withSiteHeader } from "@/lib/api";
+import { trackEvent } from "@/lib/analytics";
 import { formatPrice } from "@/lib/format";
 import { reverseGeocode, type AddressSuggestion } from "@/lib/geocode";
 import { absoluteImageUrl } from "@/lib/images";
@@ -55,6 +56,14 @@ export function CatalogBookingForm({
   const t = useTranslations("CatalogBooking");
   const locale = useLocale() as AppLocale;
   const { toasts, pushToast, dismissToast } = useToasts();
+
+  // Fired once per mount — lets Analytics tell "landed on the page" apart
+  // from "actually reached the booking form" (e.g. someone who bounces
+  // before scrolling down never fires this).
+  useEffect(() => {
+    trackEvent("booking_form_start", { kind, catalog_slug: catalogSlug });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const [vehicleId, setVehicleId] = useState<number | null>(vehiclePrices[0]?.vehicle_id ?? null);
   const selectedVehicle = vehiclePrices.find((vp) => vp.vehicle_id === vehicleId) ?? null;
@@ -325,9 +334,19 @@ export function CatalogBookingForm({
 
   async function handleSubmit() {
     if (!canSubmit) {
+      trackEvent("booking_submit_error", { reason: "validation", kind, catalog_slug: catalogSlug });
       setAttemptedSubmit(true);
       return;
     }
+    // EN/DE customers see and pay the EUR price (formatPrice above) — the
+    // conversion's value should match what they were actually quoted, not
+    // silently report PLN for them.
+    const usesEur = locale !== "pl" && Boolean(selectedVehicle?.price_eur);
+    const value = Number((usesEur ? selectedVehicle?.price_eur : selectedVehicle?.price) ?? 0);
+    const currency = usesEur ? "EUR" : "PLN";
+    trackEvent("booking_submit_attempt", {
+      kind, catalog_slug: catalogSlug, vehicle_id: vehicleId, passenger_count: passengers, value, currency,
+    });
     setStatus("submitting");
     try {
       const scheduledAt = new Date(`${date}T${time}:00`).toISOString();
@@ -354,6 +373,7 @@ export function CatalogBookingForm({
         }),
       });
       if (res.status === 401) {
+        trackEvent("booking_submit_error", { reason: "unauthenticated", kind, catalog_slug: catalogSlug });
         setStatus("unauthenticated");
         return;
       }
@@ -371,13 +391,24 @@ export function CatalogBookingForm({
       setStatus(res.ok ? "success" : "error");
       pushToast(res.ok ? "success" : "error", res.ok ? t("submitSuccessToast") : (message ?? t("submitErrorToast")));
       if (res.ok) {
+        // The one event worth marking as a GA4 conversion and importing into
+        // Google Ads — a booking the backend actually accepted, not just a
+        // click on the button.
+        trackEvent("booking_submit_success", {
+          kind, catalog_slug: catalogSlug, vehicle_id: vehicleId, passenger_count: passengers, value, currency,
+        });
         try {
           sessionStorage.removeItem(FORM_STORAGE_KEY);
         } catch {
           // Nothing to clean up if storage was blocked in the first place.
         }
+      } else {
+        trackEvent("booking_submit_error", {
+          reason: "server", status: res.status, kind, catalog_slug: catalogSlug,
+        });
       }
     } catch {
+      trackEvent("booking_submit_error", { reason: "network", kind, catalog_slug: catalogSlug });
       setStatus("error");
       pushToast("error", t("submitErrorToast"));
     }

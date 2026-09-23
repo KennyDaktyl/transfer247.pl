@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 
+import { trackEvent } from "@/lib/analytics";
+
 import { Link } from "@/i18n/navigation";
 
 import { LocaleSwitcher } from "./locale-switcher";
@@ -148,6 +150,7 @@ export function MobileNav({
             ))}
             <a
               href={`tel:${phone}`}
+              onClick={() => trackEvent("contact_click_phone", { location: "mobile_nav" })}
               className="border-border text-primary rounded-md border-b px-2 py-3 font-medium transition-colors hover:bg-bg"
             >
               {callLabel}

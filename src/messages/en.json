@@ -224,7 +224,7 @@
   },
   "CookieConsent": {
     "title": "Cookie consent",
-    "text": "We use Google Analytics to understand how you use the site and what to improve. Nothing loads until you click \"Accept all\" — you can also reject it.",
+    "text": "We use Google Analytics and advertising cookies (Google Ads) to understand how you use the site, measure campaign performance, and see what to improve. Nothing loads until you click \"Accept all\" — you can also reject it.",
     "privacyLinkText": "Terms of Service",
     "acceptAll": "Accept all",
     "reject": "Reject"

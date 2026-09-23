@@ -1,6 +1,7 @@
 import { getLocale, getTranslations } from "next-intl/server";
 
 import { apiFetch } from "@/lib/api";
+import { TrackedContactLink } from "@/components/tracked-contact-link";
 import { getSession } from "@/lib/auth";
 import { localize } from "@/lib/localize";
 import type { ContactInfo, FixedRoute, Tour } from "@/lib/types";
@@ -76,7 +77,9 @@ export async function SiteHeader() {
               </Link>
             )}
           </div>
-          <a
+          <TrackedContactLink
+            kind="phone"
+            location="header"
             href={`tel:${contact.phone}`}
             aria-label={t("call")}
             className="border-border hover:border-primary hover:text-primary hidden shrink-0 items-center gap-1.5 rounded-[999px] border px-3 py-2 text-[14px] font-medium text-text transition-colors lg:flex"
@@ -88,7 +91,7 @@ export async function SiteHeader() {
               />
             </svg>
             <span className="hidden xl:inline">{t("call")}</span>
-          </a>
+          </TrackedContactLink>
           <Link
             href="/transfery-lotniskowe"
             className="bg-primary hover:bg-primary-hover rounded-[999px] px-4 py-2 text-[14px] font-medium text-white transition-colors"

@@ -1,5 +1,9 @@
-import { marked } from "marked";
+"use client";
 
+import { marked } from "marked";
+import type { MouseEvent } from "react";
+
+import { trackEvent } from "@/lib/analytics";
 import type { AppLocale } from "@/i18n/routing";
 import { routing } from "@/i18n/routing";
 
@@ -28,6 +32,19 @@ function localizeMarkdownLinks(markdown: string, locale: AppLocale): string {
   });
 }
 
+/** A tel:/mailto:/wa.me link typed into a CMS body (contact page, a route's
+ * FAQ, anywhere) is otherwise invisible to GA4 — Enhanced Measurement only
+ * tracks outbound clicks to other domains, never those protocol links.
+ * One delegated listener on the rendered container covers every such link
+ * an admin ever adds, on any page, without editing that page's code. */
+function trackContactLinkClick(event: MouseEvent<HTMLDivElement>) {
+  const link = (event.target as HTMLElement).closest("a");
+  const href = link?.getAttribute("href") ?? "";
+  if (href.startsWith("tel:")) trackEvent("contact_click_phone", { location: "content" });
+  else if (href.startsWith("mailto:")) trackEvent("contact_click_email", { location: "content" });
+  else if (href.includes("wa.me")) trackEvent("contact_click_whatsapp", { location: "content" });
+}
+
 /** Renders admin-authored CMS markdown (headings, bold, FAQ pairs) as HTML.
  * Content comes from Django Admin, not user input — same trust level as
  * everything else pulled from the CMS, so no sanitizer pass is needed.
@@ -45,5 +62,11 @@ export function MarkdownContent({
   if (!markdown.trim()) return null;
   const source = locale ? localizeMarkdownLinks(markdown, locale) : markdown;
   const html = marked.parse(source, { async: false });
-  return <div className={`prose-content ${className}`} dangerouslySetInnerHTML={{ __html: html }} />;
+  return (
+    <div
+      className={`prose-content ${className}`}
+      onClick={trackContactLinkClick}
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
+  );
 }

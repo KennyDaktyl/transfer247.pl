@@ -2,6 +2,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 
 import { CookieSettingsLink } from "@/components/cookie-settings-link";
 import { ObfuscatedEmail } from "@/components/obfuscated-email";
+import { TrackedContactLink } from "@/components/tracked-contact-link";
 import { PaymentBadge } from "@/components/payment-badge";
 import { Link } from "@/i18n/navigation";
 import { apiFetch } from "@/lib/api";
@@ -39,10 +40,10 @@ export async function SiteFooter() {
             </span>
             <p className="mt-3 max-w-[220px] text-[14px] text-muted">{t("tagline")}</p>
             <div className="mt-4 flex flex-col gap-1.5 text-[13.5px] text-muted">
-              <a href={`tel:${contact.phone}`} className="hover:text-text">
+              <TrackedContactLink kind="phone" location="footer" href={`tel:${contact.phone}`} className="hover:text-text">
                 {contact.phone_display}
-              </a>
-              <ObfuscatedEmail user={emailUser} domain={emailDomain} className="hover:text-text" />
+              </TrackedContactLink>
+              <ObfuscatedEmail user={emailUser} domain={emailDomain} location="footer" className="hover:text-text" />
               <a href={mapsUrl} target="_blank" rel="noopener noreferrer" className="hover:text-text">
                 {address} →
               </a>
