@@ -61,6 +61,10 @@ export async function FleetTeaserSection() {
                     <img
                       src={absoluteImageUrl(vehicle.cover_photo)}
                       alt={vehicle.name}
+                      width={400}
+                      height={400}
+                      loading="lazy"
+                      decoding="async"
                       className="aspect-square w-full rounded-[12px] object-cover"
                     />
                   ) : (

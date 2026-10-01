@@ -46,6 +46,8 @@ export function PhotoGallery({
           <img
             src={coverPhoto.src}
             alt={coverPhoto.alt}
+            width={600}
+            height={600}
             className="aspect-square w-full rounded-[12px] object-cover transition-opacity hover:opacity-90"
           />
         </button>
@@ -64,6 +66,10 @@ export function PhotoGallery({
               <img
                 src={photo.thumbnailSrc}
                 alt={photo.alt}
+                width={300}
+                height={300}
+                loading="lazy"
+                decoding="async"
                 className="h-full w-full object-cover transition-transform hover:scale-105"
               />
             </button>

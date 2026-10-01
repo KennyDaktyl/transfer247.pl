@@ -1,40 +1,36 @@
 import { businessRef, siteUrl } from "@/lib/seo";
 
-/** One Service entry per fixed route page — ties the page to the
- * LocalBusiness provider (see OrganizationJsonLd, referenced by `@id`) with
- * its own name, area, and starting price so route pages can surface as
- * rich results independently of the homepage listing. */
-export function ServiceJsonLd({
+/** TouristTrip for a /wycieczki/<slug> page — a round trip from Kraków with
+ * the driver waiting on site, which is what distinguishes it from the
+ * one-way Service on the /transfery pages for the same destination. */
+export function TouristTripJsonLd({
   name,
   description,
-  areaServed,
-  priceFrom,
   url,
   image,
+  priceFrom,
   inLanguage,
-  serviceType = "Airport transfer",
+  touristType,
 }: {
   name: string;
   description: string;
-  areaServed: string[];
-  priceFrom?: number;
   url: string;
   image?: string;
+  priceFrom?: number;
   inLanguage: string;
-  serviceType?: string;
+  touristType?: string;
 }) {
   const absoluteUrl = `${siteUrl()}${url}`;
   const data = {
     "@context": "https://schema.org",
-    "@type": "Service",
-    serviceType,
+    "@type": "TouristTrip",
     name,
     description,
     url: absoluteUrl,
     inLanguage,
     ...(image ? { image } : {}),
+    ...(touristType ? { touristType } : {}),
     provider: businessRef(),
-    areaServed: areaServed.map((place) => ({ "@type": "Place", name: place })),
     ...(priceFrom
       ? {
           offers: {
@@ -43,12 +39,7 @@ export function ServiceJsonLd({
             price: priceFrom,
             priceCurrency: "PLN",
             availability: "https://schema.org/InStock",
-            priceSpecification: {
-              "@type": "PriceSpecification",
-              minPrice: priceFrom,
-              priceCurrency: "PLN",
-              valueAddedTaxIncluded: true,
-            },
+            offeredBy: businessRef(),
           },
         }
       : {}),

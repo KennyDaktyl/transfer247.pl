@@ -1,26 +1,30 @@
-import { siteUrl } from "@/lib/seo";
+import { businessRef, siteUrl } from "@/lib/seo";
 
 /** Article/BlogPosting structured data — every blog post rendered this
  * without it before. No per-post author byline exists in the CMS, so the
  * publishing Organization itself is used as `author` (accurate — nothing
  * here claims a named human wrote it) rather than inventing a person.
- * `dateModified` isn't tracked separately from `published_at`, so it's
- * left equal to `datePublished` rather than guessed. */
+ * `dateModified` is the CMS's last-edit timestamp when the backend has one,
+ * otherwise equal to `datePublished` rather than guessed. */
 export function BlogPostingJsonLd({
   headline,
   description,
   url,
   image,
   datePublished,
+  dateModified,
+  inLanguage,
 }: {
   headline: string;
   description: string;
   url: string;
   image?: string;
   datePublished: string;
+  dateModified?: string | null;
+  inLanguage: string;
 }) {
   const absoluteUrl = `${siteUrl()}${url}`;
-  const organization = { "@type": "Organization", name: "transfer247.pl", url: siteUrl() };
+  const organization = businessRef();
 
   const data = {
     "@context": "https://schema.org",
@@ -31,7 +35,8 @@ export function BlogPostingJsonLd({
     mainEntityOfPage: absoluteUrl,
     ...(image ? { image } : {}),
     datePublished,
-    dateModified: datePublished,
+    dateModified: dateModified || datePublished,
+    inLanguage,
     author: organization,
     publisher: organization,
   };

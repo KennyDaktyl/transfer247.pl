@@ -464,6 +464,10 @@ export function CatalogBookingForm({
                       <img
                         src={absoluteImageUrl(vp.vehicle_cover_image)}
                         alt={vp.vehicle_name}
+                        width={400}
+                        height={400}
+                        loading="lazy"
+                        decoding="async"
                         className="aspect-square w-full object-cover"
                       />
                     </button>
