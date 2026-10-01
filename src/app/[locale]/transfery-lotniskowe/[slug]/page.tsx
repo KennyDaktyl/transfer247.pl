@@ -17,8 +17,9 @@ import { apiFetch } from "@/lib/api";
 import { extractFaqPairs } from "@/lib/faq";
 import { formatPrice } from "@/lib/format";
 import { absoluteImageUrl } from "@/lib/images";
-import { localize } from "@/lib/localize";
-import { buildAlternates } from "@/lib/seo";
+import { localize, localizeOwn } from "@/lib/localize";
+import { pageMetadata, translatedLocales } from "@/lib/seo";
+import { routeSeoFallback } from "@/lib/seo-copy";
 import type { FixedRoute } from "@/lib/types";
 
 const SERVED_PLACES = ["Kraków", "Balice", "Wieliczka", "Skawina", "Niepołomice", "Zakopane", "Katowice"];
@@ -54,13 +55,15 @@ export async function generateMetadata({
   if (!route) return {};
 
   const appLocale = locale as AppLocale;
-  const title =
-    localize(route, "seo_title", appLocale) ||
-    localize(route, "h1", appLocale) ||
-    localize(route, "name", appLocale);
-  const description = localize(route, "seo_description", appLocale);
+  const fallback = routeSeoFallback(localize(route, "name", appLocale), route, appLocale);
 
-  return { title, description, alternates: buildAlternates(`/transfery-lotniskowe/${slug}`, locale as AppLocale) };
+  return pageMetadata({
+    path: `/transfery-lotniskowe/${slug}`,
+    locale: appLocale,
+    title: localizeOwn(route, "seo_title", appLocale) || fallback.title,
+    description: localizeOwn(route, "seo_description", appLocale) || fallback.description,
+    available: translatedLocales(route, ["h1", "body"]),
+  });
 }
 
 export default async function AirportRouteDetailPage({
@@ -118,6 +121,7 @@ export default async function AirportRouteDetailPage({
         priceFrom={route.price_from ? Number(route.price_from) : undefined}
         url={`/${locale}/transfery-lotniskowe/${slug}`}
         image={jsonLdImage ? absoluteImageUrl(jsonLdImage) : undefined}
+        inLanguage={locale}
       />
       <SiteHeader />
       <main>

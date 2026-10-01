@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getLocale, getTranslations, setRequestLocale } from "next-intl/server";
 
 import type { AppLocale } from "@/i18n/routing";
+import { BreadcrumbJsonLd } from "@/components/breadcrumb-jsonld";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { PhotoGallery } from "@/components/photo-gallery";
 import { SiteFooter } from "@/components/site-footer";
@@ -10,8 +11,10 @@ import { Link } from "@/i18n/navigation";
 import { apiFetch } from "@/lib/api";
 import { absoluteImageUrl } from "@/lib/images";
 import { localize } from "@/lib/localize";
-import { buildAlternates } from "@/lib/seo";
 import type { Vehicle } from "@/lib/types";
+import { getAllRoutes, getAllTours } from "@/lib/catalog";
+import { pageMetadata } from "@/lib/seo";
+import { staticPageSeo } from "@/lib/seo-copy";
 
 export async function generateMetadata({
   params,
@@ -19,8 +22,10 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "Fleet" });
-  return { title: t("heading"), description: t("lead"), alternates: buildAlternates("/flota", locale as AppLocale) };
+  const appLocale = locale as AppLocale;
+  const [routes, tours] = await Promise.all([getAllRoutes(), getAllTours()]);
+  const seo = await staticPageSeo("fleet", appLocale, [...routes, ...tours]);
+  return pageMetadata({ path: "/flota", locale: appLocale, ...seo });
 }
 
 function VehiclePlaceholder() {
@@ -143,12 +148,14 @@ export default async function FleetPage({ params }: { params: Promise<{ locale: 
 
   const solo = vehicles.length === 1;
 
+  const breadcrumbItems = [{ label: tCrumbs("home"), href: "/" }, { label: tCrumbs("fleet") }];
   return (
     <>
+      <BreadcrumbJsonLd items={breadcrumbItems} locale={locale} />
       <SiteHeader />
       <main>
         <div className="mx-auto max-w-[1200px] px-4 py-16 sm:px-6 sm:py-20">
-          <Breadcrumbs items={[{ label: tCrumbs("home"), href: "/" }, { label: tCrumbs("fleet") }]} />
+          <Breadcrumbs items={breadcrumbItems} />
           <h1 className="font-heading mt-3 text-[32px] font-semibold text-text sm:text-[42px]">{t("heading")}</h1>
           <p className="mt-3 max-w-[560px] text-[16px] text-muted">{t("lead")}</p>
 

@@ -17,7 +17,7 @@ import { apiFetch } from "@/lib/api";
 import { extractFaqPairs } from "@/lib/faq";
 import { absoluteImageUrl } from "@/lib/images";
 import { localize } from "@/lib/localize";
-import { buildAlternates } from "@/lib/seo";
+import { pageMetadata, translatedLocales } from "@/lib/seo";
 import type { BlogPost } from "@/lib/types";
 
 /** Accepts watch/short/embed URL shapes and returns a plain 11-char video
@@ -62,7 +62,14 @@ export async function generateMetadata({
   const title = localize(post, "seo_title", appLocale) || localize(post, "title", appLocale);
   const description = localize(post, "seo_description", appLocale) || localize(post, "excerpt", appLocale);
 
-  return { title, description, alternates: buildAlternates(`/blog/${slug}`, locale as AppLocale) };
+  return pageMetadata({
+    path: `/blog/${slug}`,
+    locale: appLocale,
+    title,
+    description,
+    available: translatedLocales(post, ["title", "body"]),
+    ogType: "article",
+  });
 }
 
 export default async function BlogPostPage({
@@ -111,6 +118,8 @@ export default async function BlogPostPage({
         url={`/${locale}/blog/${slug}`}
         image={post.cover_image ? absoluteImageUrl(post.cover_image) : undefined}
         datePublished={post.published_at}
+        dateModified={post.updated_at}
+        inLanguage={locale}
       />
       {videoId ? (
         <VideoObjectJsonLd

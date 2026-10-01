@@ -10,8 +10,10 @@ import { SiteHeader } from "@/components/site-header";
 import { apiFetch } from "@/lib/api";
 import { formatPrice } from "@/lib/format";
 import { localize } from "@/lib/localize";
-import { buildAlternates } from "@/lib/seo";
 import type { FixedRoute } from "@/lib/types";
+import { getAllRoutes } from "@/lib/catalog";
+import { pageMetadata } from "@/lib/seo";
+import { staticPageSeo } from "@/lib/seo-copy";
 
 export async function generateMetadata({
   params,
@@ -19,12 +21,10 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "Routes" });
-  return {
-    title: t("airportHeading"),
-    description: t("airportLead"),
-    alternates: buildAlternates("/transfery-lotniskowe", locale as AppLocale),
-  };
+  const appLocale = locale as AppLocale;
+  const routes = (await getAllRoutes()).filter((r) => r.category === "LOTNISKO");
+  const seo = await staticPageSeo("airport", appLocale, routes);
+  return pageMetadata({ path: "/transfery-lotniskowe", locale: appLocale, ...seo });
 }
 
 function RouteGrid({

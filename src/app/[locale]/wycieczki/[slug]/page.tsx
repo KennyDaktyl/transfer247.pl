@@ -10,18 +10,17 @@ import { CatalogBookingForm } from "@/components/catalog-booking-form";
 import { FaqJsonLd } from "@/components/faq-jsonld";
 import { MarkdownContent } from "@/components/markdown-content";
 import { PhotoGallery } from "@/components/photo-gallery";
-import { ServiceJsonLd } from "@/components/service-jsonld";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { TouristTripJsonLd } from "@/components/tourist-trip-jsonld";
 import { apiFetch } from "@/lib/api";
 import { extractFaqPairs } from "@/lib/faq";
 import { formatPrice } from "@/lib/format";
 import { absoluteImageUrl } from "@/lib/images";
-import { localize } from "@/lib/localize";
-import { buildAlternates } from "@/lib/seo";
+import { localize, localizeOwn } from "@/lib/localize";
+import { pageMetadata, translatedLocales } from "@/lib/seo";
+import { tourSeoFallback } from "@/lib/seo-copy";
 import type { Tour } from "@/lib/types";
-
-const SERVED_PLACES = ["Kraków", "Balice", "Wieliczka", "Oświęcim"];
 
 async function getTours(): Promise<Tour[]> {
   try {
@@ -54,13 +53,15 @@ export async function generateMetadata({
   if (!tour) return {};
 
   const appLocale = locale as AppLocale;
-  const title =
-    localize(tour, "seo_title", appLocale) ||
-    localize(tour, "h1", appLocale) ||
-    localize(tour, "title", appLocale);
-  const description = localize(tour, "seo_description", appLocale) || localize(tour, "summary", appLocale);
+  const fallback = tourSeoFallback(localize(tour, "title", appLocale), tour, appLocale);
 
-  return { title, description, alternates: buildAlternates(`/wycieczki/${slug}`, locale as AppLocale) };
+  return pageMetadata({
+    path: `/wycieczki/${slug}`,
+    locale: appLocale,
+    title: localizeOwn(tour, "seo_title", appLocale) || fallback.title,
+    description: localizeOwn(tour, "seo_description", appLocale) || fallback.description,
+    available: translatedLocales(tour, ["title", "body"]),
+  });
 }
 
 export default async function TourDetailPage({
@@ -105,14 +106,13 @@ export default async function TourDetailPage({
     <>
       <BreadcrumbJsonLd items={breadcrumbItems} locale={locale} />
       <FaqJsonLd faqs={faqs} />
-      <ServiceJsonLd
+      <TouristTripJsonLd
         name={h1}
         description={description}
-        areaServed={SERVED_PLACES}
         priceFrom={tour.price_from ? Number(tour.price_from) : undefined}
         url={`/${locale}/wycieczki/${slug}`}
         image={jsonLdImage ? absoluteImageUrl(jsonLdImage) : undefined}
-        serviceType="Guided day trip"
+        inLanguage={locale}
       />
       <SiteHeader />
       <main>

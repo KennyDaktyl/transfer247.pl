@@ -10,17 +10,23 @@ import { SiteHeader } from "@/components/site-header";
 import { apiFetch } from "@/lib/api";
 import { absoluteImageUrl } from "@/lib/images";
 import { localize } from "@/lib/localize";
-import { buildAlternates } from "@/lib/seo";
 import type { BlogPost } from "@/lib/types";
+import { pageMetadata } from "@/lib/seo";
+import { staticPageSeo } from "@/lib/seo-copy";
 
 export async function generateMetadata({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<{ q?: string }>;
 }): Promise<Metadata> {
-  const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "Blog" });
-  return { title: t("heading"), description: t("lead"), alternates: buildAlternates("/blog", locale as AppLocale) };
+  const [{ locale }, { q }] = await Promise.all([params, searchParams]);
+  const appLocale = locale as AppLocale;
+  const seo = await staticPageSeo("blog", appLocale);
+  // ?q= search results are an endless set of thin near-duplicates of the
+  // index — keep them out of the index (canonical already points at /blog).
+  return pageMetadata({ path: "/blog", locale: appLocale, ...seo, noindex: Boolean(q?.trim()) });
 }
 
 export default async function BlogIndexPage({
@@ -87,7 +93,7 @@ export default async function BlogIndexPage({
 
           <div className="mt-10 flex flex-col gap-5">
             {posts.length === 0 ? <p className="text-muted">{t("searchNoResults")}</p> : null}
-            {posts.map((post) => {
+            {posts.map((post, index) => {
               const tag = localize(post, "tag", appLocale);
               const title = localize(post, "title", appLocale);
               const excerpt = localize(post, "excerpt", appLocale);
@@ -103,6 +109,10 @@ export default async function BlogIndexPage({
                     <img
                       src={absoluteImageUrl(post.cover_image)}
                       alt={title}
+                      width={560}
+                      height={384}
+                      loading={index < 2 ? undefined : "lazy"}
+                      decoding="async"
                       className="h-48 w-full object-cover sm:h-auto sm:w-[280px] sm:shrink-0"
                     />
                   ) : null}

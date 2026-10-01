@@ -5,7 +5,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { TrackByCode } from "@/components/track-by-code";
 import type { AppLocale } from "@/i18n/routing";
-import { buildAlternates } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
 
 export async function generateMetadata({
   params,
@@ -14,7 +14,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "TrackByCode" });
-  return { title: t("title"), description: t("lead"), alternates: buildAlternates("/sledz", locale as AppLocale) };
+  // A code-entry form for customers with an existing booking — nothing a
+  // searcher should land on, so it stays out of the index (but crawlable).
+  return pageMetadata({ path: "/sledz", locale: locale as AppLocale, title: t("title"), description: t("lead"), noindex: true });
 }
 
 export default async function TrackByCodePage({ params }: { params: Promise<{ locale: string }> }) {

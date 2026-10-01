@@ -9,13 +9,11 @@ import { redirect } from "@/i18n/navigation";
 import { apiBaseUrl, withSiteHeader } from "@/lib/api";
 import { getSession } from "@/lib/auth";
 import type { Booking } from "@/lib/types";
+import { NOINDEX_FOLLOW } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  robots: {
-    index: false,
-    follow: false,
-  },
-};
+// noindex, follow (not nofollow): Google must still be able to crawl the
+// page to see the noindex — and robots.txt deliberately doesn't block it.
+export const metadata: Metadata = { robots: NOINDEX_FOLLOW };
 
 export default async function PanelPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;

@@ -10,8 +10,10 @@ import { SiteHeader } from "@/components/site-header";
 import { apiFetch } from "@/lib/api";
 import { formatPrice } from "@/lib/format";
 import { localize } from "@/lib/localize";
-import { buildAlternates } from "@/lib/seo";
 import type { Tour } from "@/lib/types";
+import { getAllTours } from "@/lib/catalog";
+import { pageMetadata } from "@/lib/seo";
+import { staticPageSeo } from "@/lib/seo-copy";
 
 export async function generateMetadata({
   params,
@@ -19,8 +21,9 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "Tours" });
-  return { title: t("heading"), description: t("lead"), alternates: buildAlternates("/wycieczki", locale as AppLocale) };
+  const appLocale = locale as AppLocale;
+  const seo = await staticPageSeo("tours", appLocale, await getAllTours());
+  return pageMetadata({ path: "/wycieczki", locale: appLocale, ...seo });
 }
 
 export default async function ToursIndexPage({ params }: { params: Promise<{ locale: string }> }) {

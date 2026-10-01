@@ -7,8 +7,9 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { apiFetch } from "@/lib/api";
 import { localize } from "@/lib/localize";
-import { buildAlternates } from "@/lib/seo";
 import type { ContentPage } from "@/lib/types";
+import { pageMetadata, translatedLocales } from "@/lib/seo";
+import { staticPageSeo } from "@/lib/seo-copy";
 
 async function getPage(): Promise<ContentPage | null> {
   try {
@@ -24,14 +25,18 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const page = await getPage();
-  if (!page) return {};
   const appLocale = locale as AppLocale;
-  return {
-    title: localize(page, "seo_title", appLocale) || localize(page, "title", appLocale),
-    description: localize(page, "seo_description", appLocale) || undefined,
-    alternates: buildAlternates("/regulamin", locale as AppLocale),
-  };
+  const [page, seo] = await Promise.all([getPage(), staticPageSeo("terms", appLocale)]);
+  return pageMetadata({
+    path: "/regulamin",
+    locale: appLocale,
+    // Seo.* copy (sized for the SERP) over the CMS's seo_* fields, which for
+    // these pages are only a bare "Kontakt | transfer247.pl"-style label.
+    ...seo,
+    // ContentPage has no German fields at all yet, so /de/regulamin renders the
+    // Polish fallback — kept out of the index until a translation exists.
+    available: page ? translatedLocales(page, ["title", "body"]) : undefined,
+  });
 }
 
 export default async function RegulaminPage({ params }: { params: Promise<{ locale: string }> }) {

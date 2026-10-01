@@ -11,7 +11,9 @@ import { SiteHeader } from "@/components/site-header";
 import { ToursSection } from "@/components/tours-section";
 import { VehicleShowcaseSection } from "@/components/vehicle-showcase-section";
 import type { AppLocale } from "@/i18n/routing";
-import { buildAlternates } from "@/lib/seo";
+import { getAllRoutes, getAllTours } from "@/lib/catalog";
+import { pageMetadata } from "@/lib/seo";
+import { staticPageSeo } from "@/lib/seo-copy";
 
 export async function generateMetadata({
   params,
@@ -19,7 +21,10 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  return { alternates: buildAlternates("", locale as AppLocale) };
+  const appLocale = locale as AppLocale;
+  const [routes, tours] = await Promise.all([getAllRoutes(), getAllTours()]);
+  const seo = await staticPageSeo("home", appLocale, [...routes, ...tours]);
+  return pageMetadata({ path: "", locale: appLocale, ...seo });
 }
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
