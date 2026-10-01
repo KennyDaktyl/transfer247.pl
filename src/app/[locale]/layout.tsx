@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { Lora, Work_Sans } from "next/font/google";
 
@@ -52,6 +52,10 @@ export default async function LocaleLayout({
     notFound();
   }
   setRequestLocale(locale);
+  // Seo.* (<title>/description copy) is only ever read server-side in
+  // generateMetadata — no need to ship it to the browser.
+  const clientMessages = { ...(await getMessages()) };
+  delete clientMessages.Seo;
 
   return (
     <html lang={locale} className={`${lora.variable} ${workSans.variable} antialiased`}>
@@ -59,7 +63,7 @@ export default async function LocaleLayout({
         <AnalyticsScripts />
         <WebSiteJsonLd locale={locale as AppLocale} />
         <OrganizationJsonLd />
-        <NextIntlClientProvider>
+        <NextIntlClientProvider messages={clientMessages}>
           {children}
           <WhatsAppButton />
           <CookieConsentBanner />
