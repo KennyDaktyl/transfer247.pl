@@ -1,7 +1,7 @@
 {
   "Metadata": {
-    "title": "Kraków & Katowice Airport Transfer | transfer247.pl",
-    "description": "Private transfer from Kraków Balice and Katowice Pyrzowice airports to Kraków and Zakopane. Fixed 24/7 price, no meters. Tours to Auschwitz and Wieliczka."
+    "title": "Krakow & Katowice Airport Transfer 24/7 | Transfer247",
+    "description": "Private transfer to and from Krakow Balice and Katowice Pyrzowice airports. Van for up to 6, fixed price, flight tracking 24/7. Book online."
   },
   "TrackByCode": {
     "title": "Track your driver",
@@ -275,5 +275,43 @@
     "mapCaptionDropoff": "Click the map to set the destination (To)",
     "km": "km",
     "min": "min"
+  },
+  "Seo": {
+    "home": {
+      "title": "Krakow & Katowice Airport Transfer 24/7 | Transfer247",
+      "description": "Private transfer to and from Krakow Balice and Katowice Pyrzowice airports from {price}. Van for up to 6, fixed price, flight tracking 24/7. Book online."
+    },
+    "airport": {
+      "title": "Krakow & Katowice Airport Transfers | Transfer247",
+      "description": "Airport transfers from Krakow Balice and Katowice to Krakow, Zakopane and Katowice from {price}. Van for up to 6, meet & greet, flight tracking 24/7."
+    },
+    "transfers": {
+      "title": "One-Way Private Transfers in Krakow & Area | Transfer247",
+      "description": "Private one-way transfers: train station, hotel, Energylandia, Zakopane. Fixed price from {price}, van for up to 6, 24/7, no night surcharge. Book online."
+    },
+    "tours": {
+      "title": "Private Tours from Krakow – Auschwitz, Wieliczka & More",
+      "description": "Private day trips from Krakow: Auschwitz, Wieliczka, Energylandia, Dunajec rafting. From {price} per van for up to 6, driver waits on site. Book now."
+    },
+    "blog": {
+      "title": "Krakow & Katowice Airport Transfer Guides | Transfer247 Blog",
+      "description": "How to get from Krakow Balice and Katowice airports to the city, what a transfer costs and how to plan Auschwitz and Wieliczka. Practical travel guides."
+    },
+    "fleet": {
+      "title": "Our Fleet – Volkswagen Van for up to 6 People | Transfer247",
+      "description": "A comfortable Volkswagen van for up to 6 passengers with luggage. Airport transfers and day trips from Krakow from {price}, 24/7, fixed price. Book now."
+    },
+    "contact": {
+      "title": "Contact – Krakow & Katowice Airport Transfer 24/7",
+      "description": "Contact Transfer247 by phone, WhatsApp or e-mail 24/7. Ask about a transfer from Krakow Balice or Katowice Pyrzowice airport or a private day trip."
+    },
+    "terms": {
+      "title": "Terms of Service – Private Transfers | Transfer247",
+      "description": "Transfer247 terms of service: booking a transfer or tour online, deposit payment, changes and cancellations, luggage, children and the carrier's liability."
+    },
+    "bikes": {
+      "title": "Bike Transport Krakow – Van with Bike Rack | Transfer247",
+      "description": "Bike transport from Krakow and Balice airport: van with a Thule rack for 4 bikes, fixed price, 24/7. Cycling trips and transfers in Lesser Poland. Book."
+    }
   }
 }

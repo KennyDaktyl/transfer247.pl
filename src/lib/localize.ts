@@ -8,3 +8,11 @@ export function localize<T extends Record<string, unknown>>(obj: T, field: strin
   if (typeof value === "string" && value.trim() !== "") return value;
   return String(obj[`${field}_pl`] ?? "");
 }
+
+/** Like `localize`, but without the Polish fallback — blank when this
+ * locale's own copy hasn't been written yet. For SEO fields, where showing
+ * a Polish title on an /en page is worse than generating one. */
+export function localizeOwn<T extends Record<string, unknown>>(obj: T, field: string, locale: AppLocale): string {
+  const value = obj[`${field}_${locale}`];
+  return typeof value === "string" ? value.trim() : "";
+}

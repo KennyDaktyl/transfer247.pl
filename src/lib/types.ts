@@ -80,6 +80,8 @@ export type FixedRoute = {
   vehicle_prices: VehiclePrice[];
   price_from: string | null;
   price_from_eur: string | null;
+  /** Last CMS edit (ISO datetime); null for rows not saved since the field was added. */
+  updated_at?: string | null;
   body_pl: string;
   body_en: string;
   body_de: string;
@@ -120,6 +122,8 @@ export type Tour = {
   vehicle_prices: VehiclePrice[];
   price_from: string | null;
   price_from_eur: string | null;
+  /** Last CMS edit (ISO datetime); null for rows not saved since the field was added. */
+  updated_at?: string | null;
   cover_image: string | null;
   seo_title_pl: string;
   seo_title_en: string;
@@ -198,6 +202,8 @@ export type BlogPost = {
   seo_description_en: string;
   seo_description_de: string;
   published_at: string;
+  /** Last CMS edit (ISO datetime); null for rows not saved since the field was added. */
+  updated_at?: string | null;
 };
 
 export type Customer = {

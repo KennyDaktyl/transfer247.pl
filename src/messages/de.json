@@ -1,7 +1,7 @@
 {
   "Metadata": {
-    "title": "Flughafentransfer Krakau & Katowice | transfer247.pl",
-    "description": "Privater Transfer ab Flughafen Krakau-Balice und Katowice-Pyrzowice nach Krakau und Zakopane. Fester Preis rund um die Uhr. Ausflüge nach Auschwitz und Wieliczka."
+    "title": "Flughafentransfer Krakau & Kattowitz 24/7 | Transfer247",
+    "description": "Privater Transfer von und zum Flughafen Krakau-Balice und Kattowitz-Pyrzowice. Van bis 6 Personen, Festpreis, Flugverfolgung 24/7. Online buchen."
   },
   "TrackByCode": {
     "title": "Verfolgen Sie Ihren Fahrer",
@@ -275,5 +275,43 @@
     "mapCaptionDropoff": "Klicken Sie auf die Karte, um das Ziel festzulegen",
     "km": "km",
     "min": "Min."
+  },
+  "Seo": {
+    "home": {
+      "title": "Flughafentransfer Krakau & Kattowitz 24/7 | Transfer247",
+      "description": "Privater Transfer von und zum Flughafen Krakau-Balice und Kattowitz-Pyrzowice ab {price}. Van bis 6 Personen, Festpreis, Flugverfolgung 24/7. Online buchen."
+    },
+    "airport": {
+      "title": "Flughafentransfer Krakau & Kattowitz zum Festpreis",
+      "description": "Transfer ab Flughafen Krakau-Balice und Kattowitz nach Krakau, Zakopane und Kattowitz ab {price}. Van bis 6 Personen, Namensschild, Flugverfolgung 24/7."
+    },
+    "transfers": {
+      "title": "Private Einwegtransfers Krakau & Umgebung | Transfer247",
+      "description": "Private Transfers in eine Richtung: Bahnhof, Hotel, Energylandia, Zakopane. Festpreis ab {price}, Van bis 6 Personen, 24/7, kein Nachtzuschlag. Buchen."
+    },
+    "tours": {
+      "title": "Privatausflüge ab Krakau – Auschwitz, Wieliczka & mehr",
+      "description": "Private Tagesausflüge ab Krakau: Auschwitz, Wieliczka, Energylandia, Dunajec-Floßfahrt. Ab {price} pro Van bis 6 Personen, Fahrer wartet vor Ort. Buchen."
+    },
+    "blog": {
+      "title": "Ratgeber Flughafentransfer Krakau & Kattowitz | Blog",
+      "description": "Vom Flughafen Krakau-Balice und Kattowitz in die Stadt, was ein Transfer kostet, wie man Auschwitz und Wieliczka plant. Praktische Reiseratgeber für Polen."
+    },
+    "fleet": {
+      "title": "Unsere Flotte – VW-Van für bis zu 6 Personen | Transfer247",
+      "description": "Komfortabler Volkswagen-Van für bis zu 6 Fahrgäste mit Gepäck. Flughafentransfers und Ausflüge ab Krakau ab {price}, 24/7, Festpreis. Jetzt buchen."
+    },
+    "contact": {
+      "title": "Kontakt – Flughafentransfer Krakau & Kattowitz 24/7",
+      "description": "Kontaktieren Sie Transfer247 per Telefon, WhatsApp oder E-Mail 24/7. Fragen Sie nach einem Transfer ab Flughafen Krakau oder Kattowitz oder einem Ausflug."
+    },
+    "terms": {
+      "title": "AGB – Private Transfers | Transfer247",
+      "description": "AGB von Transfer247: Online-Buchung von Transfer oder Ausflug, Anzahlung, Änderungen und Stornierung, Gepäck, Kinder und Haftung des Beförderers."
+    },
+    "bikes": {
+      "title": "Fahrradtransport Krakau – Van mit Radträger | Transfer247",
+      "description": "Fahrradtransport ab Krakau und Flughafen Balice: Van mit Thule-Träger für 4 Räder, Festpreis, 24/7. Radreisen und Transfers in Kleinpolen. Online buchen."
+    }
   }
 }

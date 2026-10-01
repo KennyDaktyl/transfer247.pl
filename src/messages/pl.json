@@ -1,7 +1,7 @@
 {
   "Metadata": {
-    "title": "Transfer lotniskowy Kraków-Balice, Katowice | transfer247.pl",
-    "description": "Prywatny transfer z lotniska Kraków-Balice i Katowice-Pyrzowice do Krakowa i Zakopanego. Stała cena 24/7, zero dopłat. Wycieczki do Auschwitz i Wieliczki."
+    "title": "Transfer lotnisko Kraków Balice, Katowice 24/7 | Transfer247",
+    "description": "Prywatny transfer z i na lotnisko Kraków Balice oraz Katowice Pyrzowice. Bus do 6 osób, stała cena, śledzenie lotu, 24/7. Zarezerwuj online."
   },
   "TrackByCode": {
     "title": "Śledź pozycję kierowcy",
@@ -275,5 +275,43 @@
     "mapCaptionDropoff": "Kliknij na mapie, aby ustawić cel podróży (Dokąd)",
     "km": "km",
     "min": "min"
+  },
+  "Seo": {
+    "home": {
+      "title": "Transfer lotnisko Kraków Balice, Katowice 24/7 | Transfer247",
+      "description": "Prywatny transfer z i na lotnisko Kraków Balice oraz Katowice Pyrzowice od {price}. Bus do 6 osób, stała cena, śledzenie lotu, 24/7. Zarezerwuj online."
+    },
+    "airport": {
+      "title": "Transfery lotniskowe Kraków Balice i Katowice | Transfer247",
+      "description": "Transfer z lotniska Balice i Pyrzowice do Krakowa, Zakopanego i Katowic od {price}. Bus do 6 osób, odbiór z tablicą, śledzenie lotu 24/7. Zarezerwuj."
+    },
+    "transfers": {
+      "title": "Transfery w jedną stronę – Kraków i okolice | Transfer247",
+      "description": "Prywatny transfer w jedną stronę: dworzec, hotel, Energylandia, Zakopane. Stała cena od {price}, bus do 6 osób, 24/7, bez dopłat nocnych. Zarezerwuj."
+    },
+    "tours": {
+      "title": "Wycieczki z Krakowa z kierowcą – Auschwitz, Wieliczka",
+      "description": "Prywatne wycieczki z Krakowa: Auschwitz, Wieliczka, Energylandia, spływ Dunajcem. Od {price} za bus do 6 osób, kierowca czeka na miejscu. Zarezerwuj."
+    },
+    "blog": {
+      "title": "Blog: transfer z lotniska Kraków i Katowice – poradniki",
+      "description": "Jak dojechać z lotniska Kraków Balice i Katowice Pyrzowice, ile kosztuje transfer, jak zaplanować Auschwitz i Wieliczkę. Praktyczne poradniki."
+    },
+    "fleet": {
+      "title": "Flota – bus Volkswagen do 6 osób z bagażem | Transfer247",
+      "description": "Komfortowy bus Volkswagen dla maksymalnie 6 osób z bagażem. Transfery lotniskowe i wycieczki z Krakowa od {price}, 24/7, stała cena. Sprawdź i zarezerwuj."
+    },
+    "contact": {
+      "title": "Kontakt – transfer lotniskowy Kraków i Katowice 24/7",
+      "description": "Kontakt z Transfer247: telefon, WhatsApp i e-mail 24/7. Zapytaj o transfer z lotniska Kraków Balice lub Katowice Pyrzowice lub wycieczkę dla grupy."
+    },
+    "terms": {
+      "title": "Regulamin usług przewozowych | Transfer247",
+      "description": "Regulamin Transfer247: rezerwacja transferu lub wycieczki online, zaliczka, zmiany i anulowanie kursu, bagaż, dzieci i odpowiedzialność przewoźnika."
+    },
+    "bikes": {
+      "title": "Przewóz rowerów Kraków – bus z bagażnikiem | Transfer247",
+      "description": "Przewóz rowerów z Krakowa i lotniska Balice: bus z bagażnikiem Thule na 4 rowery, stała cena, 24/7. Wyjazdy rowerowe i transfery w Małopolsce. Zarezerwuj."
+    }
   }
 }

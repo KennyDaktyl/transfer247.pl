@@ -1,0 +1,13 @@
+import { apiFetch } from "@/lib/api";
+import type { FixedRoute, Tour } from "@/lib/types";
+
+/** Shared, cached catalog fetches for metadata/sitemap code that only
+ * needs the list (not one item) — a failed backend call yields an empty
+ * list rather than breaking <head> generation. */
+export async function getAllRoutes(): Promise<FixedRoute[]> {
+  return apiFetch<FixedRoute[]>("/api/fixed-routes/", { next: { revalidate: 60 } }).catch(() => []);
+}
+
+export async function getAllTours(): Promise<Tour[]> {
+  return apiFetch<Tour[]>("/api/tours/", { next: { revalidate: 60 } }).catch(() => []);
+}
