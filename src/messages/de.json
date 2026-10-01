@@ -136,7 +136,7 @@
     "eyebrow": "Mein Auto",
     "lead": "Ein Auto, ein Fahrer. Klimaanlage, Platz für große Koffer, Kindersitze auf Wunsch. Sehen Sie die Fotos, bevor Sie buchen — ohne die Flottenseite zu öffnen.",
     "seats": "bis zu {count} Fahrgäste",
-    "seeFullFleet": "Gesamte Flotte ansehen",
+    "seeFullFleet": "Unser Fahrzeug ansehen",
     "driverEyebrow": "Ihr Fahrer",
     "driverHeading": "Sie erkennen mich sofort",
     "driverBody": "Ich hole Sie persönlich vom Flughafen ab — keine Subunternehmer, keine zufälligen Fahrer.",
@@ -298,8 +298,8 @@
       "description": "Vom Flughafen Krakau-Balice und Kattowitz in die Stadt, was ein Transfer kostet, wie man Auschwitz und Wieliczka plant. Praktische Reiseratgeber für Polen."
     },
     "fleet": {
-      "title": "Unsere Flotte – VW-Van für bis zu 6 Personen | Transfer247",
-      "description": "Komfortabler Volkswagen-Van für bis zu 6 Fahrgäste mit Gepäck. Flughafentransfers und Ausflüge ab Krakau ab {price}, 24/7, Festpreis. Jetzt buchen."
+      "title": "Kleinbus VW T6.1 Multivan für 6 Personen | Transfer247",
+      "description": "Komfortabler Kleinbus Volkswagen T6.1 Multivan für 6 Fahrgäste mit Gepäck. Flughafentransfers und Ausflüge ab Krakau ab {price}, 24/7. Jetzt buchen."
     },
     "contact": {
       "title": "Kontakt – Flughafentransfer Krakau & Kattowitz 24/7",

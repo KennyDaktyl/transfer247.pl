@@ -136,7 +136,7 @@
     "eyebrow": "My car",
     "lead": "One car, one driver. Air conditioning, room for large suitcases, child seats on request. See the photos before you book — no need to open the fleet page.",
     "seats": "up to {count} passengers",
-    "seeFullFleet": "See the full fleet",
+    "seeFullFleet": "See our vehicle",
     "driverEyebrow": "Your driver",
     "driverHeading": "You'll recognise me right away",
     "driverBody": "I'm the one picking you up at the airport — no subcontractors, no random drivers.",
@@ -298,8 +298,8 @@
       "description": "How to get from Krakow Balice and Katowice airports to the city, what a transfer costs and how to plan Auschwitz and Wieliczka. Practical travel guides."
     },
     "fleet": {
-      "title": "Our Fleet – Volkswagen Van for up to 6 People | Transfer247",
-      "description": "A comfortable Volkswagen van for up to 6 passengers with luggage. Airport transfers and day trips from Krakow from {price}, 24/7, fixed price. Book now."
+      "title": "VW T6.1 Multivan Minibus for 6 People | Transfer247",
+      "description": "A comfortable Volkswagen T6.1 Multivan minibus for 6 passengers with luggage. Airport transfers and day trips from Krakow from {price}, 24/7. Book now."
     },
     "contact": {
       "title": "Contact – Krakow & Katowice Airport Transfer 24/7",

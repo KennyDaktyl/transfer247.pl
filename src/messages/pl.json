@@ -136,7 +136,7 @@
     "eyebrow": "Moje auto",
     "lead": "Jedno auto, jeden kierowca. Klimatyzacja, miejsce na duże walizki, foteliki dla dzieci na życzenie. Zobacz zdjęcia, zanim zarezerwujesz — bez wchodzenia na stronę floty.",
     "seats": "do {count} pasażerów",
-    "seeFullFleet": "Zobacz pełną flotę",
+    "seeFullFleet": "Zobacz nasz samochód",
     "driverEyebrow": "Twój kierowca",
     "driverHeading": "Poznasz mnie od razu",
     "driverBody": "To ja odbieram Cię z lotniska — bez podwykonawców i przypadkowych kierowców.",
@@ -298,8 +298,8 @@
       "description": "Jak dojechać z lotniska Kraków Balice i Katowice Pyrzowice, ile kosztuje transfer, jak zaplanować Auschwitz i Wieliczkę. Praktyczne poradniki."
     },
     "fleet": {
-      "title": "Flota – bus Volkswagen do 6 osób z bagażem | Transfer247",
-      "description": "Komfortowy bus Volkswagen dla maksymalnie 6 osób z bagażem. Transfery lotniskowe i wycieczki z Krakowa od {price}, 24/7, stała cena. Sprawdź i zarezerwuj."
+      "title": "Mikrobus VW T6.1 Multivan dla 6 osób | Transfer247",
+      "description": "Komfortowy mikrobus Volkswagen T6.1 Multivan dla 6 pasażerów z bagażem. Transfery lotniskowe i wycieczki z Krakowa od {price}, 24/7, stała cena. Rezerwuj."
     },
     "contact": {
       "title": "Kontakt – transfer lotniskowy Kraków i Katowice 24/7",
