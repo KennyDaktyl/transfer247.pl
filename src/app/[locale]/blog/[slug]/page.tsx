@@ -18,6 +18,8 @@ import { extractFaqPairs } from "@/lib/faq";
 import { absoluteImageUrl } from "@/lib/images";
 import { localize } from "@/lib/localize";
 import { pageMetadata, translatedLocales } from "@/lib/seo";
+import { fillPriceTokens } from "@/lib/seo-copy";
+import { getPriceCatalog } from "@/lib/catalog";
 import type { BlogPost } from "@/lib/types";
 
 /** Accepts watch/short/embed URL shapes and returns a plain 11-char video
@@ -59,8 +61,10 @@ export async function generateMetadata({
   if (!post) return {};
 
   const appLocale = locale as AppLocale;
-  const title = localize(post, "seo_title", appLocale) || localize(post, "title", appLocale);
-  const description = localize(post, "seo_description", appLocale) || localize(post, "excerpt", appLocale);
+  const catalog = await getPriceCatalog();
+  const fill = (text: string) => fillPriceTokens(text, appLocale, catalog);
+  const title = fill(localize(post, "seo_title", appLocale) || localize(post, "title", appLocale));
+  const description = fill(localize(post, "seo_description", appLocale) || localize(post, "excerpt", appLocale));
 
   return pageMetadata({
     path: `/blog/${slug}`,
@@ -80,19 +84,21 @@ export default async function BlogPostPage({
   const { locale, slug } = await params;
   setRequestLocale(locale);
 
-  const [t, tCrumbs, appLocale, post] = await Promise.all([
+  const [t, tCrumbs, appLocale, post, catalog] = await Promise.all([
     getTranslations("Blog"),
     getTranslations("Breadcrumbs"),
     getLocale() as Promise<AppLocale>,
     getPost(slug),
+    getPriceCatalog(),
   ]);
 
   if (!post) notFound();
 
   const tag = localize(post, "tag", appLocale);
-  const title = localize(post, "title", appLocale);
-  const body = localize(post, "body", appLocale) || localize(post, "excerpt", appLocale);
-  const description = localize(post, "seo_description", appLocale) || localize(post, "excerpt", appLocale);
+  const fill = (text: string) => fillPriceTokens(text, appLocale, catalog);
+  const title = fill(localize(post, "title", appLocale));
+  const body = fill(localize(post, "body", appLocale) || localize(post, "excerpt", appLocale));
+  const description = fill(localize(post, "seo_description", appLocale) || localize(post, "excerpt", appLocale));
   const videoId = post.youtube_url ? youtubeVideoId(post.youtube_url) : null;
   const videoTitle = videoId ? await fetchYoutubeTitle(videoId) : null;
   const galleryPhotos = post.photos.map((photo) => ({

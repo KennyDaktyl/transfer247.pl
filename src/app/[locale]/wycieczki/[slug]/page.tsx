@@ -19,7 +19,8 @@ import { formatPrice } from "@/lib/format";
 import { absoluteImageUrl } from "@/lib/images";
 import { localize, localizeOwn } from "@/lib/localize";
 import { pageMetadata, translatedLocales } from "@/lib/seo";
-import { tourSeoFallback } from "@/lib/seo-copy";
+import { fillPriceTokens, tourSeoFallback } from "@/lib/seo-copy";
+import { getAllRoutes, getPriceCatalog } from "@/lib/catalog";
 import type { Tour } from "@/lib/types";
 
 async function getTours(): Promise<Tour[]> {
@@ -53,13 +54,15 @@ export async function generateMetadata({
   if (!tour) return {};
 
   const appLocale = locale as AppLocale;
+  const catalog = await getPriceCatalog();
+  const fill = (text: string) => fillPriceTokens(text, appLocale, catalog, tour);
   const fallback = tourSeoFallback(localize(tour, "title", appLocale), tour, appLocale);
 
   return pageMetadata({
     path: `/wycieczki/${slug}`,
     locale: appLocale,
-    title: localizeOwn(tour, "seo_title", appLocale) || fallback.title,
-    description: localizeOwn(tour, "seo_description", appLocale) || fallback.description,
+    title: fill(localizeOwn(tour, "seo_title", appLocale)) || fallback.title,
+    description: fill(localizeOwn(tour, "seo_description", appLocale)) || fallback.description,
     available: translatedLocales(tour, ["title", "body"]),
   });
 }
@@ -72,19 +75,22 @@ export default async function TourDetailPage({
   const { locale, slug } = await params;
   setRequestLocale(locale);
 
-  const [t, tCrumbs, appLocale, allTours, tour] = await Promise.all([
+  const [t, tCrumbs, appLocale, allTours, tour, allRoutes] = await Promise.all([
     getTranslations("Tours"),
     getTranslations("Breadcrumbs"),
     getLocale() as Promise<AppLocale>,
     getTours(),
     getTour(slug),
+    getAllRoutes(),
   ]);
 
   if (!tour) notFound();
 
-  const h1 = localize(tour, "h1", appLocale) || localize(tour, "title", appLocale);
-  const body = localize(tour, "body", appLocale);
-  const description = localize(tour, "seo_description", appLocale) || localize(tour, "summary", appLocale);
+  const catalog = { routes: allRoutes, tours: allTours };
+  const fill = (text: string) => fillPriceTokens(text, appLocale, catalog, tour);
+  const h1 = fill(localize(tour, "h1", appLocale) || localize(tour, "title", appLocale));
+  const body = fill(localize(tour, "body", appLocale));
+  const description = fill(localize(tour, "seo_description", appLocale) || localize(tour, "summary", appLocale));
   const otherTours = allTours.filter((other) => other.slug !== tour.slug);
   const galleryPhotos = tour.photos.map((photo) => ({
     src: absoluteImageUrl(photo.image),

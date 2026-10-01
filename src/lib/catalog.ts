@@ -11,3 +11,10 @@ export async function getAllRoutes(): Promise<FixedRoute[]> {
 export async function getAllTours(): Promise<Tour[]> {
   return apiFetch<Tour[]>("/api/tours/", { next: { revalidate: 60 } }).catch(() => []);
 }
+
+/** Both lists at once — what `fillPriceTokens` needs to resolve
+ * `{price:route:…}` / `{price:tour:…}` in CMS copy. */
+export async function getPriceCatalog(): Promise<{ routes: FixedRoute[]; tours: Tour[] }> {
+  const [routes, tours] = await Promise.all([getAllRoutes(), getAllTours()]);
+  return { routes, tours };
+}

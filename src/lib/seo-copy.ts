@@ -11,6 +11,7 @@ import { formatPrice } from "@/lib/format";
  * published without a price-bearing title. */
 
 type Priced = { price_from: string | null; price_from_eur: string | null };
+type PricedItem = Priced & { slug: string };
 
 function priceLabel(item: Priced, locale: AppLocale): string | null {
   return item.price_from ? formatPrice(item.price_from, item.price_from_eur, locale) : null;
@@ -94,4 +95,27 @@ export async function staticPageSeo(key: SeoPageKey, locale: AppLocale, priced: 
     ? raw.replace("{price}", price)
     : raw.replace(/\s(?:od|from|ab) \{price\}/, "").replace("{price}", "");
   return { title: t(`${key}.title`), description };
+}
+
+const PRICE_TOKEN_RE = /\{price:(route|tour):([a-z0-9-]+)\}/g;
+
+/** CMS copy (bodies, SEO fields) never hard-codes an amount — prices in
+ * old blog posts had gone stale by up to 300 zł. Editors write
+ * `{price:route:<slug>}` / `{price:tour:<slug>}` (and plain `{price}` in a
+ * route's or tour's own SEO fields), filled here with the live "from"
+ * price in the page's currency. An unknown slug renders as nothing rather
+ * than leaking the raw token. */
+export function fillPriceTokens(
+  text: string,
+  locale: AppLocale,
+  catalog: { routes: PricedItem[]; tours: PricedItem[] },
+  self?: Priced,
+): string {
+  let out = text.replace(PRICE_TOKEN_RE, (_, kind: string, slug: string) => {
+    const list = kind === "route" ? catalog.routes : catalog.tours;
+    const item = list.find((entry) => entry.slug === slug);
+    return (item && priceLabel(item, locale)) ?? "";
+  });
+  if (self && out.includes("{price}")) out = out.replaceAll("{price}", priceLabel(self, locale) ?? "");
+  return out;
 }

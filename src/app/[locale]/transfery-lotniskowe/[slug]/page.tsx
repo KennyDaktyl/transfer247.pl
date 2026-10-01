@@ -19,7 +19,8 @@ import { formatPrice } from "@/lib/format";
 import { absoluteImageUrl } from "@/lib/images";
 import { localize, localizeOwn } from "@/lib/localize";
 import { pageMetadata, translatedLocales } from "@/lib/seo";
-import { routeSeoFallback } from "@/lib/seo-copy";
+import { fillPriceTokens, routeSeoFallback } from "@/lib/seo-copy";
+import { getAllTours, getPriceCatalog } from "@/lib/catalog";
 import type { FixedRoute } from "@/lib/types";
 
 const SERVED_PLACES = ["Kraków", "Balice", "Wieliczka", "Skawina", "Niepołomice", "Zakopane", "Katowice"];
@@ -55,13 +56,15 @@ export async function generateMetadata({
   if (!route) return {};
 
   const appLocale = locale as AppLocale;
+  const catalog = await getPriceCatalog();
+  const fill = (text: string) => fillPriceTokens(text, appLocale, catalog, route);
   const fallback = routeSeoFallback(localize(route, "name", appLocale), route, appLocale);
 
   return pageMetadata({
     path: `/transfery-lotniskowe/${slug}`,
     locale: appLocale,
-    title: localizeOwn(route, "seo_title", appLocale) || fallback.title,
-    description: localizeOwn(route, "seo_description", appLocale) || fallback.description,
+    title: fill(localizeOwn(route, "seo_title", appLocale)) || fallback.title,
+    description: fill(localizeOwn(route, "seo_description", appLocale)) || fallback.description,
     available: translatedLocales(route, ["h1", "body"]),
   });
 }
@@ -74,13 +77,14 @@ export default async function AirportRouteDetailPage({
   const { locale, slug } = await params;
   setRequestLocale(locale);
 
-  const [t, tCrumbs, tNav, appLocale, allRoutes, route] = await Promise.all([
+  const [t, tCrumbs, tNav, appLocale, allRoutes, route, allTours] = await Promise.all([
     getTranslations("Routes"),
     getTranslations("Breadcrumbs"),
     getTranslations("Nav"),
     getLocale() as Promise<AppLocale>,
     getRoutes(),
     getRoute(slug),
+    getAllTours(),
   ]);
 
   if (!route) notFound();
@@ -91,9 +95,11 @@ export default async function AirportRouteDetailPage({
     permanentRedirect({ href: `/transfery/${slug}`, locale: appLocale });
   }
 
-  const h1 = localize(route, "h1", appLocale) || localize(route, "name", appLocale);
-  const body = localize(route, "body", appLocale);
-  const description = localize(route, "seo_description", appLocale) || body.slice(0, 200);
+  const catalog = { routes: allRoutes, tours: allTours };
+  const fill = (text: string) => fillPriceTokens(text, appLocale, catalog, route);
+  const h1 = fill(localize(route, "h1", appLocale) || localize(route, "name", appLocale));
+  const body = fill(localize(route, "body", appLocale));
+  const description = fill(localize(route, "seo_description", appLocale)) || body.slice(0, 200);
   const otherRoutes = allRoutes.filter((r) => r.category === "LOTNISKO" && r.slug !== route.slug);
   const galleryPhotos = route.photos.map((photo) => ({
     src: absoluteImageUrl(photo.image),

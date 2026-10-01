@@ -12,7 +12,8 @@ import { absoluteImageUrl } from "@/lib/images";
 import { localize } from "@/lib/localize";
 import type { BlogPost } from "@/lib/types";
 import { pageMetadata } from "@/lib/seo";
-import { staticPageSeo } from "@/lib/seo-copy";
+import { fillPriceTokens, staticPageSeo } from "@/lib/seo-copy";
+import { getPriceCatalog } from "@/lib/catalog";
 
 export async function generateMetadata({
   params,
@@ -40,11 +41,12 @@ export default async function BlogIndexPage({
   const { q } = await searchParams;
   setRequestLocale(locale);
 
-  const [t, tCrumbs, appLocale, allPosts] = await Promise.all([
+  const [t, tCrumbs, appLocale, allPosts, catalog] = await Promise.all([
     getTranslations("Blog"),
     getTranslations("Breadcrumbs"),
     getLocale() as Promise<AppLocale>,
     apiFetch<BlogPost[]>("/api/blog/", { next: { revalidate: 60 } }),
+    getPriceCatalog(),
   ]);
 
   const query = q?.trim().toLowerCase() ?? "";
@@ -95,8 +97,8 @@ export default async function BlogIndexPage({
             {posts.length === 0 ? <p className="text-muted">{t("searchNoResults")}</p> : null}
             {posts.map((post, index) => {
               const tag = localize(post, "tag", appLocale);
-              const title = localize(post, "title", appLocale);
-              const excerpt = localize(post, "excerpt", appLocale);
+              const title = fillPriceTokens(localize(post, "title", appLocale), appLocale, catalog);
+              const excerpt = fillPriceTokens(localize(post, "excerpt", appLocale), appLocale, catalog);
 
               return (
                 <Link
