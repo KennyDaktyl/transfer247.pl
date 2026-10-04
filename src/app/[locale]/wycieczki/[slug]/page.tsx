@@ -133,6 +133,17 @@ export default async function TourDetailPage({
             {h1}
           </h1>
 
+          {tour.cover_image ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={absoluteImageUrl(tour.cover_image)}
+              alt={h1}
+              width={1200}
+              height={480}
+              className="mt-6 h-[240px] w-full rounded-[16px] object-cover sm:h-[400px]"
+            />
+          ) : null}
+
           <div className="border-border bg-surface mt-6 rounded-[16px] border p-6">
             <div className="flex items-center justify-between gap-4">
               <div className="text-[14px] text-muted">{tour.duration}</div>

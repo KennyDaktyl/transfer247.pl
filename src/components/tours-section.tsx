@@ -4,6 +4,7 @@ import { Link } from "@/i18n/navigation";
 import { apiFetch } from "@/lib/api";
 import { formatPrice } from "@/lib/format";
 import { localize } from "@/lib/localize";
+import { TourCardImage } from "@/components/tour-card-image";
 import type { Tour } from "@/lib/types";
 import type { AppLocale } from "@/i18n/routing";
 
@@ -35,30 +36,33 @@ export async function ToursSection() {
             <Link
               key={tour.slug}
               href={`/wycieczki/${tour.slug}`}
-              className="border-border bg-bg block rounded-[16px] border p-6 transition-shadow hover:shadow-md"
+              className="border-border bg-bg block overflow-hidden rounded-[16px] border transition-shadow hover:shadow-md"
             >
-              <div className="text-secondary text-[13px] font-medium">{tour.duration}</div>
-              <h3 className="font-heading mt-1 text-[20px] font-semibold text-text">
-                {localize(tour, "title", locale)}
-              </h3>
-              <p className="mt-2 text-[14px] text-muted">{localize(tour, "summary", locale)}</p>
+              <TourCardImage tour={tour} alt={localize(tour, "h1", locale) || localize(tour, "title", locale)} />
+              <div className="p-6">
+                <div className="text-secondary text-[13px] font-medium">{tour.duration}</div>
+                <h3 className="font-heading mt-1 text-[20px] font-semibold text-text">
+                  {localize(tour, "title", locale)}
+                </h3>
+                <p className="mt-2 text-[14px] text-muted">{localize(tour, "summary", locale)}</p>
 
-              <div className="border-border mt-5 border-t pt-4">
-                {tour.price_from ? (
-                  <div className="text-[17px] font-semibold text-text">
-                    {t("from")} {formatPrice(tour.price_from, tour.price_from_eur, locale)}
-                  </div>
-                ) : (
-                  <div className="text-[14px] text-muted">{t("priceOnRequest")}</div>
-                )}
-                {tour.vehicle_prices.length > 1 ? (
-                  <div className="mt-1 text-[12.5px] text-muted">
-                    {tour.vehicle_prices.length} {t("vehicleOptions")}
-                  </div>
-                ) : null}
+                <div className="border-border mt-5 border-t pt-4">
+                  {tour.price_from ? (
+                    <div className="text-[17px] font-semibold text-text">
+                      {t("from")} {formatPrice(tour.price_from, tour.price_from_eur, locale)}
+                    </div>
+                  ) : (
+                    <div className="text-[14px] text-muted">{t("priceOnRequest")}</div>
+                  )}
+                  {tour.vehicle_prices.length > 1 ? (
+                    <div className="mt-1 text-[12.5px] text-muted">
+                      {tour.vehicle_prices.length} {t("vehicleOptions")}
+                    </div>
+                  ) : null}
+                </div>
+
+                <div className="text-primary mt-4 text-[13.5px] font-medium">{t("seeDetails")} →</div>
               </div>
-
-              <div className="text-primary mt-4 text-[13.5px] font-medium">{t("seeDetails")} →</div>
             </Link>
           ))}
         </div>

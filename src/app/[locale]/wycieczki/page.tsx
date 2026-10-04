@@ -10,16 +10,13 @@ import { SiteHeader } from "@/components/site-header";
 import { apiFetch } from "@/lib/api";
 import { formatPrice } from "@/lib/format";
 import { localize } from "@/lib/localize";
+import { TourCardImage } from "@/components/tour-card-image";
 import type { Tour } from "@/lib/types";
 import { getAllTours } from "@/lib/catalog";
 import { pageMetadata } from "@/lib/seo";
 import { staticPageSeo } from "@/lib/seo-copy";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   const appLocale = locale as AppLocale;
   const seo = await staticPageSeo("tours", appLocale, await getAllTours());
@@ -51,25 +48,32 @@ export default async function ToursIndexPage({ params }: { params: Promise<{ loc
           <p className="mt-1.5 text-[12px] text-muted">{t("vatNote")}</p>
 
           <div className="mt-10 grid gap-5 sm:grid-cols-2">
-            {tours.map((tour) => (
+            {tours.map((tour, index) => (
               <Link
                 key={tour.slug}
                 href={`/wycieczki/${tour.slug}`}
-                className="border-border bg-surface block rounded-[16px] border p-6 transition-shadow hover:shadow-md"
+                className="border-border bg-surface block overflow-hidden rounded-[16px] border transition-shadow hover:shadow-md"
               >
-                <div className="text-secondary text-[13px] font-medium">{tour.duration}</div>
-                <h2 className="font-heading mt-1 text-[20px] font-semibold text-text">
-                  {localize(tour, "title", appLocale)}
-                </h2>
-                <p className="mt-2 text-[14px] text-muted">{localize(tour, "summary", appLocale)}</p>
-                <div className="mt-4 text-[15px] font-semibold text-text">
-                  {tour.price_from ? (
-                    <>
-                      {t("from")} {formatPrice(tour.price_from, tour.price_from_eur, appLocale)}
-                    </>
-                  ) : (
-                    <span className="font-normal text-muted">{t("priceOnRequest")}</span>
-                  )}
+                <TourCardImage
+                  tour={tour}
+                  alt={localize(tour, "h1", appLocale) || localize(tour, "title", appLocale)}
+                  eager={index < 2}
+                />
+                <div className="p-6">
+                  <div className="text-secondary text-[13px] font-medium">{tour.duration}</div>
+                  <h2 className="font-heading mt-1 text-[20px] font-semibold text-text">
+                    {localize(tour, "title", appLocale)}
+                  </h2>
+                  <p className="mt-2 text-[14px] text-muted">{localize(tour, "summary", appLocale)}</p>
+                  <div className="mt-4 text-[15px] font-semibold text-text">
+                    {tour.price_from ? (
+                      <>
+                        {t("from")} {formatPrice(tour.price_from, tour.price_from_eur, appLocale)}
+                      </>
+                    ) : (
+                      <span className="font-normal text-muted">{t("priceOnRequest")}</span>
+                    )}
+                  </div>
                 </div>
               </Link>
             ))}
