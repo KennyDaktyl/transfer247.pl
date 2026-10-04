@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { getLocale, getTranslations } from "next-intl/server";
 
 import { Link } from "@/i18n/navigation";
@@ -57,14 +58,12 @@ export async function FleetTeaserSection() {
               >
                 <div className="w-[40%] shrink-0">
                   {vehicle.cover_photo ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
+                    <Image
                       src={absoluteImageUrl(vehicle.cover_photo)}
                       alt={vehicle.name}
                       width={400}
                       height={400}
-                      loading="lazy"
-                      decoding="async"
+                      sizes="(max-width: 640px) 40vw, 230px"
                       className="aspect-square w-full rounded-[12px] object-cover"
                     />
                   ) : (

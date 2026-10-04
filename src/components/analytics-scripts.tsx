@@ -10,8 +10,9 @@ import { GA_MEASUREMENT_ID } from "@/lib/analytics";
  *    strategy that runs early enough (injected into the initial HTML,
  *    before hydration) — it must live in the root layout, not a page, so
  *    every locale and every route gets it on first load.
- * 2. gtag.js itself, and the config call — `afterInteractive`, after #1.
- *    This always loads; Consent Mode is what actually decides whether it's
+ * 2. gtag.js itself, and the config call — `lazyOnload`, after #1 and
+ *    after the page's own load event, so the ~176 KB script never competes
+ *    with first paint on a phone. This always loads; Consent Mode is what actually decides whether it's
  *    allowed to send identifiable data (see CookieConsentBanner). Google's
  *    own guidance is to let gtag.js load unconditionally and have Consent
  *    Mode gate the requests, rather than conditionally injecting the
@@ -33,8 +34,8 @@ export function AnalyticsScripts() {
           });
         `}
       </Script>
-      <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} strategy="afterInteractive" />
-      <Script id="ga4-init" strategy="afterInteractive">
+      <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} strategy="lazyOnload" />
+      <Script id="ga4-init" strategy="lazyOnload">
         {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}

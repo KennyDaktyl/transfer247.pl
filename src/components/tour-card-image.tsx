@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import { absoluteImageUrl } from "@/lib/images";
 import type { Tour } from "@/lib/types";
 
@@ -22,14 +24,13 @@ export function TourCardImage({ tour, alt, eager = false }: { tour: Tour; alt: s
   }
 
   return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
+    <Image
       src={absoluteImageUrl(src)}
       alt={alt}
       width={640}
       height={360}
-      loading={eager ? undefined : "lazy"}
-      decoding="async"
+      sizes="(max-width: 640px) 100vw, 580px"
+      loading={eager ? "eager" : "lazy"}
       className="aspect-[16/9] w-full object-cover"
     />
   );

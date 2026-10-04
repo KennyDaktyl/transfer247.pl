@@ -29,6 +29,8 @@ export function SinglePhotoLightbox({
         <img
           src={thumbnailSrc || src}
           alt={alt}
+          loading="lazy"
+          decoding="async"
           className={`transition-opacity hover:opacity-80 ${className}`}
         />
       </button>

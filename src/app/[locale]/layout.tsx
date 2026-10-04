@@ -14,16 +14,23 @@ import { routing } from "@/i18n/routing";
 import { siteUrl } from "@/lib/seo";
 import "./globals.css";
 
+// Lora is headings only (font-heading), always semibold — including the
+// homepage H1, the LCP element, hence the preload.
 const lora = Lora({
   variable: "--font-lora",
   subsets: ["latin", "latin-ext"],
-  weight: ["500", "600", "700"],
+  weight: ["600"],
+  display: "swap",
+  preload: true,
 });
 
 const workSans = Work_Sans({
   variable: "--font-work-sans",
   subsets: ["latin", "latin-ext"],
+  // 700: font-bold on the booking/login submit buttons.
   weight: ["400", "500", "600", "700"],
+  display: "swap",
+  preload: true,
 });
 
 export function generateStaticParams() {

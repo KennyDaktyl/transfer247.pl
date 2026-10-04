@@ -9,6 +9,12 @@
     "lint": "eslint",
     "check-links": "node scripts/check-internal-links.mjs"
   },
+  "browserslist": [
+    "chrome >= 111",
+    "edge >= 111",
+    "firefox >= 111",
+    "safari >= 16.4"
+  ],
   "dependencies": {
     "@stripe/react-stripe-js": "^6.8.0",
     "@stripe/stripe-js": "^9.12.1",

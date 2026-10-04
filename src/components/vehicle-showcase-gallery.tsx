@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
@@ -74,12 +75,14 @@ function GalleryTile({
       onClick={onOpen}
       className={`group relative w-full overflow-hidden rounded-[16px] ${className}`}
     >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      {/* Below the fold on every screen: lazy, and resized by next/image to
+          the tile's real width instead of the ~1900px original. */}
+      <Image
         src={large ? photo.src : photo.thumbnailSrc}
         alt={photo.alt}
-        loading={large ? undefined : "lazy"}
-        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+        fill
+        sizes={large ? "(max-width: 1024px) 100vw, 665px" : "(max-width: 1024px) 50vw, 490px"}
+        className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
       />
       {photo.caption ? (
         <span className="absolute bottom-2 left-2 rounded-[8px] bg-black/55 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur-sm">
