@@ -157,6 +157,7 @@
     "lead": "Transfer w jedną stronę pod wybrany adres w Krakowie i okolicy — np. z dworca PKP na Energylandię, do hotelu czy w inne miejsce. Bez liczników i dopłat nocnych — cenę znasz zanim zarezerwujesz.",
     "airportHeading": "Transfery lotniskowe",
     "airportLead": "Transfer z lotniska Kraków-Balice i Katowice-Pyrzowice.",
+    "airportIntro": "Najczęściej wybierany kurs to <from>transfer z lotniska Balice</from> do centrum Krakowa — od {fromPrice} za cały samochód do 6 osób. Lecisz z Krakowa? <to>Transfer na lotnisko Balice</to> kosztuje od {toPrice}.",
     "from": "od",
     "priceOnRequest": "Wycena indywidualna",
     "vehicleOptions": "warianty pojazdu",

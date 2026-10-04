@@ -157,6 +157,7 @@
     "lead": "Ein Transfer in eine Richtung an eine Adresse Ihrer Wahl in Krakau und Umgebung — z. B. vom Hauptbahnhof zum Energylandia, zu Ihrem Hotel oder anderswohin. Keine Taxameter, keine Nachtzuschläge — Sie kennen den Preis vor der Buchung.",
     "airportHeading": "Flughafentransfers",
     "airportLead": "Transfer ab Flughafen Krakau-Balice und Katowice-Pyrzowice.",
+    "airportIntro": "Am häufigsten gebucht: der <from>Flughafentransfer Krakau</from> ins Stadtzentrum — ab {fromPrice} für das ganze Fahrzeug, bis 6 Personen. Sie fliegen ab? Der <to>Transfer zum Flughafen Krakau</to> kostet ab {toPrice}.",
     "from": "ab",
     "priceOnRequest": "Preis auf Anfrage",
     "vehicleOptions": "Fahrzeugvarianten",

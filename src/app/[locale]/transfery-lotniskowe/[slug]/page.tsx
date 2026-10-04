@@ -128,6 +128,7 @@ export default async function AirportRouteDetailPage({
         url={`/${locale}/transfery-lotniskowe/${slug}`}
         image={jsonLdImage ? absoluteImageUrl(jsonLdImage) : undefined}
         inLanguage={locale}
+        schemaType="TaxiService"
       />
       <SiteHeader />
       <main>

@@ -21,6 +21,14 @@ export async function AirportRoutesSection() {
   const airportRoutes = routes.filter((r) => r.category === "LOTNISKO");
   if (airportRoutes.length === 0) return null;
 
+  // An in-copy link with the exact search phrase as anchor text — the nav
+  // and the cards below only carry the short route names. Both directions
+  // are named, since "z lotniska" and "na lotnisko" are separate pages,
+  // prices, and searches.
+  const fromAirport = airportRoutes.find((r) => r.slug === "balice-krakow");
+  const toAirport = airportRoutes.find((r) => r.slug === "transfer-na-lotnisko-balice");
+  const linkClass = "text-primary font-medium underline decoration-primary/40 underline-offset-2 hover:decoration-primary";
+
   return (
     <section id="lotniskowe" className="bg-bg scroll-mt-20">
       <div className="mx-auto max-w-[1200px] px-4 py-16 sm:px-6 sm:py-24">
@@ -30,6 +38,24 @@ export async function AirportRoutesSection() {
               {t("airportHeading")}
             </h2>
             <p className="mt-3 max-w-[560px] text-[15px] text-muted sm:text-[16px]">{t("airportLead")}</p>
+            {fromAirport?.price_from && toAirport?.price_from ? (
+              <p className="mt-2 max-w-[640px] text-[15px] text-muted sm:text-[16px]">
+                {t.rich("airportIntro", {
+                  fromPrice: formatPrice(fromAirport.price_from, fromAirport.price_from_eur, locale),
+                  toPrice: formatPrice(toAirport.price_from, toAirport.price_from_eur, locale),
+                  from: (chunks) => (
+                    <Link href="/transfery-lotniskowe/balice-krakow" className={linkClass}>
+                      {chunks}
+                    </Link>
+                  ),
+                  to: (chunks) => (
+                    <Link href="/transfery-lotniskowe/transfer-na-lotnisko-balice" className={linkClass}>
+                      {chunks}
+                    </Link>
+                  ),
+                })}
+              </p>
+            ) : null}
             <p className="mt-1.5 text-[12px] text-muted">{t("vatNote")}</p>
           </div>
           <Link href="/transfery-lotniskowe" className="text-primary text-[14px] font-medium whitespace-nowrap">

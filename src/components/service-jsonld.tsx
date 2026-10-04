@@ -13,6 +13,7 @@ export function ServiceJsonLd({
   image,
   inLanguage,
   serviceType = "Airport transfer",
+  schemaType = "Service",
 }: {
   name: string;
   description: string;
@@ -22,11 +23,14 @@ export function ServiceJsonLd({
   image?: string;
   inLanguage: string;
   serviceType?: string;
+  /** "TaxiService" (a Service subtype) for private airport/point-to-point
+   * rides — it matches "airport taxi" intent more closely than plain Service. */
+  schemaType?: "Service" | "TaxiService";
 }) {
   const absoluteUrl = `${siteUrl()}${url}`;
   const data = {
     "@context": "https://schema.org",
-    "@type": "Service",
+    "@type": schemaType,
     serviceType,
     name,
     description,

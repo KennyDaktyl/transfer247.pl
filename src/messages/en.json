@@ -157,6 +157,7 @@
     "lead": "A one-way transfer to your chosen address in Kraków and the area — e.g. from the train station to Energylandia, your hotel, or anywhere else. No meters, no night surcharges — you know the price before you book.",
     "airportHeading": "Airport Transfers",
     "airportLead": "Transfer from Kraków Balice and Katowice Pyrzowice airports.",
+    "airportIntro": "Our most booked ride is the <from>Krakow Airport transfer</from> to the city centre — from {fromPrice} for the whole van, up to 6 passengers. Flying out? A <to>transfer to Krakow Airport</to> costs from {toPrice}.",
     "from": "from",
     "priceOnRequest": "Custom quote",
     "vehicleOptions": "vehicle options",
