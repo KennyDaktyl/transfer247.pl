@@ -5,11 +5,11 @@ import type { FixedRoute, Tour } from "@/lib/types";
  * needs the list (not one item) — a failed backend call yields an empty
  * list rather than breaking <head> generation. */
 export async function getAllRoutes(): Promise<FixedRoute[]> {
-  return apiFetch<FixedRoute[]>("/api/fixed-routes/", { next: { revalidate: 60 } }).catch(() => []);
+  return apiFetch<FixedRoute[]>("/api/fixed-routes/").catch(() => []);
 }
 
 export async function getAllTours(): Promise<Tour[]> {
-  return apiFetch<Tour[]>("/api/tours/", { next: { revalidate: 60 } }).catch(() => []);
+  return apiFetch<Tour[]>("/api/tours/").catch(() => []);
 }
 
 /** Both lists at once — what `fillPriceTokens` needs to resolve

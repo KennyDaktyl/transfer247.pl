@@ -32,7 +32,7 @@ function youtubeVideoId(url: string): string | null {
 
 async function getPosts(): Promise<BlogPost[]> {
   try {
-    return await apiFetch<BlogPost[]>("/api/blog/", { next: { revalidate: 60 } });
+    return await apiFetch<BlogPost[]>("/api/blog/");
   } catch {
     return [];
   }
@@ -40,7 +40,7 @@ async function getPosts(): Promise<BlogPost[]> {
 
 async function getPost(slug: string): Promise<BlogPost | null> {
   try {
-    return await apiFetch<BlogPost>(`/api/blog/${slug}/`, { next: { revalidate: 60 } });
+    return await apiFetch<BlogPost>(`/api/blog/${slug}/`);
   } catch {
     return null;
   }

@@ -45,7 +45,7 @@ export default async function BlogIndexPage({
     getTranslations("Blog"),
     getTranslations("Breadcrumbs"),
     getLocale() as Promise<AppLocale>,
-    apiFetch<BlogPost[]>("/api/blog/", { next: { revalidate: 60 } }),
+    apiFetch<BlogPost[]>("/api/blog/"),
     getPriceCatalog(),
   ]);
 

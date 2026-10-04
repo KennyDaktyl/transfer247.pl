@@ -7,7 +7,7 @@ import type { ContactInfo } from "@/lib/types";
 export async function WhatsAppButton() {
   const [t, contact] = await Promise.all([
     getTranslations("Nav"),
-    apiFetch<ContactInfo>("/api/contact-info/", { next: { revalidate: 60 } }),
+    apiFetch<ContactInfo>("/api/contact-info/"),
   ]);
   const whatsappNumber = contact.phone.replace(/\D/g, "");
 

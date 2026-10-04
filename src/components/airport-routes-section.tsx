@@ -15,7 +15,7 @@ export async function AirportRoutesSection() {
   const [t, locale, routes] = await Promise.all([
     getTranslations("Routes"),
     getLocale() as Promise<AppLocale>,
-    apiFetch<FixedRoute[]>("/api/fixed-routes/", { next: { revalidate: 60 } }),
+    apiFetch<FixedRoute[]>("/api/fixed-routes/"),
   ]);
 
   const airportRoutes = routes.filter((r) => r.category === "LOTNISKO");

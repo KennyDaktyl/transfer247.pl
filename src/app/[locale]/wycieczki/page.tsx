@@ -34,7 +34,7 @@ export default async function ToursIndexPage({ params }: { params: Promise<{ loc
     getTranslations("Tours"),
     getTranslations("Breadcrumbs"),
     getLocale() as Promise<AppLocale>,
-    apiFetch<Tour[]>("/api/tours/", { next: { revalidate: 60 } }),
+    apiFetch<Tour[]>("/api/tours/"),
   ]);
 
   const breadcrumbItems = [{ label: tCrumbs("home"), href: "/" }, { label: tCrumbs("tours") }];

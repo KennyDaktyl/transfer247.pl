@@ -15,7 +15,7 @@ import { staticPageSeo } from "@/lib/seo-copy";
 
 async function getPage(): Promise<ContentPage | null> {
   try {
-    return await apiFetch<ContentPage>("/api/content-pages/przewoz-rowerow/", { next: { revalidate: 60 } });
+    return await apiFetch<ContentPage>("/api/content-pages/przewoz-rowerow/");
   } catch {
     return null;
   }

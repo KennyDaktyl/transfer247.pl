@@ -143,7 +143,7 @@ export default async function FleetPage({ params }: { params: Promise<{ locale: 
     getTranslations("Fleet"),
     getTranslations("Breadcrumbs"),
     getLocale() as Promise<AppLocale>,
-    apiFetch<Vehicle[]>("/api/fleet/vehicles/", { next: { revalidate: 60 } }),
+    apiFetch<Vehicle[]>("/api/fleet/vehicles/"),
   ]);
 
   const solo = vehicles.length === 1;

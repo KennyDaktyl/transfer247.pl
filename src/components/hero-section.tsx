@@ -10,7 +10,7 @@ export async function HeroSection() {
   const [t, locale, content] = await Promise.all([
     getTranslations("Hero"),
     getLocale() as Promise<AppLocale>,
-    apiFetch<HomeContent>("/api/home-content/", { next: { revalidate: 60 } }),
+    apiFetch<HomeContent>("/api/home-content/"),
   ]);
 
   const eyebrow = localize(content, "eyebrow", locale);

@@ -11,7 +11,7 @@ export async function ToursSection() {
   const [t, locale, tours] = await Promise.all([
     getTranslations("Tours"),
     getLocale() as Promise<AppLocale>,
-    apiFetch<Tour[]>("/api/tours/", { next: { revalidate: 60 } }),
+    apiFetch<Tour[]>("/api/tours/"),
   ]);
 
   if (tours.length === 0) return null;

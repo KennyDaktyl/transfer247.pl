@@ -73,7 +73,7 @@ export default async function RoutesIndexPage({ params }: { params: Promise<{ lo
     getTranslations("Routes"),
     getTranslations("Breadcrumbs"),
     getLocale() as Promise<AppLocale>,
-    apiFetch<FixedRoute[]>("/api/fixed-routes/", { next: { revalidate: 60 } }),
+    apiFetch<FixedRoute[]>("/api/fixed-routes/"),
   ]);
 
   // Airport transfers moved to their own URL (/transfery-lotniskowe) —

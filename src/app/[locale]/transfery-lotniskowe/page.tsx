@@ -74,7 +74,7 @@ export default async function AirportRoutesIndexPage({ params }: { params: Promi
     getTranslations("Breadcrumbs"),
     getTranslations("Nav"),
     getLocale() as Promise<AppLocale>,
-    apiFetch<FixedRoute[]>("/api/fixed-routes/", { next: { revalidate: 60 } }),
+    apiFetch<FixedRoute[]>("/api/fixed-routes/"),
   ]);
 
   const routes = allRoutes.filter((r) => r.category === "LOTNISKO");

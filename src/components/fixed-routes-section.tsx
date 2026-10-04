@@ -11,7 +11,7 @@ export async function FixedRoutesSection() {
   const [t, locale, allRoutes] = await Promise.all([
     getTranslations("Routes"),
     getLocale() as Promise<AppLocale>,
-    apiFetch<FixedRoute[]>("/api/fixed-routes/", { next: { revalidate: 60 } }),
+    apiFetch<FixedRoute[]>("/api/fixed-routes/"),
   ]);
 
   // Airport transfers get their own homepage section (AirportRoutesSection)

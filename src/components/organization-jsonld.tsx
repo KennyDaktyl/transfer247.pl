@@ -19,12 +19,12 @@ function priceRange(items: { price_from: string | null }[]): string | undefined 
 export async function OrganizationJsonLd() {
   const url = siteUrl();
   const [contact, showcasePhotos, routes, tours] = await Promise.all([
-    apiFetch<ContactInfo>("/api/contact-info/", { next: { revalidate: 60 } }),
-    apiFetch<ShowcasePhoto[]>("/api/showcase-photos/", { next: { revalidate: 3600 } }).catch(
+    apiFetch<ContactInfo>("/api/contact-info/"),
+    apiFetch<ShowcasePhoto[]>("/api/showcase-photos/").catch(
       () => [] as ShowcasePhoto[],
     ),
-    apiFetch<FixedRoute[]>("/api/fixed-routes/", { next: { revalidate: 60 } }).catch(() => [] as FixedRoute[]),
-    apiFetch<Tour[]>("/api/tours/", { next: { revalidate: 60 } }).catch(() => [] as Tour[]),
+    apiFetch<FixedRoute[]>("/api/fixed-routes/").catch(() => [] as FixedRoute[]),
+    apiFetch<Tour[]>("/api/tours/").catch(() => [] as Tour[]),
   ]);
   const range = priceRange([...routes, ...tours]);
   // A real photo of the car or driver represents the business far better

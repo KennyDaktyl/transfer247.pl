@@ -20,9 +20,9 @@ export async function SiteFooter() {
     getTranslations("Nav"),
     getTranslations("BookingPayment"),
     getLocale() as Promise<AppLocale>,
-    apiFetch<FixedRoute[]>("/api/fixed-routes/", { next: { revalidate: 60 } }),
-    apiFetch<Tour[]>("/api/tours/", { next: { revalidate: 60 } }),
-    apiFetch<ContactInfo>("/api/contact-info/", { next: { revalidate: 60 } }),
+    apiFetch<FixedRoute[]>("/api/fixed-routes/"),
+    apiFetch<Tour[]>("/api/tours/"),
+    apiFetch<ContactInfo>("/api/contact-info/"),
   ]);
   const airportRoutes = allRoutes.filter((route) => route.category === "LOTNISKO");
   const transferRoutes = allRoutes.filter((route) => route.category === "TRANSFER");

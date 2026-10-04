@@ -27,7 +27,7 @@ const SERVED_PLACES = ["Kraków", "Balice", "Wieliczka", "Skawina", "Niepołomic
 
 async function getRoutes(): Promise<FixedRoute[]> {
   try {
-    return await apiFetch<FixedRoute[]>("/api/fixed-routes/", { next: { revalidate: 60 } });
+    return await apiFetch<FixedRoute[]>("/api/fixed-routes/");
   } catch {
     return [];
   }
@@ -35,7 +35,7 @@ async function getRoutes(): Promise<FixedRoute[]> {
 
 async function getRoute(slug: string): Promise<FixedRoute | null> {
   try {
-    return await apiFetch<FixedRoute>(`/api/fixed-routes/${slug}/`, { next: { revalidate: 60 } });
+    return await apiFetch<FixedRoute>(`/api/fixed-routes/${slug}/`);
   } catch {
     return null;
   }

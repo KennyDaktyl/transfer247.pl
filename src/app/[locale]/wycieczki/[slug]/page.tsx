@@ -25,7 +25,7 @@ import type { Tour } from "@/lib/types";
 
 async function getTours(): Promise<Tour[]> {
   try {
-    return await apiFetch<Tour[]>("/api/tours/", { next: { revalidate: 60 } });
+    return await apiFetch<Tour[]>("/api/tours/");
   } catch {
     return [];
   }
@@ -33,7 +33,7 @@ async function getTours(): Promise<Tour[]> {
 
 async function getTour(slug: string): Promise<Tour | null> {
   try {
-    return await apiFetch<Tour>(`/api/tours/${slug}/`, { next: { revalidate: 60 } });
+    return await apiFetch<Tour>(`/api/tours/${slug}/`);
   } catch {
     return null;
   }

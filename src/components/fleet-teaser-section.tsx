@@ -28,7 +28,7 @@ export async function FleetTeaserSection() {
   const [t, locale, vehicles] = await Promise.all([
     getTranslations("Fleet"),
     getLocale() as Promise<AppLocale>,
-    apiFetch<Vehicle[]>("/api/fleet/vehicles/", { next: { revalidate: 60 } }),
+    apiFetch<Vehicle[]>("/api/fleet/vehicles/"),
   ]);
 
   if (vehicles.length === 0) return null;

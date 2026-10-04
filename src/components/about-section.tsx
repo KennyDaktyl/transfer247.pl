@@ -9,7 +9,7 @@ export async function AboutSection() {
   const [t, locale, content] = await Promise.all([
     getTranslations("About"),
     getLocale() as Promise<AppLocale>,
-    apiFetch<HomeContent>("/api/home-content/", { next: { revalidate: 60 } }),
+    apiFetch<HomeContent>("/api/home-content/"),
   ]);
 
   const about = localize(content, "about", locale);

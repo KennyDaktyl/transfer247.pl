@@ -20,10 +20,10 @@ export async function VehicleShowcaseSection() {
   const [t, locale, photos, vehicles] = await Promise.all([
     getTranslations("VehicleShowcase"),
     getLocale() as Promise<AppLocale>,
-    apiFetch<ShowcasePhoto[]>("/api/showcase-photos/", { next: { revalidate: 60 } }).catch(
+    apiFetch<ShowcasePhoto[]>("/api/showcase-photos/").catch(
       () => [] as ShowcasePhoto[],
     ),
-    apiFetch<Vehicle[]>("/api/fleet/vehicles/", { next: { revalidate: 60 } }).catch(() => [] as Vehicle[]),
+    apiFetch<Vehicle[]>("/api/fleet/vehicles/").catch(() => [] as Vehicle[]),
   ]);
 
   const vehiclePhotos = photos
