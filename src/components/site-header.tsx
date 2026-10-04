@@ -2,25 +2,23 @@ import { getLocale, getTranslations } from "next-intl/server";
 
 import { apiFetch } from "@/lib/api";
 import { TrackedContactLink } from "@/components/tracked-contact-link";
-import { getSession } from "@/lib/auth";
 import { localize } from "@/lib/localize";
 import type { ContactInfo, FixedRoute, Tour } from "@/lib/types";
 import type { AppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 
-import { CustomerMenu } from "./customer-menu";
+import { HeaderAccount } from "./header-account";
 import { LocaleSwitcher } from "./locale-switcher";
 import { MobileNav } from "./mobile-nav";
 import { NavDropdown } from "./nav-dropdown";
 
 export async function SiteHeader() {
-  const [t, locale, routes, tours, contact, { customer }] = await Promise.all([
+  const [t, locale, routes, tours, contact] = await Promise.all([
     getTranslations("Nav"),
     getLocale() as Promise<AppLocale>,
     apiFetch<FixedRoute[]>("/api/fixed-routes/"),
     apiFetch<Tour[]>("/api/tours/"),
     apiFetch<ContactInfo>("/api/contact-info/"),
-    getSession(),
   ]);
 
   const airportRouteItems = routes
@@ -38,8 +36,6 @@ export async function SiteHeader() {
     { href: "/blog", label: t("blog") },
     { href: "/kontakt", label: t("contact") },
   ];
-  const loginHref = customer ? "/panel" : "/logowanie";
-  const loginLabel = customer ? t("myTrips") : t("login");
 
   return (
     <header className="border-border bg-surface/90 sticky top-0 z-50 border-b backdrop-blur-md">
@@ -66,16 +62,7 @@ export async function SiteHeader() {
             <LocaleSwitcher />
           </div>
           <div className="hidden lg:block">
-            {customer ? (
-              <CustomerMenu myTripsLabel={t("myTrips")} logoutLabel={t("logout")} />
-            ) : (
-              <Link
-                href={loginHref}
-                className="border-primary text-primary hover:bg-primary/10 shrink-0 rounded-[999px] border px-3 py-2 text-[14px] font-medium whitespace-nowrap transition-colors"
-              >
-                {loginLabel}
-              </Link>
-            )}
+            <HeaderAccount loginLabel={t("login")} myTripsLabel={t("myTrips")} logoutLabel={t("logout")} />
           </div>
           <TrackedContactLink
             kind="phone"
@@ -108,9 +95,8 @@ export async function SiteHeader() {
             flatLinks={flatLinks}
             callLabel={t("call")}
             phone={contact.phone}
-            loginHref={loginHref}
-            loginLabel={loginLabel}
-            isLoggedIn={Boolean(customer)}
+            loginLabel={t("login")}
+            myTripsLabel={t("myTrips")}
             logoutLabel={t("logout")}
           />
         </div>

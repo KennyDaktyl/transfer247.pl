@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 import { trackEvent } from "@/lib/analytics";
+import { useLoggedIn } from "@/lib/use-logged-in";
 
 import { Link } from "@/i18n/navigation";
 
@@ -71,9 +72,8 @@ export function MobileNav({
   flatLinks,
   callLabel,
   phone,
-  loginHref,
   loginLabel,
-  isLoggedIn,
+  myTripsLabel,
   logoutLabel,
 }: {
   airportRouteItems: NavItem[];
@@ -85,12 +85,12 @@ export function MobileNav({
   flatLinks: NavItem[];
   callLabel: string;
   phone: string;
-  loginHref: string;
   loginLabel: string;
-  isLoggedIn: boolean;
+  myTripsLabel: string;
   logoutLabel: string;
 }) {
   const [open, setOpen] = useState(false);
+  const isLoggedIn = Boolean(useLoggedIn());
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -156,11 +156,11 @@ export function MobileNav({
               {callLabel}
             </a>
             <Link
-              href={loginHref}
+              href={isLoggedIn ? "/panel" : "/logowanie"}
               onClick={() => setOpen(false)}
               className="border-primary text-primary mt-2 rounded-md border px-2 py-3 text-center font-semibold transition-colors hover:bg-primary/10"
             >
-              {loginLabel}
+              {isLoggedIn ? myTripsLabel : loginLabel}
             </Link>
             {isLoggedIn && (
               <LogoutButton
